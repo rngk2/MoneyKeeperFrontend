@@ -1,0 +1,36 @@
+.form-flex-container {
+  position: absolute;
+  top: 10rem;
+  width: 100%;
+  height: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+form {
+  width: 37rem;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+
+  mat-form-field {
+
+    margin-bottom: 1.7rem;
+
+    input {
+      font-size: 22px;
+    }
+  }
+
+  .form__title p {
+    font-size: 40px;
+    margin-bottom: 2rem;
+    letter-spacing: 1.7px;
+
+  }
+
+  .submit {
+    margin-bottom: 1rem;
+  }
+}
