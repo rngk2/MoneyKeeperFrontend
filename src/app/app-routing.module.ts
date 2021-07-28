@@ -6,6 +6,7 @@ import {SignUpComponent} from "./account/sign-up/sign-up.component";
 const routes: Routes = [
   {path: 'sign-in', component: SignInComponent, data: {animation: 'isRight'}},
   {path: 'sign-up', component: SignUpComponent, data: {animation: 'isLeft'}},
+  {path: '**', component: SignUpComponent}
 ];
 
 @NgModule({

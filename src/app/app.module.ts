@@ -11,6 +11,8 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
+import HttpService from "./services/http.service";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -21,6 +23,7 @@ import {MatButtonModule} from "@angular/material/button";
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatFormFieldModule,
@@ -28,7 +31,7 @@ import {MatButtonModule} from "@angular/material/button";
     MatInputModule,
     MatButtonModule
   ],
-  providers: [],
+  providers: [HttpService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
