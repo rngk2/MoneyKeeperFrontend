@@ -1,0 +1,24 @@
+<div class="form-flex-container">
+  <form [formGroup]="signInForm">
+    <div class="form__title">
+      <p>Sign In</p>
+    </div>
+    <mat-form-field>
+      <input type="email" matInput placeholder="Email" formControlName="email" required>
+      <div *ngIf="email!.invalid && (email!.dirty || email!.touched) && email!.errors?.required" class="validation-error__hint">
+        Email is required
+      </div>
+    </mat-form-field>
+    <mat-form-field>
+      <input type="password" matInput placeholder="Password" formControlName="password" required>
+      <div *ngIf="password!.invalid && (password!.dirty || password!.touched) && password!.errors?.required" class="validation-error__hint">
+        Password is required
+      </div>
+    </mat-form-field>
+
+    <button class="submit" mat-button color="primary">Submit</button>
+    <div class="have-an-account">
+      <a routerLink="/sign-up">Don't have an account?</a>
+    </div>
+  </form>
+</div>

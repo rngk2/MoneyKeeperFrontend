@@ -15,9 +15,7 @@ form {
   flex-direction: column;
 
   mat-form-field {
-
     margin-bottom: 1.7rem;
-
     input {
       font-size: 22px;
     }
@@ -27,11 +25,14 @@ form {
     font-size: 40px;
     margin-bottom: 2rem;
     letter-spacing: 1.7px;
-
   }
 
   .submit {
     margin-bottom: 1rem;
+  }
+
+  .validation-error__hint {
+    font-size: 13px;
   }
 }
 
