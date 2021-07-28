@@ -25,10 +25,10 @@ const slideTo = (direction: 'right' | 'left'): AnimationMetadata[] => [
   query(':leave', animateChild()),
   group([
     query(':leave', [
-      animate('600ms ease-out', style({ [direction]: '100%' }))
+      animate('540ms ease-out', style({ [direction]: '100%' }))
     ]),
     query(':enter', [
-      animate('600ms ease-out', style({ [direction]: '0%' }))
+      animate('540ms ease-out', style({ [direction]: '0%' }))
     ])
   ]),
   query(':enter', animateChild()),
