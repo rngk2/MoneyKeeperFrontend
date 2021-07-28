@@ -15,8 +15,7 @@
         Password is required
       </div>
     </mat-form-field>
-
-    <button class="submit" mat-button color="primary">Submit</button>
+    <button [disabled]="!signInForm.valid" class="submit" mat-button color="primary">Submit</button>
     <div class="have-an-account">
       <a routerLink="/sign-up">Don't have an account?</a>
     </div>
