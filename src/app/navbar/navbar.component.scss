@@ -1,0 +1,40 @@
+// TODO: Add burger menu
+header {
+  position: fixed;
+  width: 100%;
+  top: 1rem;
+  left: 1.5rem;
+  z-index: 50;
+  font-size: 18px;
+  height: 3em;
+
+  ul {
+    margin-left: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 2rem;
+
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: max-content;
+      height: 4rem;
+      letter-spacing: 2px;
+      padding: 1em;
+      text-transform: uppercase;
+
+      &:not(:last-child) {
+        margin-right: 2em;
+      }
+
+      &:hover {
+        cursor: pointer;
+        border: 1px solid black;
+        border-radius: 15px;
+      }
+    }
+  }
+}
