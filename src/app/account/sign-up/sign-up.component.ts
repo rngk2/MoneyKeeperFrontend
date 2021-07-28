@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms'
+import HttpService from "../../services/http.service";
+import {environment} from "../../../environments/environment";
+import User from "../../entities/User.Entity";
 
 @Component({
   selector: 'sign-up-form',
@@ -10,7 +13,9 @@ export class SignUpComponent {
 
   signUpForm: FormGroup
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+              private httpService: HttpService)
+  {
     this.signUpForm = this.fb.group({
       firstName: new FormControl('', [
         Validators.required
@@ -43,6 +48,17 @@ export class SignUpComponent {
 
   get password() {
     return this.signUpForm.get('password')
+  }
+
+  submit() {
+    const user: User = {
+      firstName: this.firstName?.value,
+      lastName: this.lastName?.value,
+      email: this.email?.value,
+      password: this.password?.value
+    }
+    this.httpService.post(environment.serverUrl + '/users', user)
+      .subscribe(data => console.log(data))
   }
 
 }
