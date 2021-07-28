@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms'
 import HttpService from "../../services/http.service";
 import {environment} from "../../../environments/environment";
-import User from "../../entities/User.Entity";
+import User from "../../entities/user.entity";
 
 @Component({
   selector: 'sign-up-form',
