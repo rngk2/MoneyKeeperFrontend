@@ -1,0 +1,19 @@
+<mat-card class="card">
+  <mat-card-header>
+    <mat-card-title>{{categoryName}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p class="spend">
+      Spend this month: {{spendThisMonth}}$
+    </p>
+    <div [@bodyExpansion]="state" class="expandable-content">
+      <p *ngFor="let transaction of lastTransactions">
+        {{transaction.timestamp}}: {{transaction.amount}}$
+      </p>
+    </div>
+    <mat-divider></mat-divider>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button (click)="toggle()" color="primary">{{state === 'collapsed' ? 'More' : 'Less'}}</button>
+  </mat-card-actions>
+</mat-card>
