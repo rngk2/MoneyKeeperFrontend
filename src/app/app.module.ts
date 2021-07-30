@@ -13,13 +13,19 @@ import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import HttpService from "./services/http.service";
 import {HttpClientModule} from "@angular/common/http";
+import UserService from "./services/user.service";
+import { CategoryCardComponent } from './category-card/category-card.component';
+import {MatCardModule} from "@angular/material/card";
+import {MatDividerModule} from "@angular/material/divider";
+import {A11yModule} from "@angular/cdk/a11y";
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     SignInComponent,
-    SignUpComponent
+    SignUpComponent,
+    CategoryCardComponent
   ],
   imports: [
     BrowserModule,
@@ -29,9 +35,11 @@ import {HttpClientModule} from "@angular/common/http";
     MatFormFieldModule,
     ReactiveFormsModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatCardModule,
+    MatDividerModule
   ],
-  providers: [HttpService],
+  providers: [HttpService, UserService],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
