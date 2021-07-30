@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Observer} from "rxjs";
+import UserService from "../services/user.service";
 
 @Component({
   selector: 'navbar',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
+  loggedIn: boolean = false
+
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
+    this.userService
+      .isLoggedIn()
+      .subscribe(loggedIn => this.loggedIn = loggedIn)
   }
-
 }
