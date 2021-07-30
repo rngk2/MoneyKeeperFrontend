@@ -8,7 +8,7 @@ export default class HttpService {
   constructor(private http: HttpClient) {
   }
 
-  post<T>(url: string, data: T): Observable<T> {
+  post<T>(url: string, data: any): Observable<T> {
     return this.http.post<T>(url, data)
   }
 
