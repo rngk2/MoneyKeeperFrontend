@@ -36,7 +36,7 @@ export class SignInComponent {
     this.userService.logIn({
       email: this.email?.value,
       password: this.password?.value
-    })
+    }).subscribe(data => console.log(data))
   }
 
 }

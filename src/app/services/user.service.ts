@@ -1,44 +1,67 @@
 import {Injectable} from "@angular/core";
-import {Observable, Subject} from "rxjs";
+import {BehaviorSubject, Observable, Subject} from "rxjs";
 import HttpService from "./http.service";
 import {environment} from "../../environments/environment";
 import User from "../entities/user.entity";
+import {HttpClient} from "@angular/common/http";
+import {map} from "rxjs/operators";
 
-interface ServerAuthResponse {
-  ok?: User
-  error?: string
-}
+
 
 @Injectable()
 export default class UserService {
 
-  private authProvider = new Subject<boolean>()
-  private loggedIn = false
+  private userSubject: BehaviorSubject<User>
+  public user: Observable<User>
 
-  private currentUser: User = {}
-
-  constructor(private httpService: HttpService) { }
-
-  isLoggedIn(): Observable<boolean> {
-    return this.authProvider.asObservable();
+  constructor(private httpClient: HttpClient) {
+    this.userSubject = new BehaviorSubject<User>({})
+    this.user = this.userSubject.asObservable()
   }
 
-  logIn(credentials: { email: string, password: string }): void {
-    console.log(credentials)
-    this.httpService.post<ServerAuthResponse>(environment.serverUrl + '/users/auth', credentials)
-    .subscribe((data: ServerAuthResponse) => {
-     this.loggedIn = !data.error && !!data.ok?.accessToken;
-      if (this.loggedIn) {
-        this.currentUser = data.ok!
-        localStorage.setItem('token', data.ok?.accessToken!)
-        this.authProvider.next(this.loggedIn)
-      }
-    })
+  get userValue() {
+    return this.userSubject.value
+  }
+
+  get currentUser(): Observable<User> {
+    return this.userSubject.asObservable()
+  }
+
+  logIn(credentials: { email: string, password: string }): Observable<User> {
+    return this.httpClient.post<User>(environment.serverUrl + '/users/authenticate', credentials, {withCredentials: true})
+      .pipe(map(user => {
+        this.userSubject.next(user)
+        this.startRefreshTokenTimer()
+        return user
+      }))
   }
 
   logOut(): void {
-    localStorage.removeItem('token')
-    this.loggedIn = false
-    this.authProvider.next(this.loggedIn)
+    this.httpClient.post<any>(environment.serverUrl + '/users/revoke-token', {}, { withCredentials: true });
+    this.stopRefreshTokenTimer();
+    this.userSubject.next({});
   }
+
+  refreshToken() {
+    return this.httpClient.post<any>(environment.serverUrl + '/users/refresh-token', {}, {withCredentials: true})
+      .pipe(map((user) => {
+        this.userSubject.next(user);
+        this.startRefreshTokenTimer();
+        return user;
+      }));
+  }
+
+  // @ts-ignore
+  private refreshTokenTimeout: NodeJS.Timeout
+
+  private startRefreshTokenTimer(): void {
+    const expires = new Date(5 * 1000)
+    const timeout = expires.getTime() - Date.now() - (60 * 1000)
+    this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout)
+  }
+
+  private stopRefreshTokenTimer(): void {
+    clearTimeout(this.refreshTokenTimeout)
+  }
+
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Observer} from "rxjs";
 import UserService from "../services/user.service";
+import User from "../entities/user.entity";
 
 @Component({
   selector: 'navbar',
@@ -14,8 +15,9 @@ export class NavbarComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.userService
-      .isLoggedIn()
-      .subscribe(loggedIn => this.loggedIn = loggedIn)
+    this.userService.currentUser.subscribe((data: User) => {
+      if (data.accessToken)
+          this.loggedIn = true
+    })
   }
 }
