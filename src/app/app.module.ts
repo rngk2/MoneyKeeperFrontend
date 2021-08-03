@@ -17,7 +17,9 @@ import UserService from "./services/user.service";
 import { CategoryCardComponent } from './category-card/category-card.component';
 import {MatCardModule} from "@angular/material/card";
 import {MatDividerModule} from "@angular/material/divider";
-import {A11yModule} from "@angular/cdk/a11y";
+import { CardsContainerComponent } from './cards-container/cards-container.component';
+import { WalletPageComponent } from './wallet-page/wallet-page.component';
+import {MatIconModule} from "@angular/material/icon";
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import {A11yModule} from "@angular/cdk/a11y";
     NavbarComponent,
     SignInComponent,
     SignUpComponent,
-    CategoryCardComponent
+    CategoryCardComponent,
+    CardsContainerComponent,
+    WalletPageComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +41,8 @@ import {A11yModule} from "@angular/cdk/a11y";
     MatInputModule,
     MatButtonModule,
     MatCardModule,
-    MatDividerModule
+    MatDividerModule,
+    MatIconModule
   ],
   providers: [HttpService, UserService],
   bootstrap: [AppComponent],
