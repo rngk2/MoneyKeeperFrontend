@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import Transaction from "../entities/transaction.entity";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
-  selector: 'app-category-card',
+  selector: 'category-card',
   templateUrl: './category-card.component.html',
   styleUrls: ['./category-card.component.scss'],
   animations: [
@@ -19,30 +19,9 @@ export class CategoryCardComponent {
 
   state: 'collapsed' | 'expanded' = 'collapsed'
 
-  categoryName = 'Category 1'
-  spendThisMonth = 2343.25
-  lastTransactions: Transaction[] = [
-    {
-        categoryName: "Cat1",
-        amount: 324,
-        timestamp: '12-12-12'
-    },
-    {
-      categoryName: "Cat1",
-      amount: 324,
-      timestamp: '12-12-12'
-    },
-    {
-      categoryName: "Cat1",
-      amount: 324,
-      timestamp: '12-12-12'
-    },
-    {
-      categoryName: "Cat1",
-      amount: 324,
-      timestamp: '12-12-12'
-    }
-  ]
+  @Input() categoryName!: string
+  @Input() spendThisMonth!: number
+  @Input() lastTransactions!: Transaction[]
 
   private lastTransactionsMaxLength = 5
 
