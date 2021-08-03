@@ -1,6 +1,6 @@
 export default interface Transaction {
   id?: number
-  categoryName: string
+  categoryName?: string
   userId?: number
   amount: number
   timestamp: string
