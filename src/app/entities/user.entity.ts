@@ -4,5 +4,5 @@ export default interface User {
   lastName?: string,
   email?: string,
   password?: string
-  accessToken?: string
+  jwtToken?: string
 }

@@ -1,6 +1,5 @@
 import {Injectable} from "@angular/core";
-import {BehaviorSubject, Observable, Subject} from "rxjs";
-import HttpService from "./http.service";
+import {BehaviorSubject, Observable} from "rxjs";
 import {environment} from "../../environments/environment";
 import User from "../entities/user.entity";
 import {HttpClient} from "@angular/common/http";
@@ -55,9 +54,8 @@ export default class UserService {
   private refreshTokenTimeout: NodeJS.Timeout
 
   private startRefreshTokenTimer(): void {
-    const expires = new Date(5 * 1000)
-    const timeout = expires.getTime() - Date.now() - (60 * 1000)
-    this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout)
+    const token_ttl = 5 * 1000
+    this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), token_ttl)
   }
 
   private stopRefreshTokenTimer(): void {

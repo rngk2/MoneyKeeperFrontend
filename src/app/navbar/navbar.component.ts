@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {Observer} from "rxjs";
 import UserService from "../services/user.service";
 import User from "../entities/user.entity";
 
@@ -16,8 +15,10 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.currentUser.subscribe((data: User) => {
-      if (data.accessToken)
+      console.log("navd: ", data)
+      if (data.jwtToken)
           this.loggedIn = true
+
     })
   }
 }
