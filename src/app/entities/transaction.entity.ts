@@ -3,5 +3,5 @@ export default interface Transaction {
   categoryName?: string
   userId?: number
   amount: number
-  timestamp: string
+  timestamp: Date
 }
