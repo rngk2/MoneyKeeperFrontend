@@ -1,5 +1,5 @@
 <div class="cards-container">
-  <div *ngIf="!!!category_transactions.size">
+  <div *ngIf="!!!category_transactions.size else ok">
     <p class="nothing-in-history__hint">Nothing in your history for now</p>
   </div>
   <ng-template #ok>
