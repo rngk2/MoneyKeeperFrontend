@@ -20,7 +20,6 @@ export class CardsContainerComponent implements OnInit  {
     this.category_transactions = new Map<string, Transaction[]>()
     this.http.get<Transaction[]>(environment.serverUrl + `/users/${this.userService.getCurrentUser().id}/summary`)
       .subscribe(transactions => {
-        console.log(transactions)
         for (const transaction of transactions) {
           const containedTransactions = this.category_transactions.get(transaction.categoryName!)
           const newSet: Transaction[] = containedTransactions == null ? [transaction] : [...containedTransactions, transaction]
