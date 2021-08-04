@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import Transaction from "../entities/transaction.entity";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 
@@ -15,7 +15,7 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
   ])
 ]
 })
-export class CategoryCardComponent {
+export class CategoryCardComponent implements OnInit {
 
   state: 'collapsed' | 'expanded' = 'collapsed'
 
@@ -27,8 +27,14 @@ export class CategoryCardComponent {
 
   constructor() { }
 
+  ngOnInit(): void {
+    if (this.lastTransactions.length > this.lastTransactionsMaxLength) {
+      this.lastTransactions = this.lastTransactions.slice(0, this.lastTransactionsMaxLength - 1)
+    }
+  }
 
   toggle(): void {
     this.state = this.state === 'collapsed' ? 'expanded' : 'collapsed'
   }
+
 }

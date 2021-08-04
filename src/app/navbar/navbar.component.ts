@@ -14,7 +14,7 @@ export class NavbarComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.userService.currentUser.subscribe((data: User) => {
+    this.userService.currentUserAsObservable.subscribe((data: User) => {
       console.log("navd: ", data)
       if (data.jwtToken)
           this.loggedIn = true

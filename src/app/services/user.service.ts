@@ -11,25 +11,27 @@ import {map} from "rxjs/operators";
 export default class UserService {
 
   private userSubject: BehaviorSubject<User>
-  public user: Observable<User>
+
+  private currentUser: User = {}
 
   constructor(private httpClient: HttpClient) {
     this.userSubject = new BehaviorSubject<User>({})
-    this.user = this.userSubject.asObservable()
   }
 
-  get userValue() {
-    return this.userSubject.value
+  getCurrentUser(): User {
+    return this.currentUser
   }
 
-  get currentUser(): Observable<User> {
+  get currentUserAsObservable(): Observable<User> {
     return this.userSubject.asObservable()
   }
 
   logIn(credentials: { email: string, password: string }): Observable<User> {
     return this.httpClient.post<User>(environment.serverUrl + '/users/authenticate', credentials, {withCredentials: true})
       .pipe(map(user => {
-        this.userSubject.next(user)
+        this.currentUser = user
+        console.log(this.currentUser)
+        this.userSubject.next(this.currentUser)
         this.startRefreshTokenTimer()
         return user
       }))
@@ -45,6 +47,7 @@ export default class UserService {
     return this.httpClient.post<any>(environment.serverUrl + '/users/refresh-token', {}, {withCredentials: true})
       .pipe(map((user) => {
         this.userSubject.next(user);
+        console.log(user)
         this.startRefreshTokenTimer();
         return user;
       }));
