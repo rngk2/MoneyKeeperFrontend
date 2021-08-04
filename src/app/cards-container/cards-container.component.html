@@ -1,6 +1,7 @@
 <div class="cards-container">
   <div *ngIf="!!!category_transactions.size else ok">
-    <p class="nothing-in-history__hint">Nothing in your history for now</p>
+    <p class="nothing-in-history__hint">Nothing in your history for now...</p>
+    <div class="not-found"></div>
   </div>
   <ng-template #ok>
     <category-card *ngFor="let c_t of category_transactions | keyvalue"
