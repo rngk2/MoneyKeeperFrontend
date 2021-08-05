@@ -30,7 +30,6 @@ export class AddCategoryFormComponent {
     if (!this.data.categoryName)
       return
 
-    console.log(this.data)
     this.dialogRef.close()
     this.httpClient.post<Category>(environment.serverUrl + '/categories', {
       name:  this.data.categoryName,

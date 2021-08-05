@@ -34,7 +34,6 @@ export default class UserService {
     return this.httpClient.post<User>(environment.serverUrl + '/users/authenticate', credentials, {withCredentials: true})
       .pipe(map(user => {
         this.currentUser = user
-        console.log(this.currentUser)
         this.userSubject.next(this.currentUser)
         this.startRefreshTokenTimer()
         return user
@@ -51,7 +50,6 @@ export default class UserService {
     return this.httpClient.post<any>(environment.serverUrl + '/users/refresh-token', {}, {withCredentials: true})
       .pipe(map((response) => {
         this.userSubject.next({...this.userSubject.value, jwtToken: response.jwtToken});
-        console.log(response)
         this.startRefreshTokenTimer();
         return response;
       }));
