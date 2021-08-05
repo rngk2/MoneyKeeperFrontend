@@ -4,6 +4,11 @@
   width: 100%;
   top: 10rem;
 
+  &__content {
+    display: flex;
+    flex-direction: column;
+  }
+
   .add-category {
     cursor: pointer;
     width: max-content;

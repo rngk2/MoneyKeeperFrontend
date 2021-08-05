@@ -1,11 +1,11 @@
 <main class="wallet-page">
   <div class="wallet-page__content">
-  <section class="add-category">
-    <span>Add</span>
+    <section class="add-category" (click)="openDialog()">
+      <span>Add</span>
     <mat-icon class="material-icons-outlined">add</mat-icon>
-  </section>
-  <section class="list-of-categories">
-    <cards-container></cards-container>
-  </section>
+    </section>
+    <section class="list-of-categories">
+      <cards-container [events]="updateCategorySubject.asObservable()" ></cards-container>
+    </section>
   </div>
 </main>
