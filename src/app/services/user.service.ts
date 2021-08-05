@@ -5,8 +5,6 @@ import User from "../entities/user.entity";
 import {HttpClient} from "@angular/common/http";
 import {map} from "rxjs/operators";
 
-
-
 @Injectable()
 export default class UserService {
 
@@ -18,13 +16,19 @@ export default class UserService {
     this.userSubject = new BehaviorSubject<User>({})
   }
 
+  get currentUserAsObservable(): Observable<User> {
+    return this.userSubject.asObservable()
+  }
+
   getCurrentUser(): User {
     return this.currentUser
   }
 
-  get currentUserAsObservable(): Observable<User> {
-    return this.userSubject.asObservable()
+  isLoggedIn(): boolean {
+    return Object.keys(this.currentUser).length !== 0
+      && !!this.currentUser.jwtToken
   }
+
 
   logIn(credentials: { email: string, password: string }): Observable<User> {
     return this.httpClient.post<User>(environment.serverUrl + '/users/authenticate', credentials, {withCredentials: true})
@@ -45,19 +49,18 @@ export default class UserService {
 
   refreshToken() {
     return this.httpClient.post<any>(environment.serverUrl + '/users/refresh-token', {}, {withCredentials: true})
-      .pipe(map((user) => {
-        this.userSubject.next(user);
-        console.log(user)
+      .pipe(map((response) => {
+        this.userSubject.next({...this.userSubject.value, jwtToken: response.jwtToken});
+        console.log(response)
         this.startRefreshTokenTimer();
-        return user;
+        return response;
       }));
   }
 
   // @ts-ignore
   private refreshTokenTimeout: NodeJS.Timeout
-
   private startRefreshTokenTimer(): void {
-    const token_ttl = 5 * 1000
+    const token_ttl = (1000 * 60) * 5
     this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), token_ttl)
   }
 
