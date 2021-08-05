@@ -1,0 +1,19 @@
+<!--TODO: add validators-->
+<div mat-dialog-content>
+  <mat-form-field>
+    <input type="text" matInput [(ngModel)]="data.categoryName" placeholder="New category name" required>
+  </mat-form-field>
+  <div mat-dialog-actions>
+  <button class="submit" mat-button color="primary" (click)="addCategory()">Add</button>
+  </div>
+</div>
+
+
+<!--<div class="form-flex-container">-->
+<!--  <form>-->
+<!--    <mat-form-field>-->
+<!--      <input type="text" matInput [(ngModel)]="data.categoryName" placeholder="New category name" required>-->
+<!--    </mat-form-field>-->
+<!--    <button class="submit" mat-button color="primary" (click)="addCategory()">Add</button>-->
+<!--  </form>-->
+<!--</div>-->

@@ -8,7 +8,7 @@ import { SignInComponent } from './account/sign-in/sign-in.component';
 import { SignUpComponent } from './account/sign-up/sign-up.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatFormFieldModule} from "@angular/material/form-field";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
 import {MatButtonModule} from "@angular/material/button";
 import HttpService from "./services/http.service";
@@ -20,6 +20,9 @@ import {MatDividerModule} from "@angular/material/divider";
 import { CardsContainerComponent } from './cards-container/cards-container.component';
 import { WalletPageComponent } from './wallet-page/wallet-page.component';
 import {MatIconModule} from "@angular/material/icon";
+import { AddCategoryFormComponent } from './add-category-form/add-category-form.component';
+import {MatSelectModule} from "@angular/material/select";
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -29,7 +32,8 @@ import {MatIconModule} from "@angular/material/icon";
     SignUpComponent,
     CategoryCardComponent,
     CardsContainerComponent,
-    WalletPageComponent
+    WalletPageComponent,
+    AddCategoryFormComponent
   ],
   imports: [
     BrowserModule,
@@ -42,7 +46,10 @@ import {MatIconModule} from "@angular/material/icon";
     MatButtonModule,
     MatCardModule,
     MatDividerModule,
-    MatIconModule
+    MatIconModule,
+    MatSelectModule,
+    FormsModule,
+    MatDialogModule
   ],
   providers: [HttpService, UserService],
   bootstrap: [AppComponent],
