@@ -20,7 +20,6 @@ export class AddTransactionFormComponent {
               private userService: UserService) { }
 
   submit(): void {
-    console.log({a: this.amount, t: this.timestamp.toDateString(), t2: this.timestamp.toISOString()})
     this.httpClient.post<Transaction>(environment.serverUrl + '/transactions', {
       categoryId: this.categoryId,
       amount: this.amount,
