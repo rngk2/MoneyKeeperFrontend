@@ -1,9 +1,8 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import Transaction from "../entities/transaction.entity";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import UserService from "../services/user.service";
-import {Observable, Subscription} from "rxjs";
 import CategoriesState from "../state/categories.state";
 
 @Component({
@@ -31,8 +30,8 @@ export class CardsContainerComponent implements OnInit {
 
         for (const transaction of transactions) {
             const containedTransactions = this.category_transactions.get(transaction.categoryName!)
-            const newSet: Transaction[] = containedTransactions == null ? this.getEmptyArrayIfTransactionIsSpoiled(transaction)
-              : [...containedTransactions, ...this.getEmptyArrayIfTransactionIsSpoiled(transaction)]
+            const newSet: Transaction[] = containedTransactions == null ? [transaction]
+              : [...containedTransactions, transaction]
             this.category_transactions.set(transaction.categoryName!, newSet)
          }
       })

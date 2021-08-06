@@ -26,9 +26,8 @@ export class CategoryCardComponent implements OnInit {
 
   state: 'collapsed' | 'expanded' = 'collapsed'
 
-  @Input() subscription!: Subscription
-
   @Input() categoryName!: string
+  @Input() categoryId!: number
   @Input() spendThisMonth!: number
   @Input() lastTransactions!: Transaction[]
 

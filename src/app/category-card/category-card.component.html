@@ -14,7 +14,7 @@
         <mat-icon *ngIf="!addTransaction" class="material-icons-outlined">add</mat-icon>
       </section>
       <section *ngIf="addTransaction">
-        <add-transaction-form></add-transaction-form>
+        <add-transaction-form [categoryId]="categoryId"></add-transaction-form>
       </section>
     </div>
     <mat-divider></mat-divider>

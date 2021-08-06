@@ -8,6 +8,7 @@
       [categoryName]="c_t.key"
       [spendThisMonth]="calculateAmountForMonth(c_t.value)"
       [lastTransactions]="c_t.value"
+      [categoryId]="c_t.value[0]?.categoryId!"
     >
     </category-card>
   </ng-template>
