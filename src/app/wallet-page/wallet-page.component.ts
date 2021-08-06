@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
 import {MatDialog} from "@angular/material/dialog";
 import {AddCategoryFormComponent} from "../add-category-form/add-category-form.component";
 import {Subject} from "rxjs";
@@ -13,13 +12,11 @@ export class WalletPageComponent {
 
   updateCategorySubject = new Subject<void>()
 
-  constructor(private httpClient: HttpClient,
-              public dialog: MatDialog,
-              ) {}
+  constructor(public dialog: MatDialog) {}
 
   openDialog() {
     const dialogRef = this.dialog.open(AddCategoryFormComponent, {
-      width: '350px'
+      width: '40rem'
     })
 
     dialogRef.afterClosed().subscribe(() => {
