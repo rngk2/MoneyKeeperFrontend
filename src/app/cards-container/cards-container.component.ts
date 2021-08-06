@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import UserService from "../services/user.service";
 import {Observable, Subscription} from "rxjs";
+import CategoriesState from "../state/categories.state";
 
 @Component({
   selector: 'cards-container',
@@ -22,8 +23,8 @@ export class CardsContainerComponent implements OnInit, OnDestroy  {
   }
 
   ngOnInit(): void {
-   this.fetchSummary()
-   this.eventsSubscription = this.events.subscribe(() => this.fetchSummary())
+    CategoriesState.getObservableState().subscribe(() => this.fetchSummary())
+    CategoriesState.updateState()
   }
 
   fetchSummary() {
@@ -47,6 +48,6 @@ export class CardsContainerComponent implements OnInit, OnDestroy  {
   }
 
   ngOnDestroy(): void {
-    this.eventsSubscription.unsubscribe()
+    // this.eventsSubscription.unsubscribe()
   }
 }

@@ -4,6 +4,7 @@ import {environment} from "../../environments/environment";
 import Category from "../entities/category.entity";
 import {HttpClient} from "@angular/common/http";
 import UserService from "../services/user.service";
+import CategoriesState from "../state/categories.state";
 
 interface DialogData {
   categoryName: string
@@ -33,8 +34,8 @@ export class AddCategoryFormComponent {
     this.dialogRef.close()
     this.httpClient.post<Category>(environment.serverUrl + '/categories', {
       name:  this.data.categoryName,
-      userId: 10
-    }).subscribe(res => console.log(res))
+      userId: this.userService.getCurrentUser().id
+    }).subscribe(res => CategoriesState.updateState())
   }
 
 }

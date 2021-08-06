@@ -1,6 +1,13 @@
 import {Component, Input, OnInit} from '@angular/core';
 import Transaction from "../entities/transaction.entity";
 import {animate, state, style, transition, trigger} from "@angular/animations";
+import {HttpClient} from "@angular/common/http";
+import {environment} from "../../environments/environment";
+import HttpService from "../services/http.service";
+import UserService from "../services/user.service";
+import {Observable, Subscription} from "rxjs";
+import CategoriesState from "../state/categories.state";
+import categoriesState from "../state/categories.state";
 
 @Component({
   selector: 'category-card',
@@ -19,13 +26,16 @@ export class CategoryCardComponent implements OnInit {
 
   state: 'collapsed' | 'expanded' = 'collapsed'
 
+  @Input() subscription!: Subscription
+
   @Input() categoryName!: string
   @Input() spendThisMonth!: number
   @Input() lastTransactions!: Transaction[]
 
   private lastTransactionsMaxLength = 5
 
-  constructor() { }
+  constructor(private httpClient: HttpClient,
+              private userService: UserService) { }
 
   ngOnInit(): void {
     if (this.lastTransactions.length > this.lastTransactionsMaxLength) {
@@ -37,4 +47,8 @@ export class CategoryCardComponent implements OnInit {
     this.state = this.state === 'collapsed' ? 'expanded' : 'collapsed'
   }
 
+  delete(): void {
+    this.httpClient.delete(environment.serverUrl + `/categories/${this.userService.getCurrentUser().id}/${this.categoryName}`)
+      .subscribe(res => categoriesState.updateState())
+  }
 }
