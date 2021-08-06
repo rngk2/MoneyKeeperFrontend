@@ -11,12 +11,9 @@ import CategoriesState from "../state/categories.state";
   templateUrl: './cards-container.component.html',
   styleUrls: ['./cards-container.component.scss']
 })
-export class CardsContainerComponent implements OnInit, OnDestroy  {
+export class CardsContainerComponent implements OnInit {
 
   category_transactions = new Map<string, Transaction[]>()
-
-  private eventsSubscription!: Subscription
-  @Input() events!: Observable<void>
 
   constructor(private http: HttpClient,
               private userService: UserService) {
@@ -45,9 +42,5 @@ export class CardsContainerComponent implements OnInit, OnDestroy  {
       amountForMonth += transaction.amount
 
     return amountForMonth
-  }
-
-  ngOnDestroy(): void {
-    // this.eventsSubscription.unsubscribe()
   }
 }
