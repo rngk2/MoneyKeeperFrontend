@@ -42,9 +42,11 @@ export class CardsContainerComponent implements OnInit {
   }
 
   calculateAmountForMonth(transactions: Transaction[]): number {
+    const currentMonth = new Date().getMonth()
     let amountForMonth = 0
     for (const transaction of transactions)
-      amountForMonth += transaction.amount
+      if (new Date(transaction.timestamp).getMonth() === currentMonth)
+        amountForMonth += transaction.amount
 
     return amountForMonth
   }
