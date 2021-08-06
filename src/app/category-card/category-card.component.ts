@@ -33,6 +33,7 @@ export class CategoryCardComponent implements OnInit {
   @Input() lastTransactions!: Transaction[]
 
   private lastTransactionsMaxLength = 5
+  addTransaction: boolean = false
 
   constructor(private httpClient: HttpClient,
               private userService: UserService) { }
@@ -48,7 +49,7 @@ export class CategoryCardComponent implements OnInit {
   }
 
   delete(): void {
-    this.httpClient.delete(environment.serverUrl + `/categories/${this.userService.getCurrentUser().id}/${this.categoryName}`)
+    this.httpClient.delete(environment.serverUrl + `/categories/10/${this.categoryName}`)
       .subscribe(res => categoriesState.updateState())
   }
 }

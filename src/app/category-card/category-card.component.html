@@ -10,6 +10,12 @@
       <p *ngFor="let transaction of lastTransactions">
         {{transaction.timestamp | date: "medium"}}: {{transaction.amount}}$
       </p>
+      <section (click)="addTransaction = true">
+        <mat-icon *ngIf="!addTransaction" class="material-icons-outlined">add</mat-icon>
+      </section>
+      <section *ngIf="addTransaction">
+        <add-transaction-form></add-transaction-form>
+      </section>
     </div>
     <mat-divider></mat-divider>
   </mat-card-content>

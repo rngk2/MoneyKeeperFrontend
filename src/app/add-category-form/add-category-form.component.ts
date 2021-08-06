@@ -34,7 +34,7 @@ export class AddCategoryFormComponent {
     this.dialogRef.close()
     this.httpClient.post<Category>(environment.serverUrl + '/categories', {
       name:  this.data.categoryName,
-      userId: this.userService.getCurrentUser().id
+      userId: 10
     }).subscribe(res => CategoriesState.updateState())
   }
 
