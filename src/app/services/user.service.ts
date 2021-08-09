@@ -10,31 +10,42 @@ export default class UserService {
 
   private userSubject: BehaviorSubject<User>
 
-  private currentUser: User = {}
+  private currentUser: User | undefined
 
   constructor(private httpClient: HttpClient) {
     this.userSubject = new BehaviorSubject<User>({})
   }
 
   get currentUserAsObservable(): Observable<User> {
+    if (!this.currentUser && this.getCurrentUser()) {
+      this.userSubject.next(this.getCurrentUser())
+    }
+
     return this.userSubject.asObservable()
   }
 
   getCurrentUser(): User {
-    return this.currentUser
+    const currentUser = localStorage.getItem("currentUser")
+    if (!currentUser) {
+      return {}
+    }
+    return JSON.parse(localStorage.getItem("currentUser")!)
   }
 
-  isLoggedIn(): boolean {
-    return Object.keys(this.currentUser).length !== 0
-      && !!this.currentUser.jwtToken
+  setCurrentUser(user: User): void {
+    localStorage.setItem("currentUser", JSON.stringify(user))
   }
 
+  removeCurrentUser(): void {
+    localStorage.removeItem("currentUser")
+  }
 
   logIn(credentials: { email: string, password: string }): Observable<User> {
     return this.httpClient.post<User>(environment.serverUrl + '/users/authenticate', credentials, {withCredentials: true})
       .pipe(map(user => {
         this.currentUser = user
         this.userSubject.next(this.currentUser)
+        this.setCurrentUser(this.currentUser)
         this.startRefreshTokenTimer()
         return user
       }))
@@ -42,6 +53,7 @@ export default class UserService {
 
   logOut(): void {
     this.httpClient.post<any>(environment.serverUrl + '/users/revoke-token', {}, { withCredentials: true });
+    this.removeCurrentUser()
     this.stopRefreshTokenTimer();
     this.userSubject.next({});
   }
@@ -50,6 +62,7 @@ export default class UserService {
     return this.httpClient.post<any>(environment.serverUrl + '/users/refresh-token', {}, {withCredentials: true})
       .pipe(map((response) => {
         this.userSubject.next({...this.userSubject.value, jwtToken: response.jwtToken});
+        this.setCurrentUser(this.userSubject.value)
         this.startRefreshTokenTimer();
         return response;
       }));
