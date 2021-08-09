@@ -31,6 +31,8 @@ import { WalletChartComponent } from './wallet-chart/wallet-chart.component';
 import {ChartsModule} from "ng2-charts";
 import { AboutTransactionComponent } from './about-transaction/about-transaction.component';
 import { InWalletNavigationComponent } from './in-wallet-navigation/in-wallet-navigation.component';
+import { AllTransactionsPageComponent } from './all-transactions-page/all-transactions-page.component';
+import {MatListModule} from "@angular/material/list";
 
 @NgModule({
   declarations: [
@@ -46,7 +48,8 @@ import { InWalletNavigationComponent } from './in-wallet-navigation/in-wallet-na
     Page404Component,
     WalletChartComponent,
     AboutTransactionComponent,
-    InWalletNavigationComponent
+    InWalletNavigationComponent,
+    AllTransactionsPageComponent
   ],
   imports: [
     BrowserModule,
@@ -65,7 +68,8 @@ import { InWalletNavigationComponent } from './in-wallet-navigation/in-wallet-na
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    ChartsModule
+    ChartsModule,
+    MatListModule
   ],
   providers: [HttpService, UserService],
   bootstrap: [AppComponent],

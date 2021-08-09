@@ -3,7 +3,7 @@ import Transaction from "../entities/transaction.entity";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import UserService from "../services/user.service";
-import CategoriesState from "../state/categories.state";
+import categoriesState from "../state/categories.state";
 
 @Component({
   selector: 'cards-container',
@@ -19,8 +19,8 @@ export class CardsContainerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    CategoriesState.getObservableState().subscribe(() => this.fetchSummary())
-    CategoriesState.updateState()
+    categoriesState.getObservableState().subscribe(() => this.fetchSummary())
+    categoriesState.updateState()
   }
 
   fetchSummary() {
