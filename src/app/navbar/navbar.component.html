@@ -1,7 +1,7 @@
 <header>
   <nav *ngIf="loggedIn; else not_auth_navbar_content">
     <ul class="navbar__part-left">
-      <li>Profile</li>
+      <li routerLink="/profile">Profile</li>
       <li routerLink="/wallet">My Wallet</li>
     </ul>
     <ul class="navbar__part-right">
@@ -11,8 +11,8 @@
   <ng-template #not_auth_navbar_content>
     <nav>
       <ul class="navbar__part-left">
-        <li>Sign In</li>
-        <li>About</li>
+        <li routerLink="/sign-in">Sign In</li>
+        <li routerLink="/about">About</li>
       </ul>
     </nav>
   </ng-template>
