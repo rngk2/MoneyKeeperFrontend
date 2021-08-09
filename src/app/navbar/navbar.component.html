@@ -1,14 +1,19 @@
 <header>
-  <nav>
-    <ul *ngIf="loggedIn; else not_auth_navbar_content">
+  <nav *ngIf="loggedIn; else not_auth_navbar_content">
+    <ul class="navbar__part-left">
       <li>Profile</li>
       <li routerLink="/wallet">My Wallet</li>
     </ul>
-    <ng-template #not_auth_navbar_content>
-      <ul>
+    <ul class="navbar__part-right">
+      <li>Sign Out</li>
+    </ul>
+  </nav>
+  <ng-template #not_auth_navbar_content>
+    <nav>
+      <ul class="navbar__part-left">
         <li>Sign In</li>
         <li>About</li>
       </ul>
-    </ng-template>
-  </nav>
+    </nav>
+  </ng-template>
 </header>

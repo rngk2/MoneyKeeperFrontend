@@ -1,40 +1,55 @@
-// TODO: Add burger menu
+@import "variables";
+
 header {
   position: fixed;
   width: 100%;
   top: 1rem;
-  left: 1.5rem;
   z-index: 50;
   font-size: 18px;
   height: 3em;
 
-  ul {
-    margin-left: 1.5rem;
+  nav {
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 2rem;
+    justify-content: space-between;
+    align-content: center;
 
-    li {
+    .navbar__part-left {
+      margin-left: $navbar_offset;
+    }
+
+    .navbar__part-right {
+      margin-right: $navbar_offset;
+    }
+
+    ul {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
-      justify-content: center;
-      width: max-content;
-      height: 4rem;
-      letter-spacing: 2px;
-      padding: 1em;
-      text-transform: uppercase;
+      justify-content: flex-start;
+      gap: 2rem;
 
-      &:not(:last-child) {
-        margin-right: 2em;
-      }
+      li {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: max-content;
+        height: 4rem;
+        letter-spacing: 2px;
+        padding: 1em;
+        text-transform: uppercase;
 
-      &:hover {
-        cursor: pointer;
-        border: 1px solid black;
-        border-radius: 15px;
-        background-color: #fff;
+        &:not(:last-child) {
+          margin-right: 2em;
+        }
+
+        &:hover {
+          cursor: pointer;
+          border: 1px solid black;
+          border-radius: 15px;
+          background-color: #fff;
+        }
       }
     }
   }
