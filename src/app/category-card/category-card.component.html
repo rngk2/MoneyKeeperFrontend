@@ -1,8 +1,8 @@
 <mat-card class="card">
-  <mat-card-header>
+  <mat-card-header (click)="toggle()">
     <mat-card-title>{{categoryName}}</mat-card-title>
   </mat-card-header>
-  <mat-card-content>
+  <mat-card-content (click)="toggle()">
     <p class="spend">
       Spend this month: {{spendThisMonth}}$
     </p>
