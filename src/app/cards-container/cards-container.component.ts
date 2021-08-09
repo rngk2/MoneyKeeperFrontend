@@ -29,11 +29,11 @@ export class CardsContainerComponent implements OnInit {
         this.category_transactions = new Map<string, Transaction[]>()
 
         for (const transaction of transactions) {
-            const containedTransactions = this.category_transactions.get(transaction.categoryName!)
-            const newSet: Transaction[] = containedTransactions == null ? [transaction]
-              : [...containedTransactions, transaction]
-            this.category_transactions.set(transaction.categoryName!, newSet)
-         }
+          const containedTransactions = this.category_transactions.get(transaction.categoryName!)
+          const newSet: Transaction[] = containedTransactions == null ? [transaction]
+            : [...containedTransactions, transaction]
+          this.category_transactions.set(transaction.categoryName!, newSet)
+        }
       })
   }
 
@@ -58,7 +58,7 @@ export class CardsContainerComponent implements OnInit {
   getAmountForCategories(categories: string[]): number[] {
     let amountForCategories: number[] = []
     for (let category of categories)
-        amountForCategories.push(<number>this.getAmountForCategory(category))
+      amountForCategories.push(<number>this.getAmountForCategory(category))
 
     return amountForCategories
   }

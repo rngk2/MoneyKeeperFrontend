@@ -12,6 +12,7 @@ const routes: Routes = [
   {path: 'wallet', component: WalletPageComponent},
   {path: 'sign-in', component: SignInComponent, data: {animation: 'isRight'}},
   {path: 'sign-up', component: SignUpComponent, data: {animation: 'isLeft'}},
+  {path: 'sign-out', redirectTo: '/sign-in', pathMatch: 'full'},
   {path: '**', component: Page404Component}
 ];
 

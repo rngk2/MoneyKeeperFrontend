@@ -18,4 +18,8 @@ export class NavbarComponent implements OnInit {
       this.loggedIn = !!data.jwtToken
     })
   }
+
+  signOut(): void {
+    this.userService.logOut()
+  }
 }
