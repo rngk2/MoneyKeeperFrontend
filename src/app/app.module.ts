@@ -30,6 +30,7 @@ import { Page404Component } from './page404/page404.component';
 import { WalletChartComponent } from './wallet-chart/wallet-chart.component';
 import {ChartsModule} from "ng2-charts";
 import { AboutTransactionComponent } from './about-transaction/about-transaction.component';
+import { InWalletNavigationComponent } from './in-wallet-navigation/in-wallet-navigation.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { AboutTransactionComponent } from './about-transaction/about-transaction
     AddTransactionFormComponent,
     Page404Component,
     WalletChartComponent,
-    AboutTransactionComponent
+    AboutTransactionComponent,
+    InWalletNavigationComponent
   ],
   imports: [
     BrowserModule,
