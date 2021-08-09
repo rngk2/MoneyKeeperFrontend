@@ -1,15 +1,24 @@
-<div class="cards-container">
-  <div *ngIf="!!!category_transactions.size else ok">
-    <p class="nothing-in-history__hint">Nothing in your history for now...</p>
-    <div class="not-found"></div>
-  </div>
-  <ng-template #ok>
-    <category-card *ngFor="let c_t of category_transactions | keyvalue"
-      [categoryName]="c_t.key"
-      [spendThisMonth]="calculateAmountForMonth(c_t.value)"
-      [lastTransactions]="c_t.value"
-      [categoryId]="c_t.value[0]?.categoryId!"
+<div class="column">
+  <div class="cards-container">
+    <div *ngIf="!!!category_transactions.size else ok">
+      <p class="nothing-in-history__hint">Nothing in your history for now...</p>
+      <div class="not-found"></div>
+    </div>
+    <ng-template #ok>
+      <category-card *ngFor="let c_t of category_transactions | keyvalue"
+        [categoryName]="c_t.key"
+        [spendThisMonth]="calculateAmountForMonth(c_t.value)"
+        [lastTransactions]="c_t.value"
+        [categoryId]="c_t.value[0]?.categoryId!"
+      >
+      </category-card>
+     </ng-template>
+</div>
+  <div class="chart" *ngIf="!!!!category_transactions.size">
+    <wallet-chart
+      [chartLabels]="getCategoriesNames()"
+      [chartData]="getAmountForCategories(getCategoriesNames())"
     >
-    </category-card>
-  </ng-template>
+    </wallet-chart>
+  </div>
 </div>

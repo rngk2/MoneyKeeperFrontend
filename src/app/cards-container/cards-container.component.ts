@@ -50,4 +50,21 @@ export class CardsContainerComponent implements OnInit {
 
     return amountForMonth
   }
+
+  getCategoriesNames(): string[] {
+    return [...this.category_transactions.keys()]
+  }
+
+  getAmountForCategories(categories: string[]): number[] {
+    let amountForCategories: number[] = []
+    for (let category of categories)
+        amountForCategories.push(<number>this.getAmountForCategory(category))
+
+    return amountForCategories
+  }
+
+  private getAmountForCategory(categoryName: string): number | undefined {
+    return this.category_transactions.get(categoryName)?.map(t => t.amount)
+      .reduce((acc, curr) => acc + curr)
+  }
 }

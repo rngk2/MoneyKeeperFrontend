@@ -6,23 +6,39 @@
 
   &__content {
     display: flex;
-    flex-direction: column;
-  }
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
 
-  .add-category {
-    cursor: pointer;
-    width: max-content;
-    padding: 1rem;
-    display: flex;
-    font-size: 20px;
-    margin: auto auto 1rem;
-    border: 2px solid black;
-    border-radius: 11px;
-
-    span {
-      font-size: 26px;
+    &__chart {
+      position: fixed;
+      width: 300px;
+      height: 300px;
+      border: 1px solid black;
     }
 
+    &__cards {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 2;
+    }
+
+    .add-category {
+      cursor: pointer;
+      width: max-content;
+      padding: 1rem;
+      display: flex;
+      font-size: 20px;
+      margin: auto auto 1rem;
+      border: 2px solid black;
+      border-radius: 11px;
+
+      span {
+        font-size: 26px;
+      }
+    }
   }
+
+
 
 }
