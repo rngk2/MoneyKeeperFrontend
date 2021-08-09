@@ -5,4 +5,5 @@ export default interface Transaction {
   userId?: number
   amount: number
   timestamp: Date
+  comment?: string
 }

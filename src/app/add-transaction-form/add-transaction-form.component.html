@@ -6,7 +6,10 @@
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
   <mat-form-field>
-    <input matInput [(ngModel)]="amount" [ngModelOptions]="{standalone: true}" placeholder="Amount" class="amount-input">
+    <input type="number" matInput [(ngModel)]="amount" [ngModelOptions]="{standalone: true}" placeholder="Amount" class="amount-input" required>
+  </mat-form-field>
+  <mat-form-field>
+    <input type="text" matInput [(ngModel)]="comment" [ngModelOptions]="{standalone: true}" placeholder="Comment" class="comment-input" required>
   </mat-form-field>
   <button class="submit" mat-button color="primary" (click)="submit()">Submit</button>
 </form>

@@ -3,11 +3,10 @@ import Transaction from "../entities/transaction.entity";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import HttpService from "../services/http.service";
 import UserService from "../services/user.service";
-import {Observable, Subscription} from "rxjs";
-import CategoriesState from "../state/categories.state";
 import categoriesState from "../state/categories.state";
+import {MatDialog} from "@angular/material/dialog";
+import {AboutTransactionComponent} from "../about-transaction/about-transaction.component";
 
 @Component({
   selector: 'category-card',
@@ -35,7 +34,8 @@ export class CategoryCardComponent implements OnInit {
   addTransaction: boolean = false
 
   constructor(private httpClient: HttpClient,
-              private userService: UserService) { }
+              private userService: UserService,
+              private dialog: MatDialog) { }
 
   ngOnInit(): void {
     console.log(this.lastTransactions[0]!.timestamp)
@@ -51,5 +51,12 @@ export class CategoryCardComponent implements OnInit {
   delete(): void {
     this.httpClient.delete(environment.serverUrl + `/categories/${this.userService.getCurrentUser().id}/${this.categoryName}`)
       .subscribe(res => categoriesState.updateState())
+  }
+
+  showMoreForTransaction(t: Transaction) {
+    const dialogRef = this.dialog.open(AboutTransactionComponent, {
+      width: '20rem',
+      data: t
+    })
   }
 }

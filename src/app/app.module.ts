@@ -29,6 +29,7 @@ import {MatNativeDateModule} from "@angular/material/core";
 import { Page404Component } from './page404/page404.component';
 import { WalletChartComponent } from './wallet-chart/wallet-chart.component';
 import {ChartsModule} from "ng2-charts";
+import { AboutTransactionComponent } from './about-transaction/about-transaction.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import {ChartsModule} from "ng2-charts";
     AddCategoryFormComponent,
     AddTransactionFormComponent,
     Page404Component,
-    WalletChartComponent
+    WalletChartComponent,
+    AboutTransactionComponent
   ],
   imports: [
     BrowserModule,

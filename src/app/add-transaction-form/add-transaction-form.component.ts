@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import Transaction from "../entities/transaction.entity";
@@ -13,17 +13,18 @@ import categoriesState from "../state/categories.state";
 export class AddTransactionFormComponent {
 
   @Input() categoryId!: number
-  amount = 0
+  amount!: number
+  comment!: string
   timestamp = new Date()
 
-  constructor(private httpClient: HttpClient,
-              private userService: UserService) { }
+  constructor(private httpClient: HttpClient) { }
 
   submit(): void {
     this.httpClient.post<Transaction>(environment.serverUrl + '/transactions', {
       categoryId: this.categoryId,
       amount: this.amount,
-      timestamp: this.timestamp
-    }).subscribe(res => categoriesState.updateState())
+      timestamp: this.timestamp,
+      comment: this.comment
+    }).subscribe(() => categoriesState.updateState())
   }
 }
