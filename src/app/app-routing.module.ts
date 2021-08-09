@@ -12,7 +12,6 @@ const routes: Routes = [
   {path: 'wallet', component: WalletPageComponent},
   {path: 'sign-in', component: SignInComponent, data: {animation: 'isRight'}},
   {path: 'sign-up', component: SignUpComponent, data: {animation: 'isLeft'}},
-  {path: 'tr', component: AddTransactionFormComponent},
   {path: '**', component: Page404Component}
 ];
 
