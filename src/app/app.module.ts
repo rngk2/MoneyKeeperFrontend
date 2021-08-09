@@ -26,6 +26,9 @@ import {MatDialogModule} from "@angular/material/dialog";
 import { AddTransactionFormComponent } from './add-transaction-form/add-transaction-form.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
+import { Page404Component } from './page404/page404.component';
+import { WalletChartComponent } from './wallet-chart/wallet-chart.component';
+import {ChartsModule} from "ng2-charts";
 
 @NgModule({
   declarations: [
@@ -37,26 +40,29 @@ import {MatNativeDateModule} from "@angular/material/core";
     CardsContainerComponent,
     WalletPageComponent,
     AddCategoryFormComponent,
-    AddTransactionFormComponent
+    AddTransactionFormComponent,
+    Page404Component,
+    WalletChartComponent
   ],
-    imports: [
-        BrowserModule,
-        HttpClientModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        MatFormFieldModule,
-        ReactiveFormsModule,
-        MatInputModule,
-        MatButtonModule,
-        MatCardModule,
-        MatDividerModule,
-        MatIconModule,
-        MatSelectModule,
-        FormsModule,
-        MatDialogModule,
-        MatDatepickerModule,
-        MatNativeDateModule
-    ],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCardModule,
+    MatDividerModule,
+    MatIconModule,
+    MatSelectModule,
+    FormsModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    ChartsModule
+  ],
   providers: [HttpService, UserService],
   bootstrap: [AppComponent],
 })
