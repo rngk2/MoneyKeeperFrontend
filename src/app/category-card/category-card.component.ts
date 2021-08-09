@@ -38,6 +38,7 @@ export class CategoryCardComponent implements OnInit {
               private userService: UserService) { }
 
   ngOnInit(): void {
+    console.log(this.lastTransactions[0]!.timestamp)
     if (this.lastTransactions.length > this.lastTransactionsMaxLength) {
       this.lastTransactions = this.lastTransactions.slice(0, this.lastTransactionsMaxLength - 1)
     }
@@ -48,7 +49,7 @@ export class CategoryCardComponent implements OnInit {
   }
 
   delete(): void {
-    this.httpClient.delete(environment.serverUrl + `/categories/10/${this.categoryName}`)
+    this.httpClient.delete(environment.serverUrl + `/categories/${this.userService.getCurrentUser().id}/${this.categoryName}`)
       .subscribe(res => categoriesState.updateState())
   }
 }

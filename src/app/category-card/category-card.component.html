@@ -8,7 +8,7 @@
     </p>
     <div [@bodyExpansion]="state" class="expandable-content">
       <p *ngFor="let transaction of lastTransactions">
-        {{transaction.timestamp | date: "medium"}}: {{transaction.amount}}$
+        {{transaction.timestamp | date: "mediumDate"}}: {{transaction.amount}}$
       </p>
       <section (click)="addTransaction = true">
         <mat-icon *ngIf="!addTransaction" class="material-icons-outlined">add</mat-icon>

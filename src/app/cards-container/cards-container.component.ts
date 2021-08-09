@@ -24,7 +24,7 @@ export class CardsContainerComponent implements OnInit {
   }
 
   fetchSummary() {
-    this.http.get<Transaction[]>(environment.serverUrl + `/users/10/summary`)
+    this.http.get<Transaction[]>(environment.serverUrl + `/users/${this.userService.getCurrentUser().id}/summary`)
       .subscribe(transactions => {
         this.category_transactions = new Map<string, Transaction[]>()
 
