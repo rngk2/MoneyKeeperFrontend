@@ -1,0 +1,33 @@
+@import "src/app/navbar/variables";
+
+$colors: #da5e5e, #8ab238, #bebe50, #83c283, #5b5bcb, #d35dd3;
+$repeat: 20;  // How often you want the pattern to repeat.
+  // Warning: a higher number outputs more CSS.
+
+@for $i from 1 through $repeat {
+  mat-list-item:nth-child(#{length($colors)}n+#{$i}) {
+  background: lighten(nth($colors, random(length($colors))), 20%);
+}
+}
+
+mat-list {
+  display: flex;
+  flex-direction: column;
+  margin: 7rem auto;
+  max-width: 50%;
+
+
+  .title {
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: .2rem;
+  }
+
+  span {
+    font-size: 18px;
+  }
+
+  mat-list-item {
+    margin-bottom: 1.5rem;
+  }
+}
