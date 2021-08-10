@@ -1,11 +1,17 @@
-<mat-list>
-  <mat-list-item *ngFor="let transaction of transactions">
-    <h3 class="title" matLine> {{transaction.categoryName}} </h3>
-    <p matLine class="content">
-      <span>({{transaction.timestamp | date: "medium"}}) </span>
-      <span>spent {{transaction.amount}}$.  </span>
-      <span>"{{transaction.comment}}"</span>
-    </p>
-  </mat-list-item>
-</mat-list>
+<div infiniteScroll
+     [infiniteScrollDistance]="3"
+     [infiniteScrollThrottle]="1000"
+     (scrolled)="onScroll()"
+>
+  <mat-list>
+    <mat-list-item *ngFor="let transaction of transactions">
+      <h3 class="title" matLine> {{transaction.categoryName}} </h3>
+      <p matLine class="content">
+        <span>({{transaction.timestamp | date: "medium"}}) </span>
+        <span>spent {{transaction.amount}}$.  </span>
+        <span>"{{transaction.comment}}"</span>
+      </p>
+    </mat-list-item>
+  </mat-list>
+</div>
 

@@ -5,6 +5,11 @@ import UserService from "../services/user.service";
 import categoriesState from "../state/categories.state";
 import {environment} from "../../environments/environment";
 
+interface Range {
+  readonly begin: number
+  readonly end: number
+}
+
 @Component({
   selector: 'app-all-transactions-page',
   templateUrl: './all-transactions-page.component.html',
@@ -12,23 +17,40 @@ import {environment} from "../../environments/environment";
 })
 export class AllTransactionsPageComponent implements OnInit {
 
-  transactions!: Transaction[]
+  private step = 20
+  private beginOffset = 0
+
+  transactions: Transaction[] = []
 
   constructor(private http: HttpClient,
               private userService: UserService) { }
 
   ngOnInit(): void {
-    categoriesState.getObservableState().subscribe(() => this.fetchSummary())
-    categoriesState.updateState()
+    this.fetchTransactions(this.getNextRange())
   }
 
-  private fetchSummary(): void {
-    this.http.get<Transaction[]>(environment.serverUrl + `/users/${this.userService.getCurrentUser().id}/summary`)
-      .subscribe(transactions => this.transactions = this.sortByDate(transactions))
+  private fetchTransactions(range: Range): void {
+    this.http.get<Transaction[]>(environment.serverUrl + `/transactions/${this.userService.getCurrentUser().id}/${range.begin}/${range.end}`)
+      .subscribe(transactions => {
+        this.transactions = [...this.transactions, ...this.sortByDate(transactions)]
+        console.log({range, trs: this.transactions})
+      })
   }
 
   private sortByDate(transactions: Transaction[]): Transaction[] {
     return transactions.sort((a, b) => new Date(b.timestamp).getDate() - new Date(a.timestamp).getDate())
   }
 
+  private getNextRange(): Range {
+    const begin = this.beginOffset
+    const end = begin + this.step
+    this.beginOffset += this.step + 1
+
+    return { begin, end }
+  }
+
+  onScroll(): void {
+    this.fetchTransactions(this.getNextRange())
+    console.log({scroll: this.transactions})
+  }
 }

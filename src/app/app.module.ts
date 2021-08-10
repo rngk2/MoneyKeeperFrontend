@@ -34,6 +34,7 @@ import { InWalletNavigationComponent } from './in-wallet-navigation/in-wallet-na
 import { AllTransactionsPageComponent } from './all-transactions-page/all-transactions-page.component';
 import {MatListModule} from "@angular/material/list";
 import {NgxMatDatetimePickerModule, NgxMatNativeDateModule} from "@angular-material-components/datetime-picker";
+import {InfiniteScrollModule} from "ngx-infinite-scroll";
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import {NgxMatDatetimePickerModule, NgxMatNativeDateModule} from "@angular-mater
     ChartsModule,
     MatListModule,
     NgxMatDatetimePickerModule,
-    NgxMatNativeDateModule
+    NgxMatNativeDateModule,
+    InfiniteScrollModule
   ],
   providers: [HttpService, UserService],
   bootstrap: [AppComponent],
