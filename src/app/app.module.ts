@@ -33,6 +33,7 @@ import { AboutTransactionComponent } from './about-transaction/about-transaction
 import { InWalletNavigationComponent } from './in-wallet-navigation/in-wallet-navigation.component';
 import { AllTransactionsPageComponent } from './all-transactions-page/all-transactions-page.component';
 import {MatListModule} from "@angular/material/list";
+import {NgxMatDatetimePickerModule, NgxMatNativeDateModule} from "@angular-material-components/datetime-picker";
 
 @NgModule({
   declarations: [
@@ -69,7 +70,9 @@ import {MatListModule} from "@angular/material/list";
     MatDatepickerModule,
     MatNativeDateModule,
     ChartsModule,
-    MatListModule
+    MatListModule,
+    NgxMatDatetimePickerModule,
+    NgxMatNativeDateModule
   ],
   providers: [HttpService, UserService],
   bootstrap: [AppComponent],

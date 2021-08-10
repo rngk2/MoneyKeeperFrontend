@@ -4,6 +4,7 @@ import {environment} from "../../environments/environment";
 import Transaction from "../entities/transaction.entity";
 import UserService from "../services/user.service";
 import categoriesState from "../state/categories.state";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'add-transaction-form',
@@ -15,7 +16,9 @@ export class AddTransactionFormComponent {
   @Input() categoryId!: number
   amount!: number
   comment!: string
-  timestamp = new Date()
+  timestampControl = new FormControl(new Date())
+  minDate = new Date(0)
+  maxDate = new Date();
 
   constructor(private httpClient: HttpClient) { }
 
@@ -23,7 +26,7 @@ export class AddTransactionFormComponent {
     this.httpClient.post<Transaction>(environment.serverUrl + '/transactions', {
       categoryId: this.categoryId,
       amount: this.amount,
-      timestamp: this.timestamp,
+      timestamp: this.timestampControl.value,
       comment: this.comment
     }).subscribe(() => categoriesState.updateState())
   }
