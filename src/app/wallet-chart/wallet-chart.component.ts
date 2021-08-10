@@ -9,7 +9,19 @@ import {Color, Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip, Singl
 })
 export class WalletChartComponent implements OnInit {
   chartOptions: ChartOptions = {
+    animation: {
+      duration: 3200
+    },
     responsive: true,
+    responsiveAnimationDuration: 3200,
+    legend:{
+      labels: {
+        fontColor: 'white',
+        fontSize: 15,
+        fontStyle: 'italic'
+      }
+    },
+
   };
 
   @Input() chartLabels!: Label[]

@@ -1,3 +1,4 @@
+@import "global_vars";
 
 @import url('https://fonts.googleapis.com/css2?family=Oswald&family=Poppins&family=Roboto:ital,wght@0,400;0,500;1,300&display=swap');
 
@@ -22,8 +23,9 @@ body {
 }
 
 body {
-  background-color: #c9e2ff;
+  background-color: $global_bg;
 }
+
 
 aside, nav, footer,
 header, section {
