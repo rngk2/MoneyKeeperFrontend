@@ -6,26 +6,33 @@
   flex-direction: column;
 }
 
+.page-container {
+  width: 50%;
+  margin: auto;
+
+  .add-button {
+    position: sticky;
+    bottom: 2rem;
+    height: 48px;
+    float: right;
+    margin-right: 2rem;
+
+    button {
+      @include accessible(#7a0f7a);
+    }
+  }
+
+}
+
 .cards-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
   gap: 3rem;
-  width: 50%;
+  width: 100%;
   margin: auto;
 
-  .add-button {
-    position: sticky;
-    margin: auto auto auto 8.8rem;
-    bottom: 2rem;
-    height: 48px;
-
-
-    button {
-      @include accessible(#7a0f7a);
-    }
-  }
 
   &:not(:last-child) {
     margin-bottom: 1rem;
