@@ -4,6 +4,8 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import UserService from "../services/user.service";
 import categoriesState from "../state/categories.state";
+import {MatDialog} from "@angular/material/dialog";
+import {AddCategoryFormComponent} from "../add-category-form/add-category-form.component";
 
 @Component({
   selector: 'cards-container',
@@ -14,7 +16,8 @@ export class CardsContainerComponent implements OnInit {
 
   category_transactions = new Map<string, Transaction[]>()
 
-  constructor(private http: HttpClient,
+  constructor(private dialog: MatDialog,
+              private http: HttpClient,
               private userService: UserService) {
   }
 
@@ -67,5 +70,16 @@ export class CardsContainerComponent implements OnInit {
   private getAmountForCategory(categoryName: string): number | undefined {
     return this.category_transactions.get(categoryName)?.map(t => t.amount)
       .reduce((acc, curr) => acc + curr)
+  }
+
+  addCategory(): void {
+    const dialogRef = this.dialog.open(AddCategoryFormComponent, {
+      width: '40rem'
+    })
+
+    dialogRef.afterClosed().subscribe(() => {
+      categoriesState.updateState()
+      document.getElementById("add-btn")!.blur();
+    })
   }
 }

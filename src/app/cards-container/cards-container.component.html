@@ -1,18 +1,32 @@
 <div class="column">
+
   <div class="cards-container">
+
     <div class="nothing-in-history__hint" *ngIf="!category_transactions.size else ok">
-      <p >Nothing in your history for now...</p>
-      <div class="not-found"></div>
-    </div>
-    <ng-template #ok>
-        <category-card *ngFor="let c_t of category_transactions | keyvalue"
-          [categoryName]="c_t.key"
-          [spendThisMonth]="calculateAmountForMonth(c_t.value)"
-          [lastTransactions]="c_t.value"
-          [categoryId]="c_t.value[0]?.categoryId!"
-        >
-        </category-card>
-       </ng-template>
+        <p >Nothing in your history for now...</p>
+        <div class="not-found"></div>
+      </div>
+
+      <ng-template #ok>
+          <category-card *ngFor="let c_t of category_transactions | keyvalue"
+            [categoryName]="c_t.key"
+            [spendThisMonth]="calculateAmountForMonth(c_t.value)"
+            [lastTransactions]="c_t.value"
+            [categoryId]="c_t.value[0]?.categoryId!"
+          >
+          </category-card>
+      </ng-template>
+
+      <div class="add-button" (click)="addCategory()">
+        <div class="mdc-touch-target-wrapper">
+          <button id="add-btn" class="mdc-fab mdc-fab--mini mdc-fab--touch">
+            <div class="mdc-fab__ripple"></div>
+            <span class="material-icons mdc-fab__icon icon">add</span>
+            <div class="mdc-fab__touch"></div>
+          </button>
+        </div>
+      </div>
+
     </div>
   <div class="chart" *ngIf="category_transactions.size">
     <wallet-chart

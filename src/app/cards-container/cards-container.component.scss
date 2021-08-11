@@ -1,3 +1,6 @@
+@import "src/app/navbar/navbar_vars";
+@import "~@material/fab/fab-theme";
+
 .column {
   display: flex;
   flex-direction: column;
@@ -12,10 +15,23 @@
   width: 50%;
   margin: auto;
 
+  .add-button {
+    position: sticky;
+    margin: auto auto auto 8.8rem;
+    bottom: 2rem;
+    height: 48px;
+
+
+    button {
+      @include accessible(#7a0f7a);
+    }
+  }
+
   &:not(:last-child) {
     margin-bottom: 1rem;
   }
 }
+
 
 .nothing-in-history__hint {
   margin: 3rem auto auto !important;
