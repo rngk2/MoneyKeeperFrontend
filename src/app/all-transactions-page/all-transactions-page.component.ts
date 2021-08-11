@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import Transaction from "../entities/transaction.entity";
 import {HttpClient} from "@angular/common/http";
 import UserService from "../services/user.service";
-import categoriesState from "../state/categories.state";
 import {environment} from "../../environments/environment";
 
 interface Range {
@@ -11,7 +10,7 @@ interface Range {
 }
 
 @Component({
-  selector: 'app-all-transactions-page',
+  selector: 'all-transactions-list',
   templateUrl: './all-transactions-page.component.html',
   styleUrls: ['./all-transactions-page.component.scss']
 })
