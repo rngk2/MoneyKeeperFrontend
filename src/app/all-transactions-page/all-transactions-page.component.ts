@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, Pipe, PipeTransform} from '@angular/core';
 import Transaction from "../entities/transaction.entity";
 import {HttpClient} from "@angular/common/http";
 import UserService from "../services/user.service";
@@ -19,7 +19,7 @@ export class AllTransactionsPageComponent implements OnInit {
   private step = 20
   private beginOffset = 0
 
-  transactions: Transaction[] = []
+  transactions: Set<Transaction> = new Set<Transaction>()
 
   constructor(private http: HttpClient,
               private userService: UserService) { }
@@ -31,13 +31,13 @@ export class AllTransactionsPageComponent implements OnInit {
   private fetchTransactions(range: Range): void {
     this.http.get<Transaction[]>(environment.serverUrl + `/transactions/${this.userService.getCurrentUser().id}/${range.begin}/${range.end}`)
       .subscribe(transactions => {
-        this.transactions = [...this.transactions, ...this.sortByDate(transactions)]
+        this.transactions =  new Set<Transaction>(this.sortByDate([...this.transactions, ...transactions]))
         console.log({range, trs: this.transactions})
       })
   }
 
   private sortByDate(transactions: Transaction[]): Transaction[] {
-    return transactions.sort((a, b) => new Date(b.timestamp).getDate() - new Date(a.timestamp).getDate())
+    return transactions.sort((a, b) => <any>new Date(b.timestamp) - <any>new Date(a.timestamp))
   }
 
   private getNextRange(): Range {
