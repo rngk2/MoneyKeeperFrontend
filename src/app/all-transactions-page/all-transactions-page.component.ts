@@ -3,11 +3,7 @@ import Transaction from "../entities/transaction.entity";
 import {HttpClient} from "@angular/common/http";
 import UserService from "../services/user.service";
 import {environment} from "../../environments/environment";
-
-interface Range {
-  readonly begin: number
-  readonly end: number
-}
+import {Range} from "src/app/utils/Utils"
 
 @Component({
   selector: 'all-transactions-list',
