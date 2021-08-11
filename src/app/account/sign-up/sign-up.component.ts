@@ -1,9 +1,9 @@
-import { Component} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms'
 import HttpService from "../../services/http.service";
-import {environment} from "../../../environments/environment";
 import User from "../../entities/user.entity";
 import {Router} from "@angular/router";
+import {BASE_SERVER_URL} from "../../app.config";
 
 @Component({
   selector: 'sign-up-form',
@@ -16,7 +16,8 @@ export class SignUpComponent {
 
   constructor(private readonly router: Router,
               private readonly fb: FormBuilder,
-              private readonly httpService: HttpService)
+              private readonly httpService: HttpService,
+              @Inject(BASE_SERVER_URL) private readonly serverUrl: string)
   {
     this.signUpForm = this.fb.group({
       firstName: new FormControl('', [
@@ -60,7 +61,7 @@ export class SignUpComponent {
       password: this.password?.value
     }
 
-    this.httpService.post(environment.serverUrl + '/users', user)
+    this.httpService.post(this.serverUrl + '/users', user)
       .subscribe(() => this.router.navigate(["/sign-in"]))
   }
 }

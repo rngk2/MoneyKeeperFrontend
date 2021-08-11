@@ -1,11 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import Transaction from "../entities/transaction.entity";
 import {HttpClient} from "@angular/common/http";
-import {environment} from "../../environments/environment";
 import UserService from "../services/user.service";
 import categoriesState from "../state/categories.state";
 import {MatDialog} from "@angular/material/dialog";
 import {AddCategoryFormComponent} from "../add-category-form/add-category-form.component";
+import {BASE_SERVER_URL} from "../app.config";
 
 @Component({
   selector: 'cards-container',
@@ -18,7 +18,8 @@ export class CardsContainerComponent implements OnInit {
 
   constructor(private readonly dialog: MatDialog,
               private readonly http: HttpClient,
-              private readonly userService: UserService) {
+              private readonly userService: UserService,
+              @Inject(BASE_SERVER_URL) private readonly serverUrl: string) {
   }
 
   public ngOnInit(): void {
@@ -27,7 +28,7 @@ export class CardsContainerComponent implements OnInit {
   }
 
   public fetchSummary(): void {
-    this.http.get<Transaction[]>(environment.serverUrl + `/users/${this.userService.getCurrentUser().id}/summary`)
+    this.http.get<Transaction[]>(this.serverUrl + `/users/${this.userService.getCurrentUser().id}/summary`)
       .subscribe(transactions => {
         this.category_transactions = new Map<string, Transaction[]>()
 

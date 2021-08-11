@@ -1,9 +1,9 @@
-import {Injectable} from "@angular/core";
+import {Inject, Injectable} from "@angular/core";
 import {BehaviorSubject, Observable} from "rxjs";
-import {environment} from "../../environments/environment";
 import User from "../entities/user.entity";
 import {HttpClient} from "@angular/common/http";
 import {map} from "rxjs/operators";
+import {BASE_SERVER_URL} from "../app.config";
 
 @Injectable()
 export default class UserService {
@@ -11,7 +11,9 @@ export default class UserService {
   private userSubject: BehaviorSubject<User>
   private currentUser: User | undefined
 
-  constructor(private readonly httpClient: HttpClient) {
+  constructor(private readonly httpClient: HttpClient,
+              @Inject(BASE_SERVER_URL) private readonly serverUrl: string)
+  {
     this.userSubject = new BehaviorSubject<User>({})
   }
 
@@ -40,7 +42,7 @@ export default class UserService {
   }
 
   public logIn(credentials: { email: string, password: string }): Observable<User> {
-    return this.httpClient.post<User>(environment.serverUrl + '/users/authenticate', credentials, {withCredentials: true})
+    return this.httpClient.post<User>(this.serverUrl + '/users/authenticate', credentials, {withCredentials: true})
       .pipe(map(user => {
         this.currentUser = user
         this.userSubject.next(this.currentUser)
@@ -51,14 +53,14 @@ export default class UserService {
   }
 
   public logOut(): void {
-    this.httpClient.post<any>(environment.serverUrl + '/users/revoke-token', {}, { withCredentials: true });
+    this.httpClient.post<any>(this.serverUrl + '/users/revoke-token', {}, { withCredentials: true });
     this.removeCurrentUser()
     this.stopRefreshTokenTimer();
     this.userSubject.next({});
   }
 
   public refreshToken(): Observable<any> {
-    return this.httpClient.post<any>(environment.serverUrl + '/users/refresh-token', {}, {withCredentials: true})
+    return this.httpClient.post<any>(this.serverUrl + '/users/refresh-token', {}, {withCredentials: true})
       .pipe(map((response) => {
         this.userSubject.next({...this.userSubject.value, jwtToken: response.jwtToken});
         this.setCurrentUser(this.userSubject.value)

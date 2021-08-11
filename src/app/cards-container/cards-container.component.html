@@ -1,7 +1,6 @@
 <div class="column">
   <div class="page-container">
     <div class="cards-container">
-
       <div class="nothing-in-history__hint" *ngIf="!category_transactions.size else ok">
         <p >Nothing in your history for now...</p>
         <div class="not-found"></div>
@@ -16,7 +15,6 @@
         >
         </category-card>
       </ng-template>
-
     </div>
 
     <div class="add-button" (click)="addCategory()">

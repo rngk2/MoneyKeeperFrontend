@@ -1,12 +1,12 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit} from '@angular/core';
 import Transaction from "../entities/transaction.entity";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {HttpClient} from "@angular/common/http";
-import {environment} from "../../environments/environment";
 import UserService from "../services/user.service";
 import categoriesState from "../state/categories.state";
 import {MatDialog} from "@angular/material/dialog";
 import {AboutTransactionComponent} from "../about-transaction/about-transaction.component";
+import {BASE_SERVER_URL} from "../app.config";
 
 @Component({
   selector: 'category-card',
@@ -35,7 +35,8 @@ export class CategoryCardComponent implements OnInit {
 
   constructor(private readonly httpClient: HttpClient,
               private readonly userService: UserService,
-              private readonly dialog: MatDialog) { }
+              private readonly dialog: MatDialog,
+              @Inject(BASE_SERVER_URL) private readonly serverUrl: string) { }
 
   public ngOnInit(): void {
     if (this.lastTransactions.length > this.lastTransactionsMaxLength) {
@@ -48,7 +49,7 @@ export class CategoryCardComponent implements OnInit {
   }
 
   public delete(): void {
-    this.httpClient.delete(environment.serverUrl + `/categories/${this.userService.getCurrentUser().id}/${this.categoryName}`)
+    this.httpClient.delete(this.serverUrl + `/categories/${this.userService.getCurrentUser().id}/${this.categoryName}`)
       .subscribe(res => categoriesState.updateState())
   }
 

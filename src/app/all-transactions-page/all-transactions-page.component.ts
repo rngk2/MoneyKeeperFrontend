@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import Transaction from "../entities/transaction.entity";
 import {HttpClient} from "@angular/common/http";
 import UserService from "../services/user.service";
-import {environment} from "../../environments/environment";
 import {Range} from "src/app/utils/Utils"
+import {BASE_SERVER_URL} from "../app.config";
 
 @Component({
   selector: 'all-transactions-list',
@@ -18,14 +18,15 @@ export class AllTransactionsPageComponent implements OnInit {
   private beginOffset = 0
 
   constructor(private readonly http: HttpClient,
-              private readonly userService: UserService) { }
+              private readonly userService: UserService,
+              @Inject(BASE_SERVER_URL) private readonly serverUrl: string) { }
 
   public ngOnInit(): void {
     this.fetchTransactions(this.getNextRange())
   }
 
   private fetchTransactions(range: Range): void {
-    this.http.get<Transaction[]>(environment.serverUrl + `/transactions/${this.userService.getCurrentUser().id}/${range.begin}/${range.end}`)
+    this.http.get<Transaction[]>(this.serverUrl + `/transactions/${this.userService.getCurrentUser().id}/${range.begin}/${range.end}`)
       .subscribe(transactions => this.transactions =  new Set<Transaction>(this.sortByDate([...this.transactions, ...transactions])))
   }
 

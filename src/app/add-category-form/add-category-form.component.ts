@@ -1,10 +1,10 @@
-import {Component} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {MatDialogRef} from "@angular/material/dialog";
-import {environment} from "../../environments/environment";
 import Category from "../entities/category.entity";
 import {HttpClient} from "@angular/common/http";
 import UserService from "../services/user.service";
 import CategoriesState from "../state/categories.state";
+import {BASE_SERVER_URL} from "../app.config";
 
 interface DialogData {
   categoryName: string
@@ -23,14 +23,15 @@ export class AddCategoryFormComponent {
 
   constructor(private readonly httpClient: HttpClient,
               private readonly userService: UserService,
-              private readonly dialogRef: MatDialogRef<AddCategoryFormComponent>) {}
+              private readonly dialogRef: MatDialogRef<AddCategoryFormComponent>,
+              @Inject(BASE_SERVER_URL) private readonly serverUrl: string) {}
 
   public addCategory(): void {
     if (!this.data.categoryName)
       return
 
     this.dialogRef.close()
-    this.httpClient.post<Category>(environment.serverUrl + '/categories', {
+    this.httpClient.post<Category>(this.serverUrl + '/categories', {
       name:  this.data.categoryName,
       userId: this.userService.getCurrentUser().id
     }).subscribe(res => CategoriesState.updateState())

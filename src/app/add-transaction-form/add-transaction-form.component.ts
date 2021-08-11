@@ -1,9 +1,9 @@
-import {Component, Input} from '@angular/core';
+import {Component, Inject, Input} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {environment} from "../../environments/environment";
 import Transaction from "../entities/transaction.entity";
 import categoriesState from "../state/categories.state";
 import {FormControl} from "@angular/forms";
+import {BASE_SERVER_URL} from "../app.config";
 
 @Component({
   selector: 'add-transaction-form',
@@ -20,10 +20,11 @@ export class AddTransactionFormComponent {
 
   @Input() public categoryId!: number
 
-  constructor(private readonly httpClient: HttpClient) { }
+  constructor(private readonly httpClient: HttpClient,
+              @Inject(BASE_SERVER_URL) private readonly serverUrl: string) { }
 
   public submit(): void {
-    this.httpClient.post<Transaction>(environment.serverUrl + '/transactions', {
+    this.httpClient.post<Transaction>(this.serverUrl + '/transactions', {
       categoryId: this.categoryId,
       amount: this.amount,
       timestamp: this.timestampControl.value,

@@ -40,6 +40,8 @@ import HttpService from "./services/http.service";
 
 // app services
 import UserService from "./services/user.service";
+import {environment} from "../environments/environment";
+import {BASE_SERVER_URL} from "./app.config";
 
 @NgModule({
   declarations: [
@@ -80,7 +82,13 @@ import UserService from "./services/user.service";
     NgxMatNativeDateModule,
     InfiniteScrollModule
   ],
-  providers: [HttpService, UserService],
-  bootstrap: [AppComponent],
+  providers: [
+    HttpService,
+    UserService,
+    {provide: BASE_SERVER_URL, useValue: environment.serverUrl}
+  ],
+  bootstrap: [
+    AppComponent
+  ],
 })
 export class AppModule { }
