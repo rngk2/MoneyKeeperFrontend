@@ -20,7 +20,7 @@ export class AddTransactionFormComponent {
   minDate = new Date(0)
   maxDate = new Date();
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private readonly httpClient: HttpClient) { }
 
   submit(): void {
     this.httpClient.post<Transaction>(environment.serverUrl + '/transactions', {

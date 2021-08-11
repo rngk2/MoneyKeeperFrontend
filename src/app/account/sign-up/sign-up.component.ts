@@ -14,9 +14,9 @@ export class SignUpComponent {
 
   signUpForm: FormGroup
 
-  constructor(private router: Router,
-              private fb: FormBuilder,
-              private httpService: HttpService)
+  constructor(private readonly router: Router,
+              private readonly fb: FormBuilder,
+              private readonly httpService: HttpService)
   {
     this.signUpForm = this.fb.group({
       firstName: new FormControl('', [

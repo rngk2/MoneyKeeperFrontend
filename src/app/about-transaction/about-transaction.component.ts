@@ -12,9 +12,9 @@ import categoriesState from "../state/categories.state";
 })
 export class AboutTransactionComponent implements OnInit {
 
-  constructor(private httpClient: HttpClient,
-              public dialogRef: MatDialogRef<AboutTransactionComponent>,
-              @Inject(MAT_DIALOG_DATA) public data: Transaction) {
+  constructor(private readonly httpClient: HttpClient,
+              public readonly dialogRef: MatDialogRef<AboutTransactionComponent>,
+              @Inject(MAT_DIALOG_DATA) public readonly data: Transaction) {
   }
 
 

@@ -17,8 +17,8 @@ export class AllTransactionsPageComponent implements OnInit {
 
   transactions: Set<Transaction> = new Set<Transaction>()
 
-  constructor(private http: HttpClient,
-              private userService: UserService) { }
+  constructor(private readonly http: HttpClient,
+              private readonly userService: UserService) { }
 
   ngOnInit(): void {
     this.fetchTransactions(this.getNextRange())

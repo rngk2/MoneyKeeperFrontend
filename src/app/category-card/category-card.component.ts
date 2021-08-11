@@ -30,12 +30,12 @@ export class CategoryCardComponent implements OnInit {
   @Input() spendThisMonth!: number
   @Input() lastTransactions!: Transaction[]
 
-  private lastTransactionsMaxLength = 5
+  private readonly lastTransactionsMaxLength = 5
   addTransaction: boolean = false
 
-  constructor(private httpClient: HttpClient,
-              private userService: UserService,
-              private dialog: MatDialog) { }
+  constructor(private readonly httpClient: HttpClient,
+              private readonly userService: UserService,
+              private readonly dialog: MatDialog) { }
 
   ngOnInit(): void {
     console.log(this.lastTransactions[0]!.timestamp)

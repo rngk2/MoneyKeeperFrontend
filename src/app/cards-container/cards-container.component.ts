@@ -16,9 +16,9 @@ export class CardsContainerComponent implements OnInit {
 
   category_transactions = new Map<string, Transaction[]>()
 
-  constructor(private dialog: MatDialog,
-              private http: HttpClient,
-              private userService: UserService) {
+  constructor(private readonly dialog: MatDialog,
+              private readonly http: HttpClient,
+              private readonly userService: UserService) {
   }
 
   ngOnInit(): void {

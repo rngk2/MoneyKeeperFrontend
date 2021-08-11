@@ -12,9 +12,9 @@ export class SignInComponent {
 
   signInForm: FormGroup
 
-  constructor(private router: Router,
-              private fb: FormBuilder,
-              private userService: UserService)
+  constructor(private readonly router: Router,
+              private readonly fb: FormBuilder,
+              private readonly userService: UserService)
   {
     this.signInForm = this.fb.group({
       email: new FormControl('', [

@@ -21,11 +21,9 @@ export class AddCategoryFormComponent {
     categoryName: ''
   }
 
-  constructor(
-    private httpClient: HttpClient,
-    private userService: UserService,
-    public dialogRef: MatDialogRef<AddCategoryFormComponent>
-    ) {}
+  constructor(private readonly httpClient: HttpClient,
+              private readonly userService: UserService,
+              public readonly dialogRef: MatDialogRef<AddCategoryFormComponent>) {}
 
   addCategory(): void {
     if (!this.data.categoryName)

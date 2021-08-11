@@ -11,7 +11,7 @@ export class NavbarComponent implements OnInit {
 
   loggedIn: boolean = false
 
-  constructor(private userService: UserService) { }
+  constructor(private readonly userService: UserService) { }
 
   ngOnInit(): void {
     this.userService.currentUserAsObservable.subscribe((data: User) => {
