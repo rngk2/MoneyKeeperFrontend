@@ -9,17 +9,17 @@ import User from "../entities/user.entity";
 })
 export class NavbarComponent implements OnInit {
 
-  loggedIn: boolean = false
+  public loggedIn: boolean = false
 
   constructor(private readonly userService: UserService) { }
 
-  ngOnInit(): void {
-    this.userService.currentUserAsObservable.subscribe((data: User) => {
-      this.loggedIn = !!data.jwtToken
+  public ngOnInit(): void {
+    this.userService.getCurrentUserAsObservable().subscribe((user: User) => {
+      this.loggedIn = !!user.jwtToken
     })
   }
 
-  signOut(): void {
+  public signOut(): void {
     this.userService.logOut()
   }
 }

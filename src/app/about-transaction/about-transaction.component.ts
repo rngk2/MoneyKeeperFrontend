@@ -10,15 +10,11 @@ import categoriesState from "../state/categories.state";
   templateUrl: './about-transaction.component.html',
   styleUrls: ['./about-transaction.component.scss']
 })
-export class AboutTransactionComponent implements OnInit {
+export class AboutTransactionComponent {
 
   constructor(private readonly httpClient: HttpClient,
-              public readonly dialogRef: MatDialogRef<AboutTransactionComponent>,
+              private readonly dialogRef: MatDialogRef<AboutTransactionComponent>,
               @Inject(MAT_DIALOG_DATA) public readonly data: Transaction) {
-  }
-
-
-  ngOnInit(): void {
   }
 
   deleteTransaction(): void {

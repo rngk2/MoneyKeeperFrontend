@@ -14,19 +14,19 @@ import {AddCategoryFormComponent} from "../add-category-form/add-category-form.c
 })
 export class CardsContainerComponent implements OnInit {
 
-  category_transactions = new Map<string, Transaction[]>()
+  public category_transactions = new Map<string, Transaction[]>()
 
   constructor(private readonly dialog: MatDialog,
               private readonly http: HttpClient,
               private readonly userService: UserService) {
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     categoriesState.getObservableState().subscribe(() => this.fetchSummary())
     categoriesState.updateState()
   }
 
-  fetchSummary() {
+  public fetchSummary(): void {
     this.http.get<Transaction[]>(environment.serverUrl + `/users/${this.userService.getCurrentUser().id}/summary`)
       .subscribe(transactions => {
         this.category_transactions = new Map<string, Transaction[]>()
@@ -40,7 +40,7 @@ export class CardsContainerComponent implements OnInit {
       })
   }
 
-  calculateAmountForMonth(transactions: Transaction[]): number {
+  public calculateAmountForMonth(transactions: Transaction[]): number {
     const currentMonth = new Date().getMonth()
     let amountForMonth = 0
     for (const transaction of transactions)
@@ -50,11 +50,11 @@ export class CardsContainerComponent implements OnInit {
     return amountForMonth
   }
 
-  getCategoriesNames(): string[] {
+  public getCategoriesNames(): string[] {
     return [...this.category_transactions.keys()]
   }
 
-  getAmountForCategories(categories: string[]): number[] {
+  public getAmountForCategories(categories: string[]): number[] {
     let amountForCategories: number[] = []
     for (let category of categories)
       amountForCategories.push(<number>this.getAmountForCategory(category))
@@ -67,7 +67,7 @@ export class CardsContainerComponent implements OnInit {
       .reduce((acc, curr) => acc + curr)
   }
 
-  addCategory(): void {
+  public addCategory(): void {
     const dialogRef = this.dialog.open(AddCategoryFormComponent, {
       width: '40rem'
     })

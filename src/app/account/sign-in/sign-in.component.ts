@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms'
 import UserService from "../../services/user.service";
 import {Router} from "@angular/router";
@@ -10,7 +10,7 @@ import {Router} from "@angular/router";
 })
 export class SignInComponent {
 
-  signInForm: FormGroup
+  public signInForm: FormGroup
 
   constructor(private readonly router: Router,
               private readonly fb: FormBuilder,
@@ -34,7 +34,7 @@ export class SignInComponent {
     return this.signInForm.get('password')
   }
 
-  submit(): void {
+  public submit(): void {
     this.userService.logIn({
       email: this.email?.value,
       password: this.password?.value

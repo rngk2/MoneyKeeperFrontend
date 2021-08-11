@@ -17,15 +17,15 @@ interface DialogData {
 })
 export class AddCategoryFormComponent {
 
-  data: DialogData = {
+  public data: DialogData = {
     categoryName: ''
   }
 
   constructor(private readonly httpClient: HttpClient,
               private readonly userService: UserService,
-              public readonly dialogRef: MatDialogRef<AddCategoryFormComponent>) {}
+              private readonly dialogRef: MatDialogRef<AddCategoryFormComponent>) {}
 
-  addCategory(): void {
+  public addCategory(): void {
     if (!this.data.categoryName)
       return
 
@@ -35,5 +35,4 @@ export class AddCategoryFormComponent {
       userId: this.userService.getCurrentUser().id
     }).subscribe(res => CategoriesState.updateState())
   }
-
 }

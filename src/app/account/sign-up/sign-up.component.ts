@@ -12,7 +12,7 @@ import {Router} from "@angular/router";
 })
 export class SignUpComponent {
 
-  signUpForm: FormGroup
+  public signUpForm: FormGroup
 
   constructor(private readonly router: Router,
               private readonly fb: FormBuilder,
@@ -52,15 +52,15 @@ export class SignUpComponent {
     return this.signUpForm.get('password')
   }
 
-  submit() {
+  public submit(): void {
     const user: User = {
       firstName: this.firstName?.value,
       lastName: this.lastName?.value,
       email: this.email?.value,
       password: this.password?.value
     }
+
     this.httpService.post(environment.serverUrl + '/users', user)
       .subscribe(() => this.router.navigate(["/sign-in"]))
   }
-
 }

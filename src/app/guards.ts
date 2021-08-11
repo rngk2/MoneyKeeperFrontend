@@ -15,10 +15,11 @@ export class Permissions {
 
 @Injectable()
 export class CanActivateUserRoutes implements CanActivate {
-  constructor(private permissions: Permissions, private router: Router) {
-  }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
+  constructor(private readonly permissions: Permissions,
+              private readonly router: Router) { }
+
+  public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
     : Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const _canActivate = this.permissions.canActivate()
     if (_canActivate) {

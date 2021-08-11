@@ -9,14 +9,13 @@ import {map} from "rxjs/operators";
 export default class UserService {
 
   private userSubject: BehaviorSubject<User>
-
   private currentUser: User | undefined
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private readonly httpClient: HttpClient) {
     this.userSubject = new BehaviorSubject<User>({})
   }
 
-  get currentUserAsObservable(): Observable<User> {
+  public getCurrentUserAsObservable(): Observable<User> {
     if (!this.currentUser && this.getCurrentUser()) {
       this.userSubject.next(this.getCurrentUser())
     }
@@ -24,7 +23,7 @@ export default class UserService {
     return this.userSubject.asObservable()
   }
 
-  getCurrentUser(): User {
+  public getCurrentUser(): User {
     const currentUser = localStorage.getItem("currentUser")
     if (!currentUser) {
       return {}
@@ -32,15 +31,15 @@ export default class UserService {
     return JSON.parse(localStorage.getItem("currentUser")!)
   }
 
-  setCurrentUser(user: User): void {
+  public setCurrentUser(user: User): void {
     localStorage.setItem("currentUser", JSON.stringify(user))
   }
 
-  removeCurrentUser(): void {
+  public removeCurrentUser(): void {
     localStorage.removeItem("currentUser")
   }
 
-  logIn(credentials: { email: string, password: string }): Observable<User> {
+  public logIn(credentials: { email: string, password: string }): Observable<User> {
     return this.httpClient.post<User>(environment.serverUrl + '/users/authenticate', credentials, {withCredentials: true})
       .pipe(map(user => {
         this.currentUser = user
@@ -51,14 +50,14 @@ export default class UserService {
       }))
   }
 
-  logOut(): void {
+  public logOut(): void {
     this.httpClient.post<any>(environment.serverUrl + '/users/revoke-token', {}, { withCredentials: true });
     this.removeCurrentUser()
     this.stopRefreshTokenTimer();
     this.userSubject.next({});
   }
 
-  refreshToken() {
+  public refreshToken(): Observable<any> {
     return this.httpClient.post<any>(environment.serverUrl + '/users/refresh-token', {}, {withCredentials: true})
       .pipe(map((response) => {
         this.userSubject.next({...this.userSubject.value, jwtToken: response.jwtToken});

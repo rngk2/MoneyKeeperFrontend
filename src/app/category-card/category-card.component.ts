@@ -23,40 +23,39 @@ import {AboutTransactionComponent} from "../about-transaction/about-transaction.
 })
 export class CategoryCardComponent implements OnInit {
 
-  state: 'collapsed' | 'expanded' = 'collapsed'
+  public state: 'collapsed' | 'expanded' = 'collapsed'
+  public addTransaction: boolean = false
 
-  @Input() categoryName!: string
-  @Input() categoryId!: number
-  @Input() spendThisMonth!: number
-  @Input() lastTransactions!: Transaction[]
+  @Input() public categoryName!: string
+  @Input() public categoryId!: number
+  @Input() public spendThisMonth!: number
+  @Input() public lastTransactions!: Transaction[]
 
   private readonly lastTransactionsMaxLength = 5
-  addTransaction: boolean = false
 
   constructor(private readonly httpClient: HttpClient,
               private readonly userService: UserService,
               private readonly dialog: MatDialog) { }
 
-  ngOnInit(): void {
-    console.log(this.lastTransactions[0]!.timestamp)
+  public ngOnInit(): void {
     if (this.lastTransactions.length > this.lastTransactionsMaxLength) {
       this.lastTransactions = this.lastTransactions.slice(0, this.lastTransactionsMaxLength - 1)
     }
   }
 
-  toggle(): void {
+  public toggle(): void {
     this.state = this.state === 'collapsed' ? 'expanded' : 'collapsed'
   }
 
-  delete(): void {
+  public delete(): void {
     this.httpClient.delete(environment.serverUrl + `/categories/${this.userService.getCurrentUser().id}/${this.categoryName}`)
       .subscribe(res => categoriesState.updateState())
   }
 
-  showMoreForTransaction(t: Transaction) {
-    const dialogRef = this.dialog.open(AboutTransactionComponent, {
+  public showMoreForTransaction(transaction: Transaction): void {
+    this.dialog.open(AboutTransactionComponent, {
       width: '20rem',
-      data: t
-    })
+      data: transaction
+    });
   }
 }

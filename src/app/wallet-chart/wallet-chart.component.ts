@@ -1,14 +1,18 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {ChartColor, ChartOptions, ChartType} from "chart.js";
-import {Color, Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip, SingleDataSet} from "ng2-charts";
+import {Component, Input} from '@angular/core';
+import {ChartOptions, ChartType} from "chart.js";
+import {Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip, SingleDataSet} from "ng2-charts";
 
 @Component({
   selector: 'wallet-chart',
   templateUrl: './wallet-chart.component.html',
   styleUrls: ['./wallet-chart.component.scss']
 })
-export class WalletChartComponent implements OnInit {
-  chartOptions: ChartOptions = {
+export class WalletChartComponent {
+
+  public chartType: ChartType = 'doughnut';
+  public chartLegend = true;
+  public chartPlugins = [];
+  public chartOptions: ChartOptions = {
     animation: {
       duration: 3200
     },
@@ -21,21 +25,13 @@ export class WalletChartComponent implements OnInit {
         fontStyle: 'italic'
       }
     },
-
   };
 
-  @Input() chartLabels!: Label[]
-  @Input() chartData!: SingleDataSet
-
-  chartType: ChartType = 'doughnut';
-  chartLegend = true;
-  chartPlugins = [];
+  @Input() public chartLabels!: Label[]
+  @Input() public chartData!: SingleDataSet
 
   constructor() {
     monkeyPatchChartJsTooltip();
     monkeyPatchChartJsLegend();
   }
-  ngOnInit(): void {
-  }
-
 }
