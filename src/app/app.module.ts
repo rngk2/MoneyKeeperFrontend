@@ -30,7 +30,6 @@ import { Page404Component } from './page404/page404.component';
 import { WalletChartComponent } from './wallet-chart/wallet-chart.component';
 import {ChartsModule} from "ng2-charts";
 import { AboutTransactionComponent } from './about-transaction/about-transaction.component';
-import { InWalletNavigationComponent } from './in-wallet-navigation/in-wallet-navigation.component';
 import { AllTransactionsPageComponent } from './all-transactions-page/all-transactions-page.component';
 import {MatListModule} from "@angular/material/list";
 import {NgxMatDatetimePickerModule, NgxMatNativeDateModule} from "@angular-material-components/datetime-picker";
@@ -50,7 +49,6 @@ import {InfiniteScrollModule} from "ngx-infinite-scroll";
     Page404Component,
     WalletChartComponent,
     AboutTransactionComponent,
-    InWalletNavigationComponent,
     AllTransactionsPageComponent
   ],
   imports: [
