@@ -32,17 +32,12 @@ export class CardsContainerComponent implements OnInit {
         this.category_transactions = new Map<string, Transaction[]>()
 
         for (const transaction of transactions) {
-
           const containedTransactions = this.category_transactions.get(transaction.categoryName!)
           const newSet: Transaction[] = containedTransactions == null ? [transaction]
             : [...containedTransactions, transaction]
           this.category_transactions.set(transaction.categoryName!, newSet)
         }
       })
-  }
-
-  private getEmptyArrayIfTransactionIsSpoiled(transaction: Transaction): Transaction[] {
-    return transaction.amount === 0 ? [] : [transaction]
   }
 
   calculateAmountForMonth(transactions: Transaction[]): number {
