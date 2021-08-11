@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms'
 import UserService from "../../services/user.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'sign-in-form',
@@ -11,7 +12,8 @@ export class SignInComponent {
 
   signInForm: FormGroup
 
-  constructor(private fb: FormBuilder,
+  constructor(private router: Router,
+              private fb: FormBuilder,
               private userService: UserService)
   {
     this.signInForm = this.fb.group({
@@ -36,7 +38,7 @@ export class SignInComponent {
     this.userService.logIn({
       email: this.email?.value,
       password: this.password?.value
-    }).subscribe(data => console.log(data))
+    }).subscribe(() => this.router.navigate(["/wallet"]))
   }
 
 }

@@ -3,6 +3,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms'
 import HttpService from "../../services/http.service";
 import {environment} from "../../../environments/environment";
 import User from "../../entities/user.entity";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'sign-up-form',
@@ -13,7 +14,8 @@ export class SignUpComponent {
 
   signUpForm: FormGroup
 
-  constructor(private fb: FormBuilder,
+  constructor(private router: Router,
+              private fb: FormBuilder,
               private httpService: HttpService)
   {
     this.signUpForm = this.fb.group({
@@ -58,7 +60,7 @@ export class SignUpComponent {
       password: this.password?.value
     }
     this.httpService.post(environment.serverUrl + '/users', user)
-      .subscribe(data => console.log(data))
+      .subscribe(() => this.router.navigate(["/sign-in"]))
   }
 
 }
