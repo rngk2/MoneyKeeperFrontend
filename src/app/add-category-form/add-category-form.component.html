@@ -1,7 +1,7 @@
 <!--TODO: add validators-->
 <div mat-dialog-content class="dialog-container">
   <mat-form-field>
-    <input type="text" matInput [(ngModel)]="data.categoryName" placeholder="New category name" required>
+    <input type="text" maxlength="50" matInput [(ngModel)]="data.categoryName" placeholder="New category name" required>
   </mat-form-field>
   <div mat-dialog-actions>
   <button class="submit" mat-button color="primary" (click)="addCategory()">Add</button>
