@@ -49,8 +49,9 @@ export class CategoryCardComponent implements OnInit {
   }
 
   public delete(): void {
-    this.httpClient.delete(this.serverUrl + `/categories/${this.userService.getCurrentUser().id}/${this.categoryName}`)
-      .subscribe(res => categoriesState.updateState())
+    if (confirm(`Delete ${this.categoryName}?`))
+      this.httpClient.delete(this.serverUrl + `/categories/${this.userService.getCurrentUser().id}/${this.categoryName}`)
+        .subscribe(res => categoriesState.updateState())
   }
 
   public showMoreForTransaction(transaction: Transaction): void {
