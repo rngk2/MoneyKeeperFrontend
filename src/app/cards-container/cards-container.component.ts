@@ -15,6 +15,7 @@ import {BASE_SERVER_URL} from "../app.config";
 export class CardsContainerComponent implements OnInit {
 
   public category_transactions = new Map<string, Transaction[]>()
+  public isFetched = false
 
   constructor(private readonly dialog: MatDialog,
               private readonly http: HttpClient,
@@ -28,7 +29,7 @@ export class CardsContainerComponent implements OnInit {
   }
 
   public fetchSummary(): void {
-    this.http.get<Transaction[]>(this.serverUrl + `/users/${this.userService.getCurrentUser().id}/summary`)
+     this.http.get<Transaction[]>(this.serverUrl + `/users/${this.userService.getCurrentUser().id}/summary`)
       .subscribe(transactions => {
         this.category_transactions = new Map<string, Transaction[]>()
 
@@ -38,6 +39,7 @@ export class CardsContainerComponent implements OnInit {
             : [...containedTransactions, transaction]
           this.category_transactions.set(transaction.categoryName!, newSet)
         }
+        this.isFetched = true
       })
   }
 
