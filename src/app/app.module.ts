@@ -41,6 +41,7 @@ import UserService from "./services/user.service";
 import {environment} from "../environments/environment";
 import {BASE_SERVER_URL} from "./app.config";
 import {AccountModule} from "./account/account.module";
+import { ConfirmPopupComponent } from './confirm-popup/confirm-popup.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import {AccountModule} from "./account/account.module";
     Page404Component,
     WalletChartComponent,
     AboutTransactionComponent,
-    AllTransactionsPageComponent
+    AllTransactionsPageComponent,
+    ConfirmPopupComponent
   ],
   imports: [
     // app modules

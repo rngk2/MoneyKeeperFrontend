@@ -7,6 +7,7 @@ import categoriesState from "../state/categories.state";
 import {MatDialog} from "@angular/material/dialog";
 import {AboutTransactionComponent} from "../about-transaction/about-transaction.component";
 import {BASE_SERVER_URL} from "../app.config";
+import {ConfirmPopupComponent} from "../confirm-popup/confirm-popup.component";
 
 @Component({
   selector: 'category-card',
@@ -24,7 +25,8 @@ import {BASE_SERVER_URL} from "../app.config";
 export class CategoryCardComponent implements OnInit {
 
   public state: 'collapsed' | 'expanded' = 'collapsed'
-  public addTransaction: boolean = false
+  public addTransaction = false
+  public showConfirm = false
 
   @Input() public categoryName!: string
   @Input() public categoryId!: number
@@ -36,6 +38,7 @@ export class CategoryCardComponent implements OnInit {
   constructor(private readonly httpClient: HttpClient,
               private readonly userService: UserService,
               private readonly dialog: MatDialog,
+              private readonly confirm: MatDialog,
               @Inject(BASE_SERVER_URL) private readonly serverUrl: string) { }
 
   public ngOnInit(): void {
@@ -49,9 +52,16 @@ export class CategoryCardComponent implements OnInit {
   }
 
   public delete(): void {
-    if (confirm(`Delete ${this.categoryName}?`))
-      this.httpClient.delete(this.serverUrl + `/categories/${this.userService.getCurrentUser().id}/${this.categoryName}`)
-        .subscribe(res => categoriesState.updateState())
+    const confirmRef = this.dialog.open(ConfirmPopupComponent, {
+      width: '30rem',
+      data: `Delete "${this.categoryName}" ?`
+    })
+    const sub = confirmRef.componentInstance.onAnswer.subscribe((ok: boolean) => {
+      if (ok)
+        this.httpClient.delete(this.serverUrl + `/categories/${this.userService.getCurrentUser().id}/${this.categoryName}`)
+            .subscribe(res => categoriesState.updateState())
+      confirmRef.close()
+    })
   }
 
   public showMoreForTransaction(transaction: Transaction): void {
