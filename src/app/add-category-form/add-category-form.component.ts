@@ -32,8 +32,14 @@ export class AddCategoryFormComponent {
 
     this.dialogRef.close()
     this.httpClient.post<Category>(this.serverUrl + '/categories', {
-      name:  this.data.categoryName,
+      name:  AddCategoryFormComponent.normalizeNameString(this.data.categoryName),
       userId: this.userService.getCurrentUser().id
-    }).subscribe(res => CategoriesState.updateState())
+    }).subscribe(() => CategoriesState.updateState())
+  }
+
+  private static normalizeNameString(name: string): string {
+    const lowered = name.toLowerCase()
+    const sym0 = lowered.charAt(0)
+    return sym0.toUpperCase() + lowered.substr(1, lowered.length - 1)
   }
 }
