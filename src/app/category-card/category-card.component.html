@@ -9,7 +9,7 @@
     <div [@bodyExpansion]="state" class="expandable-content">
       <div *ngFor="let transaction of lastTransactions" (click)="showMoreForTransaction(transaction)">
         <p *ngIf="transaction.amount !== 0">
-          {{transaction.timestamp | date: "mediumDate"}}: {{transaction.amount}}$: {{transaction.comment}}
+          {{transaction.timestamp | date: "mediumDate"}}: {{transaction.amount}}$
         </p>
       </div>
       <section (click)="addTransaction = true">
