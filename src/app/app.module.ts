@@ -23,8 +23,6 @@ import {InfiniteScrollModule} from "ngx-infinite-scroll";
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { SignInComponent } from './account/sign-in/sign-in.component';
-import { SignUpComponent } from './account/sign-up/sign-up.component';
 import { CardsContainerComponent } from './cards-container/cards-container.component';
 import { WalletPageComponent } from './wallet-page/wallet-page.component';
 import { AddCategoryFormComponent } from './add-category-form/add-category-form.component';
@@ -42,13 +40,12 @@ import HttpService from "./services/http.service";
 import UserService from "./services/user.service";
 import {environment} from "../environments/environment";
 import {BASE_SERVER_URL} from "./app.config";
+import {AccountModule} from "./account/account.module";
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    SignInComponent,
-    SignUpComponent,
     CategoryCardComponent,
     CardsContainerComponent,
     WalletPageComponent,
@@ -60,6 +57,10 @@ import {BASE_SERVER_URL} from "./app.config";
     AllTransactionsPageComponent
   ],
   imports: [
+    // app modules
+    AccountModule,
+
+    // lib modules
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
