@@ -7,7 +7,7 @@
       Spend this month: {{spendThisMonth}}$
     </p>
     <div [@bodyExpansion]="state" class="expandable-content">
-      <div *ngFor="let transaction of lastTransactions" (click)="showMoreForTransaction(transaction)">
+      <div *ngFor="let transaction of lastTransactions" (click)="showMoreForTransaction(transaction)" style="cursor: pointer">
         <p *ngIf="transaction.amount !== 0">
           {{transaction.timestamp | date: "mediumDate"}}: {{transaction.amount}}$
         </p>
