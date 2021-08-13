@@ -42,6 +42,9 @@ import {environment} from "../environments/environment";
 import {BASE_SERVER_URL} from "./app.config";
 import {AccountModule} from "./account/account.module";
 import { ConfirmPopupComponent } from './confirm-popup/confirm-popup.component';
+import {StoreModule} from "@ngrx/store";
+import {cardsContainerReducer} from "./store/cards-store/cards-container.reducer";
+import CardsContainerStore from "./store/cards-store/cards-container.store";
 
 @NgModule({
   declarations: [
@@ -83,12 +86,14 @@ import { ConfirmPopupComponent } from './confirm-popup/confirm-popup.component';
     MatListModule,
     NgxMatDatetimePickerModule,
     NgxMatNativeDateModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    StoreModule.forRoot({cards: cardsContainerReducer})
   ],
   providers: [
     HttpService,
     UserService,
-    {provide: BASE_SERVER_URL, useValue: environment.serverUrl}
+    {provide: BASE_SERVER_URL, useValue: environment.serverUrl},
+    CardsContainerStore
   ],
   bootstrap: [
     AppComponent

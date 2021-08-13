@@ -2,10 +2,10 @@ import {Component, Inject, OnInit} from '@angular/core';
 import Transaction from "../entities/transaction.entity";
 import {HttpClient} from "@angular/common/http";
 import UserService from "../services/user.service";
-import categoriesState from "../state/categories.state";
 import {MatDialog} from "@angular/material/dialog";
 import {AddCategoryFormComponent} from "../add-category-form/add-category-form.component";
 import {BASE_SERVER_URL} from "../app.config";
+import CardsContainerStore from "../store/cards-store/cards-container.store";
 
 @Component({
   selector: 'cards-container',
@@ -20,12 +20,13 @@ export class CardsContainerComponent implements OnInit {
   constructor(private readonly dialog: MatDialog,
               private readonly http: HttpClient,
               private readonly userService: UserService,
-              @Inject(BASE_SERVER_URL) private readonly serverUrl: string) {
+              @Inject(BASE_SERVER_URL) private readonly serverUrl: string,
+              private readonly cardsStore: CardsContainerStore) {
   }
 
   public ngOnInit(): void {
-    categoriesState.getObservableState().subscribe(() => this.fetchSummary())
-    categoriesState.updateState()
+    this.cardsStore.getState().subscribe(() => this.fetchSummary())
+    this.cardsStore.updateState()
   }
 
   public fetchSummary(): void {
@@ -76,7 +77,7 @@ export class CardsContainerComponent implements OnInit {
     })
 
     dialogRef.afterClosed().subscribe(() => {
-      categoriesState.updateState()
+      this.cardsStore.updateState()
       document.getElementById("add-btn")!.blur();
     })
   }
