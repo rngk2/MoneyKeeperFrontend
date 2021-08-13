@@ -26,8 +26,6 @@ export class CategoryCardComponent implements OnInit {
 
   public state: 'collapsed' | 'expanded' = 'collapsed'
   public addTransaction = false
-  public showConfirm = false
-
   @Input() public categoryName!: string
   @Input() public categoryId!: number
   @Input() public spendThisMonth!: number
@@ -57,12 +55,12 @@ export class CategoryCardComponent implements OnInit {
       width: '30rem',
       data: `Delete "${this.categoryName}" ?`
     })
-    const sub = confirmRef.componentInstance.onAnswer.subscribe((ok: boolean) => {
+    confirmRef.componentInstance.onAnswer.subscribe((ok: boolean) => {
       if (ok)
         this.httpClient.delete(this.serverUrl + `/categories/${this.userService.getCurrentUser().id}/${this.categoryName}`)
-            .subscribe(res => this.cardsStore.updateState())
+          .subscribe(() => this.cardsStore.updateState())
       confirmRef.close()
-    })
+    });
   }
 
   public showMoreForTransaction(transaction: Transaction): void {
