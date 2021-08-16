@@ -8,6 +8,12 @@
     <div class="search__container">
       <input class="search__input" type="text" placeholder="Search" [formControl]="searchControl" >
     </div>
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker" placeholder="Choose a date" [formControl]="timestampControl"
+             [min]="minDate" [max]="maxDate" readonly>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
   </form>
     <mat-list-item *ngFor="let transaction of transactions">
       <h3 class="title" matLine> {{transaction.categoryName}} </h3>

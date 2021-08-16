@@ -30,6 +30,9 @@ export class AllTransactionsPageComponent implements OnInit {
 
   public transactions: Set<Transaction> = new Set<Transaction>()
   public searchControl = new FormControl('')
+  public minDate = new Date(0)
+  public maxDate = new Date()
+  public timestampControl = new FormControl();
 
   private rangeForAll = new RangeOffsetController()
   private rangeForSearch = new RangeOffsetController()
