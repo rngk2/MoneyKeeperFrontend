@@ -9,7 +9,7 @@
       <ng-template #ok>
         <category-card *ngFor="let c_t of category_transactions | keyvalue"
                        [categoryName]="c_t.key"
-                       [spendThisMonth]="calculateAmount(c_t.value)"
+                       [spendThisMonth]="calculateAmountForMonth(c_t.value)"
                        [lastTransactions]="c_t.value"
                        [categoryId]="c_t.value[0]?.categoryId!"
         >

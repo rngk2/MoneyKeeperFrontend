@@ -30,7 +30,7 @@ export class CardsContainerComponent implements OnInit {
   }
 
   public fetchSummary(): void {
-     this.http.get<Transaction[]>(this.serverUrl + `/users/${this.userService.getCurrentUser().id}/summary/month`)
+     this.http.get<Transaction[]>(this.serverUrl + `/users/${this.userService.getCurrentUser().id}/summary`)
       .subscribe(transactions => {
         this.category_transactions = new Map<string, Transaction[]>()
 
@@ -44,12 +44,14 @@ export class CardsContainerComponent implements OnInit {
       })
   }
 
-  public calculateAmount(transactions: Transaction[]): number {
-    let amount = 0
+  public calculateAmountForMonth(transactions: Transaction[]): number {
+    const currentMonth = new Date().getMonth()
+    let amountForMonth = 0
     for (const transaction of transactions)
-      amount += transaction.amount
+      if (new Date(transaction.timestamp).getMonth() === currentMonth)
+        amountForMonth += transaction.amount
 
-    return amount
+    return amountForMonth
   }
 
   public getCategoriesNames(): string[] {
