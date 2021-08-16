@@ -17,7 +17,7 @@
       </ng-template>
     </div>
 
-    <div class="add-button" (click)="addCategory()" *ngIf="isFetched">
+    <div class="add-button" *ngIf="isFetched" [matMenuTriggerFor]="menu">
       <div class="mdc-touch-target-wrapper">
         <button id="add-btn" class="mdc-fab mdc-fab--mini mdc-fab--touch">
           <div class="mdc-fab__ripple"></div>
@@ -26,6 +26,16 @@
         </button>
       </div>
     </div>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="addCategory()">
+        <mat-icon>add</mat-icon>
+        <span>Category</span>
+      </button>
+      <button mat-menu-item>
+        <mat-icon>add</mat-icon>
+        <span>Earning</span>
+      </button>
+    </mat-menu>
 
   </div>
   <div class="chart" *ngIf="category_transactions.size">

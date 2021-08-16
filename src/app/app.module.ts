@@ -45,6 +45,7 @@ import { ConfirmPopupComponent } from './confirm-popup/confirm-popup.component';
 import {StoreModule} from "@ngrx/store";
 import {cardsContainerReducer} from "./store/cards-store/cards-container.reducer";
 import CardsContainerStore from "./store/cards-store/cards-container.store";
+import {MatMenuModule} from "@angular/material/menu";
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import CardsContainerStore from "./store/cards-store/cards-container.store";
     NgxMatDatetimePickerModule,
     NgxMatNativeDateModule,
     InfiniteScrollModule,
-    StoreModule.forRoot({cards: cardsContainerReducer})
+    StoreModule.forRoot({cards: cardsContainerReducer}),
+    MatMenuModule
   ],
   providers: [
     HttpService,
