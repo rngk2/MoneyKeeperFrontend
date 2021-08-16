@@ -43,7 +43,7 @@ export class AllTransactionsPageComponent implements OnInit {
     this.searchControl.valueChanges
       .pipe(debounceTime(AllTransactionsPageComponent.SEARCH_DEBOUNCE_DURATION), distinctUntilChanged())
       .subscribe(() => {
-        [this.rangeForSearch, this.rangeForSearch] = [new RangeOffsetController(), new RangeOffsetController()]
+        this.rangeForSearch = this.rangeForAll = new RangeOffsetController()
         this.fetchTransactionsWithPattern(this.rangeForSearch.getNextRange())
       })
     this.fetchTransactions(this.rangeForAll.getNextRange())
