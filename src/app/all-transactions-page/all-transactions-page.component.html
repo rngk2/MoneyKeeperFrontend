@@ -4,6 +4,11 @@
      (scrolled)="onScroll()"
 >
   <mat-list>
+  <form>
+    <div class="search__container">
+      <input class="search__input" type="text" placeholder="Search" [formControl]="searchControl" >
+    </div>
+  </form>
     <mat-list-item *ngFor="let transaction of transactions">
       <h3 class="title" matLine> {{transaction.categoryName}} </h3>
       <p matLine class="content">
