@@ -45,6 +45,7 @@ import { ConfirmPopupComponent } from './confirm-popup/confirm-popup.component';
 import {StoreModule} from "@ngrx/store";
 import {cardsContainerReducer} from "./store/cards-store/cards-container.reducer";
 import CardsContainerStore from "./store/cards-store/cards-container.store";
+import { ProfilePageComponent } from './profile-page/profile-page.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import CardsContainerStore from "./store/cards-store/cards-container.store";
     WalletChartComponent,
     AboutTransactionComponent,
     AllTransactionsPageComponent,
-    ConfirmPopupComponent
+    ConfirmPopupComponent,
+    ProfilePageComponent
   ],
   imports: [
     // app modules
