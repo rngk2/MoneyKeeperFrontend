@@ -2,6 +2,7 @@
   <nav class="sticky-navbar">
     <ul>
       <li (click)="showCards = true; showTransactions = false">My Categories</li>
+      <li (click)="showCards = false; showTransactions = false">Earnings</li>
       <li (click)="showTransactions = true; showCards = false">Transactions</li>
     </ul>
   </nav>
@@ -11,7 +12,10 @@
         <cards-container></cards-container>
       </section>
       <section class="list-of-transactions" *ngIf="showTransactions">
-        <all-transactions-list></all-transactions-list>
+        <all-transactions-page></all-transactions-page>
+      </section>
+      <section class="list-of-earnings" *ngIf="!showTransactions && !showCards">
+        <earnings-page></earnings-page>
       </section>
     </div>
   </div>

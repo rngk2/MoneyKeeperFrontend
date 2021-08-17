@@ -1,10 +1,10 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import Transaction from "../entities/transaction.entity";
-import {HttpClient} from "@angular/common/http";
-import UserService from "../services/user.service";
-import {Range} from "src/app/utils/Utils"
-import {BASE_SERVER_URL} from "../app.config";
+import {Component, Inject, Input, OnInit} from '@angular/core';
+import {Range} from "../../utils/Utils";
+import Transaction from "../../entities/transaction.entity";
 import {FormControl} from "@angular/forms";
+import {HttpClient} from "@angular/common/http";
+import UserService from "../../services/user.service";
+import {BASE_SERVER_URL} from "../../app.config";
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
 
 class RangeOffsetController {
@@ -22,14 +22,16 @@ class RangeOffsetController {
 }
 
 @Component({
-  selector: 'all-transactions-list',
-  templateUrl: './all-transactions-page.component.html',
-  styleUrls: ['./all-transactions-page.component.scss']
+  selector: 'transactions-list',
+  templateUrl: './transactions-list.component.html',
+  styleUrls: ['./transactions-list.component.scss']
 })
-export class AllTransactionsPageComponent implements OnInit {
+export class TransactionsListComponent implements OnInit {
 
   public transactions: Set<Transaction> = new Set<Transaction>()
   public searchControl = new FormControl('')
+
+  @Input() filter: ((value: any, index: number, array: any[]) => unknown) = (() => true)
 
   private rangeForAll = new RangeOffsetController()
   private rangeForSearch = new RangeOffsetController()
@@ -41,7 +43,7 @@ export class AllTransactionsPageComponent implements OnInit {
 
   public ngOnInit(): void {
     this.searchControl.valueChanges
-      .pipe(debounceTime(AllTransactionsPageComponent.SEARCH_DEBOUNCE_DURATION), distinctUntilChanged())
+      .pipe(debounceTime(TransactionsListComponent.SEARCH_DEBOUNCE_DURATION), distinctUntilChanged())
       .subscribe(() => {
         this.rangeForSearch = this.rangeForAll = new RangeOffsetController()
         this.fetchTransactionsWithPattern(this.rangeForSearch.getNextRange())
@@ -51,7 +53,9 @@ export class AllTransactionsPageComponent implements OnInit {
 
   private fetchTransactions(range: Range): void {
     this.http.get<Transaction[]>(this.serverUrl + `/transactions/${this.userService.getCurrentUser().id}/${range.begin}/${range.end}`)
-      .subscribe(transactions => this.transactions =  new Set<Transaction>(this.sortByDate([...this.transactions, ...transactions])))
+      .subscribe(transactions => this.transactions =
+        new Set(this.sortByDate([...this.transactions, ...transactions]).filter(this.filter))
+      )
   }
 
   private fetchTransactionsWithPattern(range: Range): void {
@@ -59,7 +63,8 @@ export class AllTransactionsPageComponent implements OnInit {
     this.http.get<Transaction[]>(this.serverUrl + `/transactions/${this.userService.getCurrentUser().id}/${range.begin}/${range.end}/${pattern}`)
       .subscribe(transactions => {
         const append = range.begin === 0 ? new Set<Transaction>([]) : this.transactions
-        this.transactions = new Set<Transaction>(this.sortByDate([...append, ...transactions]))
+        this.transactions =
+          new Set(this.sortByDate([...append, ...transactions]).filter(this.filter))
       })
   }
 
@@ -72,4 +77,9 @@ export class AllTransactionsPageComponent implements OnInit {
       this.fetchTransactions(this.rangeForAll.getNextRange()) :
       this.fetchTransactionsWithPattern(this.rangeForSearch.getNextRange())
   }
+
+  public inputTransactionName(): string {
+    return Transaction.inputTransactionName
+  }
+
 }
