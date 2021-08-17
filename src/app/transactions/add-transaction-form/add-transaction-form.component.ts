@@ -1,9 +1,9 @@
 import {Component, Inject, Input} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import Transaction from "../entities/transaction.entity";
+import Transaction from "../../entities/transaction.entity";
 import {FormControl} from "@angular/forms";
-import {BASE_SERVER_URL} from "../app.config";
-import CardsContainerStore from "../store/cards-store/cards-container.store";
+import {BASE_SERVER_URL} from "../../app.config";
+import CardsContainerStore from "../../store/cards-store/cards-container.store";
 
 @Component({
   selector: 'add-transaction-form',

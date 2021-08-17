@@ -6,6 +6,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {AddCategoryFormComponent} from "../add-category-form/add-category-form.component";
 import {BASE_SERVER_URL} from "../app.config";
 import CardsContainerStore from "../store/cards-store/cards-container.store";
+import {AddEarningFormComponent} from "../transactions/add-earning-form/add-earning-form.component";
 
 @Component({
   selector: 'cards-container',
@@ -35,6 +36,8 @@ export class CardsContainerComponent implements OnInit {
         this.category_transactions = new Map<string, Transaction[]>()
 
         for (const transaction of transactions) {
+          if (transaction.categoryName === Transaction.inputTransactionName)
+              continue
           const containedTransactions = this.category_transactions.get(transaction.categoryName!)
           const newSet: Transaction[] = containedTransactions == null ? [transaction]
             : [...containedTransactions, transaction]
@@ -73,6 +76,17 @@ export class CardsContainerComponent implements OnInit {
 
   public addCategory(): void {
     const dialogRef = this.dialog.open(AddCategoryFormComponent, {
+      width: '40rem'
+    })
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.cardsStore.updateState()
+      document.getElementById("add-btn")!.blur();
+    })
+  }
+
+  public addEarning(): void {
+    const dialogRef = this.dialog.open(AddEarningFormComponent, {
       width: '40rem'
     })
 

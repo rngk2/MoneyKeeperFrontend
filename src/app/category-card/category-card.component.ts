@@ -4,7 +4,7 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
 import {HttpClient} from "@angular/common/http";
 import UserService from "../services/user.service";
 import {MatDialog} from "@angular/material/dialog";
-import {AboutTransactionComponent} from "../about-transaction/about-transaction.component";
+import {AboutTransactionComponent} from "../transactions/about-transaction/about-transaction.component";
 import {BASE_SERVER_URL} from "../app.config";
 import {ConfirmPopupComponent} from "../confirm-popup/confirm-popup.component";
 import CardsContainerStore from "../store/cards-store/cards-container.store";
@@ -26,12 +26,13 @@ export class CategoryCardComponent implements OnInit {
 
   public state: 'collapsed' | 'expanded' = 'collapsed'
   public addTransaction = false
+
   @Input() public categoryName!: string
   @Input() public categoryId!: number
   @Input() public spendThisMonth!: number
   @Input() public lastTransactions!: Transaction[]
 
-  private readonly lastTransactionsMaxLength = 5
+  private static readonly lastTransactionsMaxLength = 5
 
   constructor(private readonly httpClient: HttpClient,
               private readonly userService: UserService,
@@ -41,8 +42,8 @@ export class CategoryCardComponent implements OnInit {
               private readonly cardsStore: CardsContainerStore) { }
 
   public ngOnInit(): void {
-    if (this.lastTransactions.length > this.lastTransactionsMaxLength) {
-      this.lastTransactions = this.lastTransactions.slice(0, this.lastTransactionsMaxLength - 1)
+    if (this.lastTransactions.length > CategoryCardComponent.lastTransactionsMaxLength) {
+      this.lastTransactions = this.lastTransactions.slice(0, CategoryCardComponent.lastTransactionsMaxLength - 1)
     }
   }
 
@@ -58,9 +59,9 @@ export class CategoryCardComponent implements OnInit {
     confirmRef.componentInstance.onAnswer.subscribe((ok: boolean) => {
       if (ok)
         this.httpClient.delete(this.serverUrl + `/categories/${this.userService.getCurrentUser().id}/${this.categoryName}`)
-          .subscribe(() => this.cardsStore.updateState())
+            .subscribe(() => this.cardsStore.updateState())
       confirmRef.close()
-    });
+    })
   }
 
   public showMoreForTransaction(transaction: Transaction): void {
