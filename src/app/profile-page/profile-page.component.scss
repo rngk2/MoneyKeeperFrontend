@@ -1,0 +1,41 @@
+main {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 10rem;
+
+  .greeting {
+    font-size: 30px;
+    margin-bottom: 2.5rem;
+  }
+
+  .center-text {
+    text-align: center;
+  }
+
+  .earned-info {
+    margin-bottom: 5rem;
+  }
+
+  h3 {
+    margin-bottom: 2rem;
+    font-size: 20px;
+  }
+
+  .profile-page-summary__item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .charts {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10rem;
+    align-content: center;
+    margin: auto;
+  }
+}

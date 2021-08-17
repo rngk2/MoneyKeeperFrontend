@@ -1,0 +1,21 @@
+<main>
+  <h2 class="greeting center-text">Hi, {{user!.firstName}} {{user!.lastName}}!</h2>
+  <h3 class="center-text earned-info">Earned this month: {{earnedForMonth}}$</h3>
+  <div class="charts">
+    <div class="profile-page-summary__item">
+      <h3>Spent this month: {{reduce(getAmountForCategories(totalForMonth))}}$</h3>
+      <wallet-chart [chartLabels]="getCategoriesNames(totalForMonth)"
+                    [chartData]="getAmountForCategories(totalForMonth)"
+      >
+      </wallet-chart>
+    </div>
+    <div class="profile-page-summary__item">
+      <h3>Spent this year: {{reduce(getAmountForCategories(totalForYear))}}$</h3>
+      <wallet-chart [chartLabels]="getCategoriesNames(totalForYear)"
+                    [chartData]="getAmountForCategories(totalForYear)"
+      >
+    </wallet-chart>
+    </div>
+  </div>
+</main>
+

@@ -1,6 +1,6 @@
 // lib components & modules
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -20,18 +20,15 @@ import {NgxMatDatetimePickerModule, NgxMatNativeDateModule} from "@angular-mater
 import {InfiniteScrollModule} from "ngx-infinite-scroll";
 
 // app components & modules
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { NavbarComponent } from './navbar/navbar.component';
-import { CardsContainerComponent } from './cards-container/cards-container.component';
-import { WalletPageComponent } from './wallet-page/wallet-page.component';
-import { AddCategoryFormComponent } from './add-category-form/add-category-form.component';
-import { AddTransactionFormComponent } from './add-transaction-form/add-transaction-form.component';
-import { Page404Component } from './page404/page404.component';
-import { AboutTransactionComponent } from './about-transaction/about-transaction.component';
-import { WalletChartComponent } from './wallet-chart/wallet-chart.component';
-import { AllTransactionsPageComponent } from './all-transactions-page/all-transactions-page.component';
-import { CategoryCardComponent } from './category-card/category-card.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {NavbarComponent} from './navbar/navbar.component';
+import {CardsContainerComponent} from './cards-container/cards-container.component';
+import {WalletPageComponent} from './wallet-page/wallet-page.component';
+import {AddCategoryFormComponent} from './add-category-form/add-category-form.component';
+import {Page404Component} from './page404/page404.component';
+import {WalletChartComponent} from './wallet-chart/wallet-chart.component';
+import {CategoryCardComponent} from './category-card/category-card.component';
 
 // lib services
 import HttpService from "./services/http.service";
@@ -41,7 +38,13 @@ import UserService from "./services/user.service";
 import {environment} from "../environments/environment";
 import {BASE_SERVER_URL} from "./app.config";
 import {AccountModule} from "./account/account.module";
-import { ConfirmPopupComponent } from './confirm-popup/confirm-popup.component';
+import {ConfirmPopupComponent} from './confirm-popup/confirm-popup.component';
+import {StoreModule} from "@ngrx/store";
+import {cardsContainerReducer} from "./store/cards-store/cards-container.reducer";
+import CardsContainerStore from "./store/cards-store/cards-container.store";
+import {MatMenuModule} from "@angular/material/menu";
+import {TransactionsModule} from "./transactions/transactions.module";
+import { ProfilePageComponent } from './profile-page/profile-page.component';
 
 @NgModule({
   declarations: [
@@ -51,16 +54,15 @@ import { ConfirmPopupComponent } from './confirm-popup/confirm-popup.component';
     CardsContainerComponent,
     WalletPageComponent,
     AddCategoryFormComponent,
-    AddTransactionFormComponent,
     Page404Component,
     WalletChartComponent,
-    AboutTransactionComponent,
-    AllTransactionsPageComponent,
-    ConfirmPopupComponent
+    ConfirmPopupComponent,
+    ProfilePageComponent
   ],
   imports: [
     // app modules
     AccountModule,
+    TransactionsModule,
 
     // lib modules
     BrowserModule,
@@ -83,12 +85,15 @@ import { ConfirmPopupComponent } from './confirm-popup/confirm-popup.component';
     MatListModule,
     NgxMatDatetimePickerModule,
     NgxMatNativeDateModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    StoreModule.forRoot({cards: cardsContainerReducer}),
+    MatMenuModule
   ],
   providers: [
     HttpService,
     UserService,
-    {provide: BASE_SERVER_URL, useValue: environment.serverUrl}
+    {provide: BASE_SERVER_URL, useValue: environment.serverUrl},
+    CardsContainerStore
   ],
   bootstrap: [
     AppComponent

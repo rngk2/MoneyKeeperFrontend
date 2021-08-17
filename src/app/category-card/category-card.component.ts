@@ -3,11 +3,11 @@ import Transaction from "../entities/transaction.entity";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {HttpClient} from "@angular/common/http";
 import UserService from "../services/user.service";
-import categoriesState from "../state/categories.state";
 import {MatDialog} from "@angular/material/dialog";
-import {AboutTransactionComponent} from "../about-transaction/about-transaction.component";
+import {AboutTransactionComponent} from "../transactions/about-transaction/about-transaction.component";
 import {BASE_SERVER_URL} from "../app.config";
 import {ConfirmPopupComponent} from "../confirm-popup/confirm-popup.component";
+import CardsContainerStore from "../store/cards-store/cards-container.store";
 
 @Component({
   selector: 'category-card',
@@ -26,24 +26,24 @@ export class CategoryCardComponent implements OnInit {
 
   public state: 'collapsed' | 'expanded' = 'collapsed'
   public addTransaction = false
-  public showConfirm = false
 
   @Input() public categoryName!: string
   @Input() public categoryId!: number
   @Input() public spendThisMonth!: number
   @Input() public lastTransactions!: Transaction[]
 
-  private readonly lastTransactionsMaxLength = 5
+  private static readonly lastTransactionsMaxLength = 5
 
   constructor(private readonly httpClient: HttpClient,
               private readonly userService: UserService,
               private readonly dialog: MatDialog,
               private readonly confirm: MatDialog,
-              @Inject(BASE_SERVER_URL) private readonly serverUrl: string) { }
+              @Inject(BASE_SERVER_URL) private readonly serverUrl: string,
+              private readonly cardsStore: CardsContainerStore) { }
 
   public ngOnInit(): void {
-    if (this.lastTransactions.length > this.lastTransactionsMaxLength) {
-      this.lastTransactions = this.lastTransactions.slice(0, this.lastTransactionsMaxLength - 1)
+    if (this.lastTransactions.length > CategoryCardComponent.lastTransactionsMaxLength) {
+      this.lastTransactions = this.lastTransactions.slice(0, CategoryCardComponent.lastTransactionsMaxLength - 1)
     }
   }
 
@@ -56,10 +56,10 @@ export class CategoryCardComponent implements OnInit {
       width: '30rem',
       data: `Delete "${this.categoryName}" ?`
     })
-    const sub = confirmRef.componentInstance.onAnswer.subscribe((ok: boolean) => {
+    confirmRef.componentInstance.onAnswer.subscribe((ok: boolean) => {
       if (ok)
         this.httpClient.delete(this.serverUrl + `/categories/${this.userService.getCurrentUser().id}/${this.categoryName}`)
-            .subscribe(res => categoriesState.updateState())
+            .subscribe(() => this.cardsStore.updateState())
       confirmRef.close()
     })
   }

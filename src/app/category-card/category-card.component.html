@@ -4,7 +4,7 @@
   </mat-card-header>
   <mat-card-content>
     <p class="spend">
-      Spend this month: {{spendThisMonth}}$
+      Spent this month: <br> {{spendThisMonth}}$
     </p>
     <div [@bodyExpansion]="state" class="expandable-content">
       <div *ngFor="let transaction of lastTransactions" (click)="showMoreForTransaction(transaction)" style="cursor: pointer">
