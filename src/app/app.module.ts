@@ -44,6 +44,7 @@ import {cardsContainerReducer} from "./store/cards-store/cards-container.reducer
 import CardsContainerStore from "./store/cards-store/cards-container.store";
 import {MatMenuModule} from "@angular/material/menu";
 import {TransactionsModule} from "./transactions/transactions.module";
+import { ProfilePageComponent } from './profile-page/profile-page.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import {TransactionsModule} from "./transactions/transactions.module";
     AddCategoryFormComponent,
     Page404Component,
     WalletChartComponent,
-    ConfirmPopupComponent
+    ConfirmPopupComponent,
+    ProfilePageComponent
   ],
   imports: [
     // app modules
