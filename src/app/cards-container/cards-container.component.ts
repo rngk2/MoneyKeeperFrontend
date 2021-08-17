@@ -93,5 +93,4 @@ export class CardsContainerComponent implements OnInit {
       document.getElementById("add-btn")!.blur();
     })
   }
-
 }

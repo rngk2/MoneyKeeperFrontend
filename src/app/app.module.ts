@@ -46,6 +46,7 @@ import {StoreModule} from "@ngrx/store";
 import {cardsContainerReducer} from "./store/cards-store/cards-container.reducer";
 import CardsContainerStore from "./store/cards-store/cards-container.store";
 import {MatMenuModule} from "@angular/material/menu";
+import { AddEarningFormComponent } from './add-earning-form/add-earning-form.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +61,8 @@ import {MatMenuModule} from "@angular/material/menu";
     WalletChartComponent,
     AboutTransactionComponent,
     AllTransactionsPageComponent,
-    ConfirmPopupComponent
+    ConfirmPopupComponent,
+    AddEarningFormComponent
   ],
   imports: [
     // app modules
