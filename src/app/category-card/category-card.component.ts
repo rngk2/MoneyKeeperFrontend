@@ -26,14 +26,13 @@ export class CategoryCardComponent implements OnInit {
 
   public state: 'collapsed' | 'expanded' = 'collapsed'
   public addTransaction = false
-  public showConfirm = false
 
   @Input() public categoryName!: string
   @Input() public categoryId!: number
   @Input() public spendThisMonth!: number
   @Input() public lastTransactions!: Transaction[]
 
-  private readonly lastTransactionsMaxLength = 5
+  private static readonly lastTransactionsMaxLength = 5
 
   constructor(private readonly httpClient: HttpClient,
               private readonly userService: UserService,
@@ -43,8 +42,8 @@ export class CategoryCardComponent implements OnInit {
               private readonly cardsStore: CardsContainerStore) { }
 
   public ngOnInit(): void {
-    if (this.lastTransactions.length > this.lastTransactionsMaxLength) {
-      this.lastTransactions = this.lastTransactions.slice(0, this.lastTransactionsMaxLength - 1)
+    if (this.lastTransactions.length > CategoryCardComponent.lastTransactionsMaxLength) {
+      this.lastTransactions = this.lastTransactions.slice(0, CategoryCardComponent.lastTransactionsMaxLength - 1)
     }
   }
 
@@ -57,10 +56,10 @@ export class CategoryCardComponent implements OnInit {
       width: '30rem',
       data: `Delete "${this.categoryName}" ?`
     })
-    const sub = confirmRef.componentInstance.onAnswer.subscribe((ok: boolean) => {
+    confirmRef.componentInstance.onAnswer.subscribe((ok: boolean) => {
       if (ok)
         this.httpClient.delete(this.serverUrl + `/categories/${this.userService.getCurrentUser().id}/${this.categoryName}`)
-            .subscribe(res => this.cardsStore.updateState())
+            .subscribe(() => this.cardsStore.updateState())
       confirmRef.close()
     })
   }
