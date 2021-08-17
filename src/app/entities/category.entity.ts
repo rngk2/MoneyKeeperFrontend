@@ -1,5 +1,5 @@
-export default interface Category {
-  id?: string,
-  name: string,
-  userId?: number
+export default class Category {
+  public id?: string
+  public name!: string
+  public userId?: number
 }

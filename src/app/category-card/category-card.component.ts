@@ -4,7 +4,7 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
 import {HttpClient} from "@angular/common/http";
 import UserService from "../services/user.service";
 import {MatDialog} from "@angular/material/dialog";
-import {AboutTransactionComponent} from "../about-transaction/about-transaction.component";
+import {AboutTransactionComponent} from "../transactions/about-transaction/about-transaction.component";
 import {BASE_SERVER_URL} from "../app.config";
 import {ConfirmPopupComponent} from "../confirm-popup/confirm-popup.component";
 import CardsContainerStore from "../store/cards-store/cards-container.store";

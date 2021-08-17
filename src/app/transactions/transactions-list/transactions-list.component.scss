@@ -1,4 +1,4 @@
-@import "../navbar/navbar_vars";
+@import "../../navbar/navbar_vars";
 
 /* Search bar ------------ */
 
@@ -56,12 +56,12 @@
 
 $colors: #303030, #3c5748, #bebe50, #83c283, #5b5bcb, #413241, #00ffa0;
 $repeat: 20;  // How often you want the pattern to repeat.
-  // Warning: a higher number outputs more CSS.
+// Warning: a higher number outputs more CSS.
 
 @for $i from 1 through $repeat {
   mat-list-item:nth-child(#{length($colors)}n+#{$i}) {
-  background: lighten(nth($colors, random(length($colors))), 20%);
-}
+    background: lighten(nth($colors, random(length($colors))), 20%);
+  }
 }
 
 mat-list {
@@ -72,7 +72,7 @@ mat-list {
 
 
   .title {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 500;
     margin-bottom: .2rem;
   }
@@ -85,4 +85,9 @@ mat-list {
     margin-bottom: 1.5rem;
     border-radius: 6px;
   }
+
+  .mat-icon {
+    float: right;
+  }
+
 }

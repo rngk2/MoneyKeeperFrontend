@@ -5,7 +5,7 @@ import {SignUpComponent} from "./account/sign-up/sign-up.component";
 import {WalletPageComponent} from "./wallet-page/wallet-page.component";
 import {Page404Component} from "./page404/page404.component";
 import {CanActivateUserRoutes, Permissions} from "./guards";
-import {AllTransactionsPageComponent} from "./all-transactions-page/all-transactions-page.component";
+import {AllTransactionsPageComponent} from "./transactions/all-transactions-page/all-transactions-page.component";
 
 const routes: Routes = [
   {path: 'wallet', component: WalletPageComponent, canActivate: [CanActivateUserRoutes]},

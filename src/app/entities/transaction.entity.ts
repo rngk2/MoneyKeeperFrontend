@@ -1,9 +1,10 @@
-export default interface Transaction {
-  id?: number
-  categoryName?: string
-  categoryId?: number
-  userId?: number
-  amount: number
-  timestamp: Date
-  comment?: string
+export default class Transaction {
+  public id?: number
+  public categoryName?: string
+  public categoryId?: number
+  public userId?: number
+  public amount!: number
+  public timestamp!: Date
+  public comment?: string
+  public static readonly inputTransactionName = 'Earnings'
 }
