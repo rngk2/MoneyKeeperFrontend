@@ -54,8 +54,8 @@
 /* ------------ Search bar */
 
 
-$colors: #303030, #3c5748, #bebe50, #83c283, #5b5bcb, #413241, #00ffa0;
-$repeat: 20;  // How often you want the pattern to repeat.
+$colors: #464444, #3c5748, #bebe50, #328b9f, #5b5bcb, #413241, #00ffa0;
+$repeat: 21;  // How often you want the pattern to repeat.
 // Warning: a higher number outputs more CSS.
 
 @for $i from 1 through $repeat {
