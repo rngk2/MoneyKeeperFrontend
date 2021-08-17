@@ -3,6 +3,7 @@ import UserService from "../services/user.service";
 import User from "../entities/user.entity";
 import {HttpClient} from "@angular/common/http";
 import {BASE_SERVER_URL} from "../app.config";
+import Transaction from "../entities/transaction.entity";
 
 type Total = Map<string, number>
 
@@ -16,6 +17,7 @@ export class ProfilePageComponent implements OnInit {
   public user: User | undefined
   public totalForMonth = {}
   public totalForYear = {}
+  public earnedForMonth!: number
 
   constructor(private readonly userService: UserService,
               private readonly http: HttpClient,
@@ -31,7 +33,11 @@ export class ProfilePageComponent implements OnInit {
 
   private fetchTotalForMonth(): void {
     this.http.get<Total>(this.serverUrl + `/users/${this.user!.id}/total/month`)
-      .subscribe(total => this.totalForMonth = total)
+      .subscribe(total => {
+        this.totalForMonth = total
+        // @ts-ignore
+        this.earnedForMonth = total[Transaction.inputTransactionName]
+      })
   }
 
   private fetchTotalForYear(): void {
