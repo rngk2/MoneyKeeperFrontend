@@ -17,7 +17,7 @@ export class ProfilePageComponent implements OnInit {
   public user: User | undefined
   public totalForMonth = {}
   public totalForYear = {}
-  public earnedForMonth!: number
+  public earnedForMonth: number = 0
 
   constructor(private readonly userService: UserService,
               private readonly http: HttpClient,
