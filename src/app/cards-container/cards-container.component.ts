@@ -58,7 +58,11 @@ export class CardsContainerComponent implements OnInit {
   }
 
   public getCategoriesNames(): string[] {
-    return [...this.category_transactions.keys()]
+    return [...this.category_transactions.keys()].filter(key => {
+      const transactions = this.category_transactions.get(key)!
+      return !(transactions.length === 0 || (transactions.length === 1 && transactions[0].amount === 0));
+
+    })
   }
 
   public getAmountForCategories(categories: string[]): number[] {
