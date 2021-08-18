@@ -18,7 +18,7 @@
 
     background-color: transparent;
     transition: transform 250ms ease-in-out;
-    font-size: 18px;
+    font-size: 17px;
 
     color: #575756;
     background-color: transparent;
@@ -36,8 +36,6 @@
     &::placeholder {
       color: #575756;
       opacity: .8;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
     }
 
     &:hover,
