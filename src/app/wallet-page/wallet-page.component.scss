@@ -1,14 +1,9 @@
+@import "src/global_vars";
 .wallet-page {
   position: absolute;
   height: 100%;
   width: 100%;
   top: 10rem;
-
-  .sticky-navbar {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
 
   &__content {
     display: flex;
@@ -31,13 +26,11 @@
   }
 }
 
-@import "src/global_vars";
 
 nav {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin: auto;
   justify-content: space-around;
   align-content: center;
 

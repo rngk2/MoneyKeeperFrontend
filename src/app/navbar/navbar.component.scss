@@ -4,10 +4,11 @@
 header {
   position: fixed;
   width: 100%;
-  top: 1rem;
+  top: 0;
   z-index: 50;
   font-size: 18px;
   height: 3em;
+  backface-visibility: hidden;
 
   nav {
     display: flex;
@@ -15,6 +16,7 @@ header {
     flex-wrap: wrap;
     justify-content: space-between;
     align-content: center;
+    background: linear-gradient(to top, #00000000, $global_bg);
 
     .navbar__part-left {
       margin-left: $navbar_offset;
@@ -25,6 +27,7 @@ header {
     }
 
     ul {
+      margin-top: 1rem;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
