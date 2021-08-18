@@ -1,7 +1,7 @@
 @import "src/app/account/forms.styles";
 
 .dialog-container {
-  width: available;
+  overflow: hidden;
 }
 
 mat-form-field {

@@ -34,22 +34,30 @@ export class ProfilePageComponent implements OnInit {
   private fetchTotalForMonth(): void {
     this.http.get<Total>(this.serverUrl + `/users/${this.user!.id}/total/month`)
       .subscribe(total => {
+        if (total.hasOwnProperty(Transaction.inputTransactionName)) {
+          // @ts-ignore
+          this.earnedForMonth = total[Transaction.inputTransactionName]
+          // @ts-ignore
+          delete total[Transaction.inputTransactionName]
+        }
         this.totalForMonth = total
-        // @ts-ignore
-        this.earnedForMonth = total[Transaction.inputTransactionName]
       })
   }
 
   private fetchTotalForYear(): void {
     this.http.get<Total>(this.serverUrl + `/users/${this.user!.id}/total/year`)
-      .subscribe(total => this.totalForYear = total)
+      .subscribe(total => {
+        total.hasOwnProperty(Transaction.inputTransactionName) &&
+          // @ts-ignore
+          delete total[Transaction.inputTransactionName]
+        this.totalForYear = total
+      })
   }
 
   public getCategoriesNames(total: object): string[] {
     return Object.keys(total)
   }
 
-  public amountCache: number[] = []
   public getAmountForCategories(total: object): number[] {
     let categories = this.getCategoriesNames(total)
     let amountForCategories: number[] = []
@@ -58,7 +66,6 @@ export class ProfilePageComponent implements OnInit {
         amountForCategories.push(<number>total[category])
       }
 
-    this.amountCache = amountForCategories
     return amountForCategories
   }
 

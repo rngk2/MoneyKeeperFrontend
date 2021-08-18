@@ -5,7 +5,7 @@ export const initialState = 0
 
 const _cardsContainerReducer = createReducer(
   initialState,
-  on(update, (state) => state + 1)
+  on(update, (state) => state + 1 === Number.MAX_SAFE_INTEGER ? 0 : state + 1)
 )
 
 export const cardsContainerReducer = (state: number | undefined, action: Action): number => _cardsContainerReducer(state, action)

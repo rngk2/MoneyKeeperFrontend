@@ -45,6 +45,7 @@ import CardsContainerStore from "./store/cards-store/cards-container.store";
 import {MatMenuModule} from "@angular/material/menu";
 import {TransactionsModule} from "./transactions/transactions.module";
 import { ProfilePageComponent } from './profile-page/profile-page.component';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [
@@ -59,36 +60,37 @@ import { ProfilePageComponent } from './profile-page/profile-page.component';
     ConfirmPopupComponent,
     ProfilePageComponent
   ],
-  imports: [
-    // app modules
-    AccountModule,
-    TransactionsModule,
+    imports: [
+        // app modules
+        AccountModule,
+        TransactionsModule,
 
-    // lib modules
-    BrowserModule,
-    HttpClientModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatButtonModule,
-    MatCardModule,
-    MatDividerModule,
-    MatIconModule,
-    MatSelectModule,
-    FormsModule,
-    MatDialogModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    ChartsModule,
-    MatListModule,
-    NgxMatDatetimePickerModule,
-    NgxMatNativeDateModule,
-    InfiniteScrollModule,
-    StoreModule.forRoot({cards: cardsContainerReducer}),
-    MatMenuModule
-  ],
+        // lib modules
+        BrowserModule,
+        HttpClientModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatFormFieldModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatButtonModule,
+        MatCardModule,
+        MatDividerModule,
+        MatIconModule,
+        MatSelectModule,
+        FormsModule,
+        MatDialogModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        ChartsModule,
+        MatListModule,
+        NgxMatDatetimePickerModule,
+        NgxMatNativeDateModule,
+        InfiniteScrollModule,
+        StoreModule.forRoot({cards: cardsContainerReducer}),
+        MatMenuModule,
+        MatProgressSpinnerModule
+    ],
   providers: [
     HttpService,
     UserService,
