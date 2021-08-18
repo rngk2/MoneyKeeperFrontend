@@ -32,6 +32,7 @@ export class AddEarningFormComponent {
       .subscribe(categories => {
         const e_index: number = categories.findIndex(value => value.name === 'Earnings')
         this.http.post<Transaction>(this.serverUrl + '/transactions', {
+          userId: this.userService.getCurrentUser().id,
           categoryId: categories[e_index].id,
           amount: this.amount,
           timestamp: this.timestampControl.value,
