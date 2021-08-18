@@ -6,6 +6,8 @@
         <div class="not-found"></div>
       </div>
 
+      <mat-spinner *ngIf="!isFetched" [diameter]="80" [strokeWidth]="4" class="spinner"></mat-spinner>
+
       <ng-template #ok>
         <category-card *ngFor="let c_t of category_transactions | keyvalue"
                        [categoryName]="c_t.key"
