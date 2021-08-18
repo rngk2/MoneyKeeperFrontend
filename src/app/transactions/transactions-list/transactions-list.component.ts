@@ -59,7 +59,7 @@ export class TransactionsListComponent implements OnInit {
   }
 
   private fetchTransactionsWithPattern(range: Range): void {
-    const pattern = `${this.searchControl.value}%`
+    const pattern = `%${this.searchControl.value}%`
     this.http.get<Transaction[]>(this.serverUrl + `/transactions/${this.userService.getCurrentUser().id}/${range.begin}/${range.end}/${pattern}`)
       .subscribe(transactions => {
         const append = range.begin === 0 ? new Set<Transaction>([]) : this.transactions
