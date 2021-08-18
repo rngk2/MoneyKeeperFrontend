@@ -49,8 +49,6 @@ export class CategoryCardComponent implements OnInit {
 
   public toggle(): void {
     this.state = this.state === 'collapsed' ? 'expanded' : 'collapsed'
-    if (this.state === 'collapsed')
-        this.addTransaction = false
   }
 
   public delete(): void {
