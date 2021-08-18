@@ -49,7 +49,6 @@ export class ProfilePageComponent implements OnInit {
     return Object.keys(total)
   }
 
-  public amountCache: number[] = []
   public getAmountForCategories(total: object): number[] {
     let categories = this.getCategoriesNames(total)
     let amountForCategories: number[] = []
@@ -58,7 +57,6 @@ export class ProfilePageComponent implements OnInit {
         amountForCategories.push(<number>total[category])
       }
 
-    this.amountCache = amountForCategories
     return amountForCategories
   }
 
