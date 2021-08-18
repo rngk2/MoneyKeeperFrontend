@@ -49,18 +49,6 @@
     }
   }
 }
-/* ------------ Search bar */
-
-
-$colors: #464444, #3c5748, #bebe50, #328b9f, #5b5bcb, #413241, #00ffa0;
-$repeat: 21;  // How often you want the pattern to repeat.
-// Warning: a higher number outputs more CSS.
-
-@for $i from 1 through $repeat {
-  mat-list-item:nth-child(#{length($colors)}n+#{$i}) {
-    background: lighten(nth($colors, random(length($colors))), 20%);
-  }
-}
 
 mat-list {
   display: flex;
@@ -86,6 +74,14 @@ mat-list {
 
   .mat-icon {
     float: right;
+  }
+
+  .spent-bg {
+    background: #ffd8d8;
+  }
+
+  .earn-bg {
+    background: #9be89b;
   }
 
 }

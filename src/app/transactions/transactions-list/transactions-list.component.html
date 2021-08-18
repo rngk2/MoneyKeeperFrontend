@@ -9,7 +9,7 @@
         <input class="search__input" type="text" placeholder="Search by category name or associated comment..." [formControl]="searchControl" >
       </div>
     </form>
-    <mat-list-item *ngFor="let transaction of transactions">
+    <mat-list-item *ngFor="let transaction of transactions" [class]="transaction.categoryName !== inputTransactionName() ? 'spent-bg' : 'earn-bg'">
       <h3 class="title" matLine> {{transaction.categoryName}} </h3>
       <p matLine class="content">
         <span>({{transaction.timestamp | date: "medium"}}) </span>
