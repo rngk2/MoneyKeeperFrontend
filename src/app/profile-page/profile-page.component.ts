@@ -4,6 +4,7 @@ import User from "../entities/user.entity";
 import {HttpClient} from "@angular/common/http";
 import {BASE_SERVER_URL} from "../app.config";
 import Transaction from "../entities/transaction.entity";
+import {BehaviorSubject} from "rxjs";
 
 type Total = Map<string, number>
 
@@ -15,9 +16,13 @@ type Total = Map<string, number>
 export class ProfilePageComponent implements OnInit {
 
   public user: User | undefined
-  public totalForMonth = {}
-  public totalForYear = {}
   public earnedForMonth: number = 0
+
+  public names_month = new BehaviorSubject<string[]>([])
+  public amount_month = new BehaviorSubject<number[]>([])
+
+  public names_year = new BehaviorSubject<string[]>([])
+  public amount_year = new BehaviorSubject<number[]>([])
 
   constructor(private readonly userService: UserService,
               private readonly http: HttpClient,
@@ -40,7 +45,8 @@ export class ProfilePageComponent implements OnInit {
           // @ts-ignore
           delete total[Transaction.inputTransactionName]
         }
-        this.totalForMonth = total
+        this.names_month.next(this.getCategoriesNames(total))
+        this.amount_month.next(this.getAmountForCategories(total))
       })
   }
 
@@ -50,7 +56,8 @@ export class ProfilePageComponent implements OnInit {
         total.hasOwnProperty(Transaction.inputTransactionName) &&
           // @ts-ignore
           delete total[Transaction.inputTransactionName]
-        this.totalForYear = total
+        this.names_year.next(this.getCategoriesNames(total))
+        this.amount_year.next(this.getAmountForCategories(total))
       })
   }
 
@@ -72,5 +79,4 @@ export class ProfilePageComponent implements OnInit {
   public reduce(a: number[]): number {
     return a.reduce((acc, curr) => acc + curr)
   }
-
 }
