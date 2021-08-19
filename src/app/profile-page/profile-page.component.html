@@ -3,19 +3,18 @@
   <h3 class="center-text earned-info">Earned this month: {{earnedForMonth}}$</h3>
   <div class="charts">
     <div class="profile-page-summary__item">
-      <h3>Spent this month: {{reduce(amount_month.value)}}$</h3>
-      <wallet-chart [chartLabelsObservable]="names_month.asObservable()"
+      <h3>Spent this month: {{spent_month}}$</h3>
+      <wallet-chart *ngIf="amount_month.value.length && names_month.value.length" [chartLabelsObservable]="names_month.asObservable()"
                     [chartDataObservable]="amount_month.asObservable()"
       >
       </wallet-chart>
     </div>
     <div class="profile-page-summary__item">
-      <h3>Spent this year: {{reduce(amount_year.value)}}$</h3>
-      <wallet-chart [chartLabelsObservable]="names_year.asObservable()"
+      <h3>Spent this year: {{spent_year}}$</h3>
+      <wallet-chart *ngIf="amount_year.value.length && names_year.value.length" [chartLabelsObservable]="names_year.asObservable()"
                     [chartDataObservable]="amount_year.asObservable()"
       >
     </wallet-chart>
     </div>
   </div>
 </main>
-

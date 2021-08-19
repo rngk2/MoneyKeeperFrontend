@@ -24,6 +24,9 @@ export class ProfilePageComponent implements OnInit {
   public names_year = new BehaviorSubject<string[]>([])
   public amount_year = new BehaviorSubject<number[]>([])
 
+  public spent_month = 0
+  public spent_year = 0
+
   constructor(private readonly userService: UserService,
               private readonly http: HttpClient,
               @Inject(BASE_SERVER_URL) private readonly serverUrl: string) {
@@ -47,6 +50,7 @@ export class ProfilePageComponent implements OnInit {
         }
         this.names_month.next(this.getCategoriesNames(total))
         this.amount_month.next(this.getAmountForCategories(total))
+        this.spent_month = this.reduce(this.amount_month.value)
       })
   }
 
@@ -58,6 +62,7 @@ export class ProfilePageComponent implements OnInit {
           delete total[Transaction.inputTransactionName]
         this.names_year.next(this.getCategoriesNames(total))
         this.amount_year.next(this.getAmountForCategories(total))
+        this.spent_year = this.reduce(this.amount_year.value)
       })
   }
 
