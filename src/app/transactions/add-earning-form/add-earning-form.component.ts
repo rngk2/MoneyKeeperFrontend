@@ -7,6 +7,8 @@ import UserService from "../../services/user.service";
 import Category from "../../entities/category.entity";
 import Transaction from "../../entities/transaction.entity";
 import CardsContainerStore from "../../store/cards-store/cards-container.store";
+import CategoryService from "../../services/category.service";
+import TransactionService from "../../services/transaction.service";
 
 @Component({
   selector: 'add-earning-form',
@@ -22,16 +24,16 @@ export class AddEarningFormComponent {
   public comment!: string;
 
   constructor(private readonly dialogRef: MatDialogRef<AddEarningFormComponent>,
-              private readonly http: HttpClient,
-              @Inject(BASE_SERVER_URL) private readonly serverUrl: string,
               private readonly userService: UserService,
-              private readonly cardsStore: CardsContainerStore) { }
+              private readonly cardsStore: CardsContainerStore,
+              private readonly categoryService: CategoryService,
+              private readonly transactionService: TransactionService) { }
 
-  public submit(): void {
-    this.http.get<Category[]>(this.serverUrl + `/Categories/user/${this.userService.getCurrentUser().id}`)
-      .subscribe(categories => {
+  public addEarning(): void {
+    this.categoryService.getCategories()
+    .subscribe(categories => {
         const e_index: number = categories.findIndex(value => value.name === 'Earnings')
-        this.http.post<Transaction>(this.serverUrl + '/transactions', {
+        this.transactionService.createTransaction({
           userId: this.userService.getCurrentUser().id,
           categoryId: categories[e_index].id,
           amount: this.amount,
@@ -39,8 +41,8 @@ export class AddEarningFormComponent {
           comment: this.comment
         }).subscribe(() => {
           this.cardsStore.updateState()
-          this.dialogRef.close()
         })
       })
+    this.dialogRef.close()
   }
 }

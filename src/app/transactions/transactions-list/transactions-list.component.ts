@@ -2,10 +2,13 @@ import {Component, Inject, Input, OnInit} from '@angular/core';
 import {Range} from "../../utils/Utils";
 import Transaction from "../../entities/transaction.entity";
 import {FormControl} from "@angular/forms";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
 import UserService from "../../services/user.service";
 import {BASE_SERVER_URL} from "../../app.config";
 import {debounceTime, distinctUntilChanged} from "rxjs/operators";
+import TransactionService from "../../services/transaction.service";
+import {Api, TransactionDto} from "../../../gen/myApi";
+import {fromPromise} from "rxjs/internal-compatibility";
 
 class RangeOffsetController {
 
@@ -28,18 +31,21 @@ class RangeOffsetController {
 })
 export class TransactionsListComponent implements OnInit {
 
-  public transactions: Set<Transaction> = new Set<Transaction>()
+  public transactions: Set<TransactionDto> = new Set<TransactionDto>()
   public searchControl = new FormControl('')
 
-  @Input() filter: ((value: any, index: number, array: any[]) => unknown) = (() => true)
+  @Input() public filter: (value: any, index: number, array: any[]) => unknown = () => true
 
   private rangeForAll = new RangeOffsetController()
   private rangeForSearch = new RangeOffsetController()
+
   private static readonly SEARCH_DEBOUNCE_DURATION = 400
 
+  private api = new Api()
+
   constructor(private readonly http: HttpClient,
-              private readonly userService: UserService,
-              @Inject(BASE_SERVER_URL) private readonly serverUrl: string) { }
+              @Inject(BASE_SERVER_URL) private readonly serverUrl: string,
+              private readonly transactionService: TransactionService) { }
 
   public ngOnInit(): void {
     this.searchControl.valueChanges
@@ -52,24 +58,21 @@ export class TransactionsListComponent implements OnInit {
   }
 
   private fetchTransactions(range: Range): void {
-    this.http.get<Transaction[]>(this.serverUrl + `/transactions/${this.userService.getCurrentUser().id}/${range.begin}/${range.end}`)
-      .subscribe(transactions => this.transactions =
-        new Set(this.sortByDate([...this.transactions, ...transactions]).filter(this.filter))
+    fromPromise(this.api.transactions.transactionsDetail2(
+      range.begin, range.end, '%', new Date().toDateString()
+    )).subscribe(transactions => this.transactions =
+        new Set(this.transactionService.sortByDate([...this.transactions, ...transactions.data]).filter(this.filter))
       )
   }
 
   private fetchTransactionsWithPattern(range: Range): void {
-    const pattern = `%${this.searchControl.value}%`
-    this.http.get<Transaction[]>(this.serverUrl + `/transactions/${this.userService.getCurrentUser().id}/${range.begin}/${range.end}/${pattern}`)
-      .subscribe(transactions => {
-        const append = range.begin === 0 ? new Set<Transaction>([]) : this.transactions
-        this.transactions =
-          new Set(this.sortByDate([...append, ...transactions]).filter(this.filter))
-      })
-  }
-
-  private sortByDate(transactions: Transaction[]): Transaction[] {
-    return transactions.sort((a, b) => <number><unknown>new Date(b.timestamp) - <number><unknown>new Date(a.timestamp))
+    // const pattern = `%${this.searchControl.value}%`
+    // this.transactionService.getTransactionsWithPattern(range, pattern)
+    //   .subscribe(transactions => {
+    //     const append = range.begin === 0 ? new Set<Transaction>([]) : this.transactions
+    //     this.transactions =
+    //       new Set(this.transactionService.sortByDate([...append, ...transactions]).filter(this.filter))
+    //   })
   }
 
   public onScroll(): void {
@@ -81,5 +84,4 @@ export class TransactionsListComponent implements OnInit {
   public inputTransactionName(): string {
     return Transaction.inputTransactionName
   }
-
 }

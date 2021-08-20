@@ -7,7 +7,8 @@
     "start-secure": "ng serve --ssl true",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "make-api": "swagger-typescript-api -p C:\\Users\\yoliinyk\\source\\repos\\MoneyKeeper\\MoneyKeeper\\OpenApis\\swagger.json -o ./src/gen -n myApi.ts\n"
   },
   "private": true,
   "dependencies": {
@@ -43,6 +44,7 @@
     "karma-coverage": "~2.0.3",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
+    "swagger-typescript-api": "^9.2.0",
     "typescript": "~4.3.2"
   }
 }

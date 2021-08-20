@@ -46,6 +46,8 @@ import {MatMenuModule} from "@angular/material/menu";
 import {TransactionsModule} from "./transactions/transactions.module";
 import { ProfilePageComponent } from './profile-page/profile-page.component';
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import CategoryService from "./services/category.service";
+import TransactionService from "./services/transaction.service";
 
 @NgModule({
   declarations: [
@@ -94,6 +96,8 @@ import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
   providers: [
     HttpService,
     UserService,
+    CategoryService,
+    TransactionService,
     {provide: BASE_SERVER_URL, useValue: environment.serverUrl},
     CardsContainerStore
   ],

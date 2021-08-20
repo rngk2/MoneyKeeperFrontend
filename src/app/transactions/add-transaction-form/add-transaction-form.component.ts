@@ -5,6 +5,7 @@ import {FormControl} from "@angular/forms";
 import {BASE_SERVER_URL} from "../../app.config";
 import CardsContainerStore from "../../store/cards-store/cards-container.store";
 import UserService from "../../services/user.service";
+import TransactionService from "../../services/transaction.service";
 
 @Component({
   selector: 'add-transaction-form',
@@ -21,14 +22,13 @@ export class AddTransactionFormComponent {
 
   @Input() public categoryId!: number
 
-  constructor(private readonly httpClient: HttpClient,
-              @Inject(BASE_SERVER_URL) private readonly serverUrl: string,
-              private readonly cardsStore: CardsContainerStore,
-              private readonly userService: UserService) { }
+  constructor(private readonly cardsStore: CardsContainerStore,
+              private readonly userService: UserService,
+              private readonly transactionService: TransactionService) { }
 
-  public submit(): void {
-    this.httpClient.post<Transaction>(this.serverUrl + '/transactions', {
-      userId: this.userService.getCurrentUser().id,
+  public addTransaction(): void {
+    this.transactionService.createTransaction({
+    userId: this.userService.getCurrentUser().id,
       categoryId: this.categoryId,
       amount: this.amount,
       timestamp: this.timestampControl.value,

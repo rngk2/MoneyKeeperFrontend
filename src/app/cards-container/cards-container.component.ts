@@ -8,6 +8,10 @@ import {BASE_SERVER_URL} from "../app.config";
 import CardsContainerStore from "../store/cards-store/cards-container.store";
 import {AddEarningFormComponent} from "../transactions/add-earning-form/add-earning-form.component";
 import {BehaviorSubject, Subject} from "rxjs";
+import TransactionService from "../services/transaction.service";
+import CategoryService from "../services/category.service";
+import {Api, TransactionDto} from "../../gen/myApi";
+import {fromPromise} from "rxjs/internal-compatibility";
 
 @Component({
   selector: 'cards-container',
@@ -16,7 +20,7 @@ import {BehaviorSubject, Subject} from "rxjs";
 })
 export class CardsContainerComponent implements OnInit {
 
-  public category_transactions = new BehaviorSubject(new Map<string, Transaction[]>())
+  public category_transactions = new BehaviorSubject(new Map<string, TransactionDto[]>())
   public categoriesNames = new Subject<string[]>()
   public amountForCategories = new Subject<number[]>()
   public isFetched = false
@@ -25,7 +29,9 @@ export class CardsContainerComponent implements OnInit {
               private readonly http: HttpClient,
               private readonly userService: UserService,
               @Inject(BASE_SERVER_URL) private readonly serverUrl: string,
-              private readonly cardsStore: CardsContainerStore) {
+              private readonly cardsStore: CardsContainerStore,
+              private readonly transactionsService: TransactionService,
+              private readonly categoryService: CategoryService) {
   }
 
   public ngOnInit(): void {
@@ -38,16 +44,15 @@ export class CardsContainerComponent implements OnInit {
   }
 
   public fetchSummary(): void {
-    console.log('fetch')
-     this.http.get<Transaction[]>(this.serverUrl + `/users/${this.userService.getCurrentUser().id}/summary`)
+    fromPromise(new Api().users.summaryList())
       .subscribe(transactions => {
-        let category_transactions = new Map<string, Transaction[]>()
+        let category_transactions = new Map<string, TransactionDto[]>()
 
-        for (const transaction of transactions) {
+        for (const transaction of transactions.data) {
           if (transaction.categoryName === Transaction.inputTransactionName)
               continue
           const containedTransactions = category_transactions.get(transaction.categoryName!)
-          const newSet: Transaction[] = containedTransactions == null ? [transaction]
+          const newSet: TransactionDto[] = containedTransactions == null ? [transaction]
             : [...containedTransactions, transaction]
           category_transactions.set(transaction.categoryName!, newSet)
         }
@@ -57,36 +62,25 @@ export class CardsContainerComponent implements OnInit {
   }
 
   public calculateAmountForMonth(transactions: Transaction[]): number {
-    const currentMonth = new Date().getMonth()
-    let amountForMonth = 0
-    for (const transaction of transactions)
-      if (new Date(transaction.timestamp).getMonth() === currentMonth)
-        amountForMonth += transaction.amount
-
-    return amountForMonth
+    return this.transactionsService.calculateAmountForMonth(transactions)
   }
 
   public getCategoriesNames(): string[] {
-    console.log('names')
-    return [...this.category_transactions.value.keys()].filter(key => {
-      const transactions = this.category_transactions.value.get(key)!
-      return !(transactions.length === 0 || (transactions.length === 1 && transactions[0].amount === 0));
-
-    })
+    return this.categoryService.extractCategoriesNames(this.category_transactions.value)
   }
 
   public getAmountForCategories(categories: string[]): number[] {
-    console.log('amount')
     let amountForCategories: number[] = []
     for (let category of categories)
-      amountForCategories.push(<number>this.getAmountForCategory(category))
+      amountForCategories.push(this.getAmountForCategory(category))
 
     return amountForCategories
   }
 
-  private getAmountForCategory(categoryName: string): number | undefined {
-    return this.category_transactions.value.get(categoryName)?.map(t => t.amount)
-      .reduce((acc, curr) => acc + curr)
+  private getAmountForCategory(categoryName: string): number {
+    return this.transactionsService.getSumForTransactions(
+      this.category_transactions.value.get(categoryName)!
+    )
   }
 
   public addCategory(): void {

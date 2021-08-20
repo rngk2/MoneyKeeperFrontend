@@ -27,9 +27,7 @@ export class ProfilePageComponent implements OnInit {
   public spent_month = 0
   public spent_year = 0
 
-  constructor(private readonly userService: UserService,
-              private readonly http: HttpClient,
-              @Inject(BASE_SERVER_URL) private readonly serverUrl: string) {
+  constructor(private readonly userService: UserService) {
     userService.getCurrentUserAsObservable()
       .subscribe(user => this.user = user)
   }
@@ -40,7 +38,7 @@ export class ProfilePageComponent implements OnInit {
   }
 
   private fetchTotalForMonth(): void {
-    this.http.get<Total>(this.serverUrl + `/users/${this.user!.id}/total/month`)
+    this.userService.fetchTotalForMonth()
       .subscribe(total => {
         if (total.hasOwnProperty(Transaction.inputTransactionName)) {
           // @ts-ignore
@@ -55,8 +53,8 @@ export class ProfilePageComponent implements OnInit {
   }
 
   private fetchTotalForYear(): void {
-    this.http.get<Total>(this.serverUrl + `/users/${this.user!.id}/total/year`)
-      .subscribe(total => {
+    this.userService.fetchTotalForYear()
+    .subscribe(total => {
         total.hasOwnProperty(Transaction.inputTransactionName) &&
           // @ts-ignore
           delete total[Transaction.inputTransactionName]
@@ -71,14 +69,7 @@ export class ProfilePageComponent implements OnInit {
   }
 
   public getAmountForCategories(total: object): number[] {
-    let categories = this.getCategoriesNames(total)
-    let amountForCategories: number[] = []
-    for (let category of categories) {
-        // @ts-ignore
-        amountForCategories.push(<number>total[category])
-      }
-
-    return amountForCategories
+    return Object.values(total)
   }
 
   public reduce(a: number[]): number {
