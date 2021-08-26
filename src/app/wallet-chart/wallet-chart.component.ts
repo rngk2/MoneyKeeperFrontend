@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ChartOptions, ChartType} from "chart.js";
-import {Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip, SingleDataSet} from "ng2-charts";
-import {Observable} from "rxjs";
+import {ChartOptions, ChartType} from 'chart.js';
+import {Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip, SingleDataSet} from 'ng2-charts';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'wallet-chart',
@@ -19,7 +19,7 @@ export class WalletChartComponent implements OnInit {
     },
     responsive: true,
     responsiveAnimationDuration: 3200,
-    legend:{
+    legend: {
       labels: {
         fontColor: 'white',
         fontSize: 15,
@@ -28,11 +28,11 @@ export class WalletChartComponent implements OnInit {
     },
   };
 
-  public chartLabels: Label[] | undefined = undefined
-  public chartData: SingleDataSet | undefined = undefined
+  public chartLabels: Label[] | undefined = undefined;
+  public chartData: SingleDataSet | undefined = undefined;
 
-  @Input() public chartLabelsObservable!: Observable<Label[]>
-  @Input() public chartDataObservable!: Observable<SingleDataSet>
+  @Input() public chartLabelsObservable!: Observable<Label[]>;
+  @Input() public chartDataObservable!: Observable<SingleDataSet>;
 
   constructor() {
     monkeyPatchChartJsTooltip();
@@ -40,8 +40,7 @@ export class WalletChartComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.chartLabelsObservable.subscribe(labels => this.chartLabels = labels)
-    this.chartDataObservable.subscribe(data => this.chartData = data)
+    this.chartLabelsObservable.subscribe(labels => this.chartLabels = labels);
+    this.chartDataObservable.subscribe(data => this.chartData = data);
   }
-
 }

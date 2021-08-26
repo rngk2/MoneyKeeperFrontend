@@ -1,3 +1,3 @@
-import {createAction} from "@ngrx/store";
+import {createAction} from '@ngrx/store';
 
-export const update = createAction('[CardsContainer Component] Update')
+export const update = createAction('[CardsContainer Component] Update');

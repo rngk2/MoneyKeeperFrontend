@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import Transaction from "../../entities/transaction.entity";
+import Transaction from '../../entities/transaction.entity';
 
 @Component({
   selector: 'earnings-page',
@@ -7,5 +7,5 @@ import Transaction from "../../entities/transaction.entity";
   styleUrls: ['./earnings-page.component.scss']
 })
 export class EarningsPageComponent {
-  public filter = (value: Transaction) => value.categoryName === Transaction.inputTransactionName
+  public filter = (value: Transaction) => value.categoryName === Transaction.inputTransactionName;
 }

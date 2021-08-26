@@ -6,6 +6,6 @@ import {Component} from '@angular/core';
   styleUrls: ['./wallet-page.component.scss']
 })
 export class WalletPageComponent {
-  public showTransactions = false
+  public showTransactions = false;
   public showCards = true;
 }

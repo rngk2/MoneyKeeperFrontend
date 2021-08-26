@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {SignInComponent} from "./account/sign-in/sign-in.component";
-import {SignUpComponent} from "./account/sign-up/sign-up.component";
-import {WalletPageComponent} from "./wallet-page/wallet-page.component";
-import {Page404Component} from "./page404/page404.component";
-import {CanActivateUserRoutes, Permissions} from "./guards";
-import {AllTransactionsPageComponent} from "./transactions/all-transactions-page/all-transactions-page.component";
-import {ProfilePageComponent} from "./profile-page/profile-page.component";
+import {SignInComponent} from './account/sign-in/sign-in.component';
+import {SignUpComponent} from './account/sign-up/sign-up.component';
+import {WalletPageComponent} from './wallet-page/wallet-page.component';
+import {Page404Component} from './page404/page404.component';
+import {CanActivateUserRoutes, Permissions} from './guards';
+import {AllTransactionsPageComponent} from './transactions/all-transactions-page/all-transactions-page.component';
+import {ProfilePageComponent} from './profile-page/profile-page.component';
 
 const routes: Routes = [
   {path: 'wallet', component: WalletPageComponent, canActivate: [CanActivateUserRoutes]},

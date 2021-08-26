@@ -1,15 +1,15 @@
-import UserService from "./services/user.service";
-import {Injectable} from "@angular/core";
-import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from "@angular/router";
-import {Observable} from "rxjs";
+import UserService from './services/user.service';
+import {Injectable} from '@angular/core';
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class Permissions {
-  constructor(private userService: UserService) {
+  constructor(private readonly userService: UserService) {
   }
 
   canActivate(): boolean {
-    return this.userService.getCurrentUser().jwtToken !== undefined
+    return !!this.userService.currentUserService.getCurrentUser()
   }
 }
 
