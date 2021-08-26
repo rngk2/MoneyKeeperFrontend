@@ -3,12 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "start-secure": "ng serve --ssl true",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "make-api": "swagger-typescript-api -p C:\\Users\\yoliinyk\\source\\repos\\MoneyKeeper\\MoneyKeeper\\OpenApis\\swagger.json -o ./src/gen -n myApi.ts\n"
+    "start": "npm run make-api && ng serve",
+    "build": "npm run make-api && ng build",
+    "watch": "npm run make-api && ng build --watch --configuration development",
+    "test": "npm run make-api && ng test",
+    "make-api": "swagger-typescript-api -p src/api/swagger.json -o src/api -n api.generated.ts\\n"
   },
   "private": true,
   "dependencies": {

@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import UserService from "../services/user.service";
-import User from "../entities/user.entity";
+import UserService from '../services/user.service';
+import User from '../entities/user.entity';
+import AuthService from '../services/auth.service';
 
 @Component({
   selector: 'navbar',
@@ -9,17 +10,19 @@ import User from "../entities/user.entity";
 })
 export class NavbarComponent implements OnInit {
 
-  public loggedIn: boolean = false
+  public loggedIn: boolean = false;
 
-  constructor(private readonly userService: UserService) { }
+  constructor(private readonly userService: UserService,
+              private readonly authService: AuthService) {
+  }
 
   public ngOnInit(): void {
-    this.userService.getCurrentUserAsObservable().subscribe((user: User) => {
-      this.loggedIn = !!user.jwtToken
-    })
+    this.userService.currentUserService.getCurrentUserAsObservable().subscribe((user: User | null) => {
+      this.loggedIn = !!user;
+    });
   }
 
   public signOut(): void {
-    this.userService.logOut()
+    this.authService.logOut();
   }
 }

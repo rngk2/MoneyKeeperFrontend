@@ -1,10 +1,10 @@
 import {Component, Inject} from '@angular/core';
-import Transaction from "../../entities/transaction.entity";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {HttpClient} from "@angular/common/http";
-import {BASE_SERVER_URL} from "../../app.config";
-import CardsContainerStore from "../../store/cards-store/cards-container.store";
-import TransactionService from "../../services/transaction.service";
+import Transaction from '../../entities/transaction.entity';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {HttpClient} from '@angular/common/http';
+import {BASE_SERVER_URL} from '../../app.config';
+import CardsContainerStore from '../../store/cards-store/cards-container.store';
+import TransactionService from '../../services/transaction.service';
 
 @Component({
   selector: 'app-about-transaction',
@@ -22,8 +22,8 @@ export class AboutTransactionComponent {
   }
 
   public deleteTransaction(): void {
-    this.transactionService.deleteTransaction(this.data.id!)
-      .subscribe(() => this.cardsStore.updateState())
-    this.dialogRef.close()
+    (this.transactionService.api.transactionsDelete(this.data.id!))
+      .subscribe(() => this.cardsStore.updateState());
+    this.dialogRef.close();
   }
 }

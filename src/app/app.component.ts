@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import {RouterOutlet} from "@angular/router";
-import {authFormsSlider} from "./route-animations";
+import {RouterOutlet} from '@angular/router';
+import {authFormsSlider} from './route-animations';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +15,7 @@ export class AppComponent {
 
   prepareRoute(outlet: RouterOutlet) {
     return outlet && outlet.activatedRoute
-      && outlet.activatedRouteData.animation
+      && outlet.activatedRouteData.animation;
   }
 
 }

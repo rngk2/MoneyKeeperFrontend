@@ -14,6 +14,15 @@ export interface AuthenticateRequest {
   password: string;
 }
 
+export interface AuthenticateResponse {
+  /** @format int32 */
+  id?: number;
+  firstName?: string | null;
+  lastName?: string | null;
+  email?: string | null;
+  jwtToken?: string | null;
+}
+
 export interface CategoryDto {
   /** @format int32 */
   id?: number;
@@ -57,6 +66,10 @@ export interface CreateUserDto {
    * @pattern ^((?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])|(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[^a-zA-Z0-9])|(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[^a-zA-Z0-9])|(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^a-zA-Z0-9])).{8,16}$
    */
   password: string;
+}
+
+export interface RefreshTokenResponse {
+  newToken?: string | null;
 }
 
 export interface SummaryUnit {
@@ -280,9 +293,6 @@ export class HttpClient<SecurityDataType = unknown> {
     format,
     baseUrl,
     cancelToken,
-    headers = {
-      'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem('currentUser')!).jwtToken
-    },
     ...params
   }: FullRequestParams): Promise<HttpResponse<T, E>> => {
     const secureParams =
@@ -334,6 +344,18 @@ export class HttpClient<SecurityDataType = unknown> {
   };
 }
 
+interface Users {
+  usersList: (params?: RequestParams) => any;
+  usersCreate: (data: CreateUserDto, params?: RequestParams) => any;
+  usersUpdate: (data: UpdateUserDto, params?: RequestParams) => any;
+  usersDelete: (params?: RequestParams) => any;
+  summaryList: (params?: RequestParams) => any;
+  totalMonthList: (params?: RequestParams) => any;
+  totalYearList: (params?: RequestParams) => any;
+  authenticateCreate: (data: AuthenticateRequest, params?: RequestParams) => any;
+  refreshTokenCreate: (params?: RequestParams) => any;
+}
+
 /**
  * @title MoneyKeeper
  * @version v1
@@ -346,13 +368,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Categories
      * @name CategoriesDetail
      * @request GET:/Categories/{id}
-     * @secure
      */
     categoriesDetail: (id: number, params: RequestParams = {}) =>
       this.request<CategoryDto, any>({
         path: `/Categories/${id}`,
         method: "GET",
-        secure: true,
         format: "json",
         ...params,
       }),
@@ -363,14 +383,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Categories
      * @name CategoriesUpdate
      * @request PUT:/Categories/{id}
-     * @secure
      */
     categoriesUpdate: (id: number, data: UpdateCategoryDto, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/Categories/${id}`,
         method: "PUT",
         body: data,
-        secure: true,
         type: ContentType.Json,
         ...params,
       }),
@@ -381,13 +399,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Categories
      * @name CategoriesDelete
      * @request DELETE:/Categories/{id}
-     * @secure
      */
     categoriesDelete: (id: number, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/Categories/${id}`,
         method: "DELETE",
-        secure: true,
         ...params,
       }),
 
@@ -397,13 +413,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Categories
      * @name CategoriesList
      * @request GET:/Categories
-     * @secure
      */
     categoriesList: (params: RequestParams = {}) =>
       this.request<CategoryDto[], any>({
         path: `/Categories`,
         method: "GET",
-        secure: true,
         format: "json",
         ...params,
       }),
@@ -414,14 +428,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Categories
      * @name CategoriesCreate
      * @request POST:/Categories
-     * @secure
      */
     categoriesCreate: (data: CreateCategoryDto, params: RequestParams = {}) =>
       this.request<CategoryDto, any>({
         path: `/Categories`,
         method: "POST",
         body: data,
-        secure: true,
         type: ContentType.Json,
         format: "json",
         ...params,
@@ -433,13 +445,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Categories
      * @name BynameDelete
      * @request DELETE:/Categories/byname/{categoryName}
-     * @secure
      */
     bynameDelete: (categoryName: string, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/Categories/byname/${categoryName}`,
         method: "DELETE",
-        secure: true,
         ...params,
       }),
   };
@@ -450,13 +460,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Transactions
      * @name TransactionsDetail
      * @request GET:/Transactions/{id}
-     * @secure
      */
     transactionsDetail: (id: number, params: RequestParams = {}) =>
       this.request<TransactionDto, any>({
         path: `/Transactions/${id}`,
         method: "GET",
-        secure: true,
         format: "json",
         ...params,
       }),
@@ -467,13 +475,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Transactions
      * @name TransactionsDelete
      * @request DELETE:/Transactions/{id}
-     * @secure
      */
     transactionsDelete: (id: number, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/Transactions/${id}`,
         method: "DELETE",
-        secure: true,
         ...params,
       }),
 
@@ -483,13 +489,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Transactions
      * @name TransactionsList
      * @request GET:/Transactions
-     * @secure
      */
     transactionsList: (params: RequestParams = {}) =>
       this.request<TransactionDto[], any>({
         path: `/Transactions`,
         method: "GET",
-        secure: true,
         format: "json",
         ...params,
       }),
@@ -500,14 +504,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Transactions
      * @name TransactionsCreate
      * @request POST:/Transactions
-     * @secure
      */
     transactionsCreate: (data: CreateTransactionDto, params: RequestParams = {}) =>
       this.request<TransactionDto, any>({
         path: `/Transactions`,
         method: "POST",
         body: data,
-        secure: true,
         type: ContentType.Json,
         format: "json",
         ...params,
@@ -517,35 +519,30 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Transactions
-     * @name TransactionsDetail2
-     * @request GET:/Transactions/{from}/{to}/{like}/{when}
-     * @originalName transactionsDetail
-     * @duplicate
-     * @secure
+     * @name OfUserList
+     * @request GET:/Transactions/ofUser
      */
-    transactionsDetail2: (from: number, to: number, like: string, when: string, params: RequestParams = {}) =>
+    ofUserList: (query: { from: number; to: number; like?: string; when?: string }, params: RequestParams = {}) =>
       this.request<TransactionDto[], any>({
-        path: `/Transactions/${from}/${to}/${like}/${when}`,
+        path: `/Transactions/ofUser`,
         method: "GET",
-        secure: true,
+        query: query,
         format: "json",
         ...params,
       }),
   };
-  users = {
+  users: Users = {
     /**
      * No description
      *
      * @tags Users
      * @name UsersList
      * @request GET:/Users
-     * @secure
      */
     usersList: (params: RequestParams = {}) =>
       this.request<UserDto, any>({
         path: `/Users`,
         method: "GET",
-        secure: true,
         format: "json",
         ...params,
       }),
@@ -556,14 +553,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Users
      * @name UsersCreate
      * @request POST:/Users
-     * @secure
      */
     usersCreate: (data: CreateUserDto, params: RequestParams = {}) =>
       this.request<UserDto, any>({
         path: `/Users`,
         method: "POST",
         body: data,
-        secure: true,
         type: ContentType.Json,
         format: "json",
         ...params,
@@ -575,14 +570,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Users
      * @name UsersUpdate
      * @request PUT:/Users
-     * @secure
      */
     usersUpdate: (data: UpdateUserDto, params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/Users`,
         method: "PUT",
         body: data,
-        secure: true,
         type: ContentType.Json,
         ...params,
       }),
@@ -593,13 +586,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Users
      * @name UsersDelete
      * @request DELETE:/Users
-     * @secure
      */
     usersDelete: (params: RequestParams = {}) =>
       this.request<void, any>({
         path: `/Users`,
         method: "DELETE",
-        secure: true,
         ...params,
       }),
 
@@ -609,13 +600,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Users
      * @name SummaryList
      * @request GET:/Users/summary
-     * @secure
      */
     summaryList: (params: RequestParams = {}) =>
       this.request<SummaryUnit[], any>({
         path: `/Users/summary`,
         method: "GET",
-        secure: true,
         format: "json",
         ...params,
       }),
@@ -626,13 +615,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Users
      * @name TotalMonthList
      * @request GET:/Users/total/month
-     * @secure
      */
     totalMonthList: (params: RequestParams = {}) =>
       this.request<Record<string, number>, any>({
         path: `/Users/total/month`,
         method: "GET",
-        secure: true,
         format: "json",
         ...params,
       }),
@@ -643,13 +630,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Users
      * @name TotalYearList
      * @request GET:/Users/total/year
-     * @secure
      */
     totalYearList: (params: RequestParams = {}) =>
       this.request<Record<string, number>, any>({
         path: `/Users/total/year`,
         method: "GET",
-        secure: true,
         format: "json",
         ...params,
       }),
@@ -660,15 +645,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Users
      * @name AuthenticateCreate
      * @request POST:/Users/authenticate
-     * @secure
      */
     authenticateCreate: (data: AuthenticateRequest, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<AuthenticateResponse, any>({
         path: `/Users/authenticate`,
         method: "POST",
         body: data,
-        secure: true,
         type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
@@ -678,13 +662,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @tags Users
      * @name RefreshTokenCreate
      * @request POST:/Users/refresh-token
-     * @secure
      */
     refreshTokenCreate: (params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<RefreshTokenResponse, any>({
         path: `/Users/refresh-token`,
         method: "POST",
-        secure: true,
+        format: "json",
         ...params,
       }),
   };
