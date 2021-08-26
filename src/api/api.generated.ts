@@ -344,18 +344,6 @@ export class HttpClient<SecurityDataType = unknown> {
   };
 }
 
-interface Users {
-  usersList: (params?: RequestParams) => any;
-  usersCreate: (data: CreateUserDto, params?: RequestParams) => any;
-  usersUpdate: (data: UpdateUserDto, params?: RequestParams) => any;
-  usersDelete: (params?: RequestParams) => any;
-  summaryList: (params?: RequestParams) => any;
-  totalMonthList: (params?: RequestParams) => any;
-  totalYearList: (params?: RequestParams) => any;
-  authenticateCreate: (data: AuthenticateRequest, params?: RequestParams) => any;
-  refreshTokenCreate: (params?: RequestParams) => any;
-}
-
 /**
  * @title MoneyKeeper
  * @version v1
@@ -531,7 +519,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         ...params,
       }),
   };
-  users: Users = {
+  users = {
     /**
      * No description
      *
