@@ -18,9 +18,14 @@ import {ChartsModule} from 'ng2-charts';
 import {MatListModule} from '@angular/material/list';
 import {NgxMatDatetimePickerModule, NgxMatNativeDateModule} from '@angular-material-components/datetime-picker';
 import {InfiniteScrollModule} from 'ngx-infinite-scroll';
+import {StoreModule} from '@ngrx/store';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 // app components & modules
 import {AppRoutingModule} from './app-routing.module';
+import {AccountModule} from './account/account.module';
+import {TransactionsModule} from './transactions/transactions.module';
 import {AppComponent} from './app.component';
 import {NavbarComponent} from './navbar/navbar.component';
 import {CardsContainerComponent} from './cards-container/cards-container.component';
@@ -29,25 +34,24 @@ import {AddCategoryFormComponent} from './add-category-form/add-category-form.co
 import {Page404Component} from './page404/page404.component';
 import {WalletChartComponent} from './wallet-chart/wallet-chart.component';
 import {CategoryCardComponent} from './category-card/category-card.component';
+import {ConfirmPopupComponent} from './confirm-popup/confirm-popup.component';
+import {ProfilePageComponent} from './profile-page/profile-page.component';
 
 // app services
 import UserService from './services/user.service';
-import {environment} from '../environments/environment';
-import {BASE_SERVER_URL} from './app.config';
-import {AccountModule} from './account/account.module';
-import {ConfirmPopupComponent} from './confirm-popup/confirm-popup.component';
-import {StoreModule} from '@ngrx/store';
-import {cardsContainerReducer} from './store/cards-store/cards-container.reducer';
-import CardsContainerStore from './store/cards-store/cards-container.store';
-import {MatMenuModule} from '@angular/material/menu';
-import {TransactionsModule} from './transactions/transactions.module';
-import {ProfilePageComponent} from './profile-page/profile-page.component';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import CurrentUserService from "./services/currentUser.service";
 import CategoryService from './services/category.service';
 import TransactionService from './services/transaction.service';
-import ApiConnector from '../api/api.connector';
 import AuthService from './services/auth.service';
-import CurrentUserService from "./services/currentUser.service";
+import ApiConnector from '../api/api.connector';
+
+// store
+import CardsContainerStore from './store/cards-store/cards-container.store';
+import {cardsContainerReducer} from './store/cards-store/cards-container.reducer';
+
+// app config
+import {environment} from '../environments/environment';
+import {BASE_SERVER_URL} from './app.config';
 
 @NgModule({
   declarations: [
