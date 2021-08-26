@@ -1,9 +1,9 @@
 import {Component, Inject} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms'
-import HttpService from "../../services/http.service";
-import User from "../../entities/user.entity";
-import {Router} from "@angular/router";
-import {BASE_SERVER_URL} from "../../app.config";
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Router} from '@angular/router';
+import {BASE_SERVER_URL} from '../../app.config';
+import UserService from '../../services/user.service';
+import {CreateUserDto} from '../../../api/api.generated';
 
 @Component({
   selector: 'sign-up-form',
@@ -12,13 +12,12 @@ import {BASE_SERVER_URL} from "../../app.config";
 })
 export class SignUpComponent {
 
-  public signUpForm: FormGroup
+  public signUpForm: FormGroup;
 
   constructor(private readonly router: Router,
               private readonly fb: FormBuilder,
-              private readonly httpService: HttpService,
-              @Inject(BASE_SERVER_URL) private readonly serverUrl: string)
-  {
+              private readonly userService: UserService,
+              @Inject(BASE_SERVER_URL) private readonly serverUrl: string) {
     this.signUpForm = this.fb.group({
       firstName: new FormControl('', [
         Validators.required
@@ -28,40 +27,40 @@ export class SignUpComponent {
       ]),
       email: new FormControl('', [
         Validators.required,
-        Validators.pattern(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
+        Validators.pattern(/^(([^<>()\[\]\\.,;:\s@']+(\.[^<>()\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
       ]),
       password: new FormControl('', [
         Validators.required,
         Validators.pattern(/^((?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])|(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[^a-zA-Z0-9])|(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[^a-zA-Z0-9])|(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^a-zA-Z0-9])).{8,16}$/)
       ])
-    })
+    });
   }
 
   get firstName() {
-    return this.signUpForm.get('firstName')
+    return this.signUpForm.get('firstName');
   }
 
   get lastName() {
-      return this.signUpForm.get('lastName')
+    return this.signUpForm.get('lastName');
   }
 
   get email() {
-    return this.signUpForm.get('email')
+    return this.signUpForm.get('email');
   }
 
   get password() {
-    return this.signUpForm.get('password')
+    return this.signUpForm.get('password');
   }
 
   public submit(): void {
-    const user: User = {
+    const user: CreateUserDto = {
       firstName: this.firstName?.value,
       lastName: this.lastName?.value,
       email: this.email?.value,
       password: this.password?.value
-    }
+    };
 
-    this.httpService.post(this.serverUrl + '/users', user)
-      .subscribe(() => this.router.navigate(["/sign-in"]))
+    this.userService.api.usersCreate(user)
+      .subscribe(() => this.router.navigate(['/sign-in']));
   }
 }

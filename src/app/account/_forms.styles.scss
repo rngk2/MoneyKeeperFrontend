@@ -33,6 +33,8 @@ form {
   .submit {
     margin-bottom: 1rem;
     font-size: 17px;
+    font-weight: bolder;
+    color: #676666;
   }
 
   .validation-error__hint {
@@ -41,13 +43,13 @@ form {
   }
 }
 
-.have-an-account {
+.hint {
   text-align: center;
 
   a {
     font-size: 15px;
-    color: darkgrey;
-    font-weight: lighter;
-    letter-spacing: .9px;
+    color: rgba(103, 0, 103, 0.51);
+    font-weight: bolder;
+    letter-spacing: .8px;
   }
 }

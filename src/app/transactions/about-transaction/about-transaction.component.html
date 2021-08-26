@@ -1,6 +1,6 @@
 <div mat-dialog-content class="dialog-container">
   <p class="title">{{data.categoryName}}</p>
-  <p>Date: {{data.timestamp | date: 'mediumDate'}}</p>
+  <p>Date: {{data.timestamp | date: "mediumDate"}}</p>
   <p>Amount: {{data.amount}}$</p>
   <p>Comment: {{data.comment}}</p>
   <button class="submit" mat-button (click)="deleteTransaction()" color="warn">Delete</button>

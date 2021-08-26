@@ -7,10 +7,10 @@ import {
   trigger,
   animateChild,
   AnimationMetadata
-} from '@angular/animations'
+} from '@angular/animations';
 
 const slideTo = (direction: 'right' | 'left'): AnimationMetadata[] => [
-  style({ position: 'relative' }),
+  style({position: 'relative'}),
   query(':enter, :leave', [
     style({
       position: 'absolute',
@@ -20,19 +20,19 @@ const slideTo = (direction: 'right' | 'left'): AnimationMetadata[] => [
     })
   ]),
   query(':enter', [
-    style({ [direction]: '-100%' })
+    style({[direction]: '-100%'})
   ]),
   query(':leave', animateChild()),
   group([
     query(':leave', [
-      animate('540ms ease-out', style({ [direction]: '100%' }))
+      animate('540ms ease-out', style({[direction]: '100%'}))
     ]),
     query(':enter', [
-      animate('540ms ease-out', style({ [direction]: '0%' }))
+      animate('540ms ease-out', style({[direction]: '0%'}))
     ])
   ]),
   query(':enter', animateChild()),
-]
+];
 
 export const authFormsSlider =
   trigger('authRouteAnimations', [

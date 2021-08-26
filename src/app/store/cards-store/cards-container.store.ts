@@ -1,7 +1,7 @@
-import {Store} from "@ngrx/store";
-import {Injectable} from "@angular/core";
-import AbstractStore from "../AbstractStore";
-import {update} from "./cards-container.actions";
+import {Store} from '@ngrx/store';
+import {Injectable} from '@angular/core';
+import AbstractStore from '../AbstractStore';
+import {update} from './cards-container.actions';
 
 @Injectable()
 export default class CardsContainerStore extends AbstractStore {
