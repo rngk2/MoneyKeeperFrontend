@@ -21,21 +21,22 @@ import {InfiniteScrollModule} from 'ngx-infinite-scroll';
 import {StoreModule} from '@ngrx/store';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {RouterModule} from "@angular/router";
+import {CommonModule} from "@angular/common";
 
 // app components & modules
 import {AppRoutingModule} from './app-routing.module';
-import {AccountModule} from './account/account.module';
+import {NavbarModule} from "./navbar/navbar.module";
 import {TransactionsModule} from './transactions/transactions.module';
+import {WalletChartModule} from "./wallet-chart/wallet-chart.module";
+
 import {AppComponent} from './app.component';
-import {NavbarComponent} from './navbar/navbar.component';
 import {CardsContainerComponent} from './cards-container/cards-container.component';
 import {WalletPageComponent} from './wallet-page/wallet-page.component';
 import {AddCategoryFormComponent} from './add-category-form/add-category-form.component';
-import {Page404Component} from './page404/page404.component';
 import {WalletChartComponent} from './wallet-chart/wallet-chart.component';
 import {CategoryCardComponent} from './category-card/category-card.component';
 import {ConfirmPopupComponent} from './confirm-popup/confirm-popup.component';
-import {ProfilePageComponent} from './profile-page/profile-page.component';
 
 // app services
 import UserService from './services/user.service';
@@ -56,25 +57,24 @@ import {BASE_SERVER_URL} from './app.config';
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent,
     CategoryCardComponent,
     CardsContainerComponent,
     WalletPageComponent,
     AddCategoryFormComponent,
-    Page404Component,
-    WalletChartComponent,
-    ConfirmPopupComponent,
-    ProfilePageComponent
+    ConfirmPopupComponent
   ],
   imports: [
     // app modules
-    AccountModule,
+    AppRoutingModule,
     TransactionsModule,
+    NavbarModule,
+    WalletChartModule,
 
     // lib modules
+    CommonModule,
     BrowserModule,
+    RouterModule,
     HttpClientModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
     MatFormFieldModule,
     ReactiveFormsModule,
@@ -95,7 +95,7 @@ import {BASE_SERVER_URL} from './app.config';
     InfiniteScrollModule,
     StoreModule.forRoot({cards: cardsContainerReducer}),
     MatMenuModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
   ],
   providers: [
     ApiConnector,
@@ -107,8 +107,11 @@ import {BASE_SERVER_URL} from './app.config';
     {provide: BASE_SERVER_URL, useValue: environment.serverUrl},
     CardsContainerStore
   ],
+  exports: [
+    WalletChartComponent
+  ],
   bootstrap: [
     AppComponent
-  ],
+  ]
 })
 export class AppModule {}

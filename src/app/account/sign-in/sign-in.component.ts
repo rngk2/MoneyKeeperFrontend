@@ -39,5 +39,4 @@ export class SignInComponent {
       password: this.password?.value
     }, () => this.router.navigate(['/wallet']));
   }
-
 }
