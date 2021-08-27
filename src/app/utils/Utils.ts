@@ -6,7 +6,7 @@ export interface Range {
   readonly end: number;
 }
 
-export type ReplaceReturnType<T extends (...a: any[]) => any, TNewReturn> = (...a: Parameters<T>) => TNewReturn
+export type ReplaceReturnType<T extends (...a: any[]) => any, R> = (...a: Parameters<T>) => R
 
 export type Observed<T> = {
   [P in keyof T]: T[P] extends (...a: any[]) => any ? ReplaceReturnType<T[P], Observable<any>> : unknown;

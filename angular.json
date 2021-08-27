@@ -80,7 +80,7 @@
             "ssl": true,
             "sslCert": "ssl/localhost.crt",
             "sslKey": "ssl/localhost.key",
-            "browserTarget": "rpc:build"
+            "browserTarget": "MoneyKeeperFrontend:build"
           },
           "configurations": {
             "production": {

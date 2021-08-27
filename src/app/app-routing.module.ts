@@ -1,24 +1,52 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {SignInComponent} from './account/sign-in/sign-in.component';
-import {SignUpComponent} from './account/sign-up/sign-up.component';
 import {WalletPageComponent} from './wallet-page/wallet-page.component';
-import {Page404Component} from './page404/page404.component';
 import {CanActivateUserRoutes, Permissions} from './guards';
-import {ProfilePageComponent} from './profile-page/profile-page.component';
 
 const routes: Routes = [
-  {path: 'wallet', component: WalletPageComponent, canActivate: [CanActivateUserRoutes]},
-  {path: 'sign-in', component: SignInComponent, data: {animation: 'isRight'}},
-  {path: 'sign-up', component: SignUpComponent, data: {animation: 'isLeft'}},
-  {path: 'profile', component: ProfilePageComponent, canActivate: [CanActivateUserRoutes]},
-  {path: 'sign-out', redirectTo: '/sign-in', pathMatch: 'full'},
-  {path: '**', component: Page404Component}
+  {
+    path: 'account',
+    loadChildren: () => import('./account/account.module').then(m => m.AccountModule)
+  },
+  {
+    path: 'profile',
+    loadChildren: () => import('./profile-page/profile-page.module').then(m => m.ProfilePageModule)
+  },
+  {
+    path: 'wallet',
+    component: WalletPageComponent,
+    canActivate: [CanActivateUserRoutes]
+  },
+  {
+    path: 'sign-in',
+    redirectTo: '/account/sign-in',
+    pathMatch: 'full'
+  },
+  {
+    path: 'sign-up',
+    redirectTo: '/account/sign-up',
+    pathMatch: 'full'
+  },
+  {
+    path: 'sign-out',
+    redirectTo: '/account/sign-in',
+    pathMatch: 'full'},
+  {
+    path: '**',
+    loadChildren: () => import('./page404/page404.module').then(m => m.Page404Module)
+  }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-  providers: [CanActivateUserRoutes, Permissions]
+  imports: [
+    RouterModule.forRoot(routes)
+  ],
+  exports: [
+    RouterModule
+  ],
+  providers: [
+    CanActivateUserRoutes,
+    Permissions
+  ]
 })
 export class AppRoutingModule { }
