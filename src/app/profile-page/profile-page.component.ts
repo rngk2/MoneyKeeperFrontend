@@ -34,10 +34,9 @@ export class ProfilePageComponent implements OnInit {
     this.fetchTotalForYear();
   }
 
-  private fetchTotalForMonth(): void {/*
-    <object>*/(this.userService.api.totalMonthList())
+  private fetchTotalForMonth(): void {
+    this.userService.api.totalMonthList()
       .subscribe(res => {
-        //@ts-ignore
         const total = res.data;
         if (total.hasOwnProperty(Transaction.inputTransactionName)) {
           // @ts-ignore
@@ -51,10 +50,9 @@ export class ProfilePageComponent implements OnInit {
       });
   }
 
-  private fetchTotalForYear(): void {/*
-    <object>*/(this.userService.api.totalYearList())
+  private fetchTotalForYear(): void {
+    this.userService.api.totalYearList()
       .subscribe(res => {
-        //@ts-ignore
         const total = res.data;
         total.hasOwnProperty(Transaction.inputTransactionName) &&
         // @ts-ignore

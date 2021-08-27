@@ -25,11 +25,11 @@ export class SignInComponent {
     });
   }
 
-  get email() {
+  public get email() {
     return this.signInForm.get('email');
   }
 
-  get password() {
+  public get password() {
     return this.signInForm.get('password');
   }
 
@@ -39,5 +39,4 @@ export class SignInComponent {
       password: this.password?.value
     }, () => this.router.navigate(['/wallet']));
   }
-
 }

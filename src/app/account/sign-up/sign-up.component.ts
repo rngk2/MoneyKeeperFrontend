@@ -36,19 +36,19 @@ export class SignUpComponent {
     });
   }
 
-  get firstName() {
+  public get firstName() {
     return this.signUpForm.get('firstName');
   }
 
-  get lastName() {
+  public get lastName() {
     return this.signUpForm.get('lastName');
   }
 
-  get email() {
+  public get email() {
     return this.signUpForm.get('email');
   }
 
-  get password() {
+  public get password() {
     return this.signUpForm.get('password');
   }
 

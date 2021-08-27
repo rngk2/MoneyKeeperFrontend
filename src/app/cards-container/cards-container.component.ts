@@ -42,11 +42,10 @@ export class CardsContainerComponent implements OnInit {
     this.cardsStore.updateState();
   }
 
-  public fetchSummary(): void {/*
-    <TransactionDto[]>*/(this.userService.api.summaryList())
+  public fetchSummary(): void {
+    this.userService.api.summaryList()
       .subscribe(transactions => {
         let category_transactions = new Map<string, TransactionDto[]>();
-        //@ts-ignore
         for (const transaction of transactions.data) {
           if (transaction.categoryName === Transaction.inputTransactionName) {
             continue;
