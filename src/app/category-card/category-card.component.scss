@@ -2,6 +2,20 @@
   width: 20rem;
   margin: 50px auto auto auto;
 
+  &__when-expanded__bottom {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__see-all {
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: .4px;
+  }
+
   mat-card-title {
     text-align: center;
     font-family: 'Lato', sans-serif;
@@ -21,14 +35,12 @@
     letter-spacing: .3px;
   }
 
-
   mat-divider {
     margin-top: .9rem;
   }
 
   mat-icon {
     cursor: pointer;
-    margin-top: 1rem;
   }
 
 }
