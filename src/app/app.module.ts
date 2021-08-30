@@ -41,6 +41,7 @@ import CategoryService from './services/category.service'
 import TransactionService from './services/transaction.service'
 import AuthService from './services/auth.service'
 import ApiConnector from '../api/api.connector'
+import CacheService from './services/cache.service'
 
 // store
 import CardsContainerStore from './store/cards-store/cards-container.store'
@@ -99,7 +100,8 @@ import {BASE_SERVER_URL} from './app.config'
     TransactionService,
     AuthService,
     {provide: BASE_SERVER_URL, useValue: environment.serverUrl},
-    CardsContainerStore
+    CardsContainerStore,
+    CacheService,
   ],
   bootstrap: [
     AppComponent
