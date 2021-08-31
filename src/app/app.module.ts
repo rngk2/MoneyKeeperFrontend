@@ -50,6 +50,7 @@ import {cardsContainerReducer} from './store/cards-store/cards-container.reducer
 // app config
 import {environment} from '../environments/environment'
 import {BASE_SERVER_URL} from './app.config'
+import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 
 @NgModule({
   declarations: [
@@ -89,6 +90,10 @@ import {BASE_SERVER_URL} from './app.config'
     NgxMatNativeDateModule,
     InfiniteScrollModule,
     StoreModule.forRoot({cards: cardsContainerReducer}),
+    StoreDevtoolsModule.instrument({
+      name: 'MK App',
+      logOnly: environment.production
+    }),
     MatMenuModule,
     MatProgressSpinnerModule
   ],
