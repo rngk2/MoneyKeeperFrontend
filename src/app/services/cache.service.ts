@@ -1,10 +1,10 @@
 export default class CacheService {
   public save<T = any>(key: string, value: NonNullable<T>): void {
-    localStorage.setItem(key, JSON.stringify(value));
+    sessionStorage.setItem(key, JSON.stringify(value));
   }
 
   public get<T = any>(key: string): T | null {
-    const item = localStorage.getItem(key);
+    const item = sessionStorage.getItem(key);
     return (item === null || item === null as unknown as string) ? null : JSON.parse(item);
   }
 
@@ -13,10 +13,19 @@ export default class CacheService {
   }
 
   public remove(key: string): void {
-    localStorage.removeItem(key);
+    sessionStorage.removeItem(key);
   }
 
   public isFresh(key: string): boolean {
-    return !!localStorage.getItem(key);
+    return !!sessionStorage.getItem(key);
   }
+
+  public makeFresh(key: string): void {
+    sessionStorage.setItem(key, 'fresh');
+  }
+
+  public clear(): void {
+    sessionStorage.clear();
+  }
+
 }
