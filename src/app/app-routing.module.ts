@@ -1,7 +1,6 @@
-import {NgModule} from '@angular/core';
-import {RouterModule, Routes} from '@angular/router';
-import {WalletPageComponent} from './wallet-page/wallet-page.component';
-import {CanActivateUserRoutes, Permissions} from './guards';
+import {NgModule} from '@angular/core'
+import {RouterModule, Routes} from '@angular/router'
+import {CanActivateUserRoutes, Permissions} from './guards'
 
 const routes: Routes = [
   {
@@ -10,12 +9,18 @@ const routes: Routes = [
   },
   {
     path: 'profile',
+    canActivate: [CanActivateUserRoutes],
     loadChildren: () => import('./profile-page/profile-page.module').then(m => m.ProfilePageModule)
   },
   {
     path: 'wallet',
-    component: WalletPageComponent,
-    canActivate: [CanActivateUserRoutes]
+    canActivate: [CanActivateUserRoutes],
+    loadChildren: () => import('./wallet-page/wallet-page.module').then(m => m.WalletPageModule)
+  },
+  {
+    path: 'transactions',
+    canActivate: [CanActivateUserRoutes],
+    loadChildren: () => import('./transactions/transactions.module').then(m => m.TransactionsModule)
   },
   {
     path: 'sign-in',

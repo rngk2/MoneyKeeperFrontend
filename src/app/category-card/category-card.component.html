@@ -12,8 +12,9 @@
           {{transaction.timestamp | date: "mediumDate"}}: {{transaction.amount}}$
         </p>
       </div>
-      <section (click)="addTransaction = true">
+      <section class="card__when-expanded__bottom" (click)="addTransaction = true">
         <mat-icon *ngIf="!addTransaction" class="material-icons-outlined">add</mat-icon>
+        <span class="card__see-all" routerLink="/wallet/transactions/{{categoryName}}">See all</span>
       </section>
       <section *ngIf="addTransaction">
         <add-transaction-form [categoryId]="categoryId"></add-transaction-form>
