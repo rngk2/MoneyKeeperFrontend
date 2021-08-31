@@ -3,8 +3,8 @@ import {FormControl} from '@angular/forms';
 import CardsContainerStore from '../../store/cards-store/cards-container.store';
 import UserService from '../../services/user.service';
 import TransactionService from '../../services/transaction.service';
-import CacheService from '../../services/cache.service'
-import {ProfilePageComponent} from '../../profile-page/profile-page.component'
+import CacheService from '../../services/cache.service';
+import {CACHE_TRANSACTIONS_PATH, PROFILE_PAGE_CACHE_FRESH_CHECK_PATH} from "../../constants";
 
 @Component({
   selector: 'add-transaction-form',
@@ -35,7 +35,8 @@ export class AddTransactionFormComponent {
       timestamp: this.timestampControl.value,
       comment: this.comment
     }).subscribe(() => {
-      this.cache.remove(ProfilePageComponent.PROFILE_PAGE_CACHE_FRESH_CHECK_PATH);
+      this.cache.remove(PROFILE_PAGE_CACHE_FRESH_CHECK_PATH);
+      this.cache.remove(CACHE_TRANSACTIONS_PATH);
       this.cardsStore.updateState()
     });
   }
