@@ -4,6 +4,7 @@ import User from '../entities/user.entity';
 import Transaction from '../entities/transaction.entity';
 import {BehaviorSubject} from 'rxjs';
 import CacheService from '../services/cache.service'
+import {PROFILE_PAGE_CACHE_FRESH_CHECK_PATH} from "../constants";
 
 @Component({
   selector: 'profile-page',
@@ -25,7 +26,6 @@ export class ProfilePageComponent implements OnInit {
   public spent_month = 0;
   public spent_year = 0;
 
-  public static readonly PROFILE_PAGE_CACHE_FRESH_CHECK_PATH = 'profile-page__data';
   private static readonly CACHE_TOTAL_MONTH_PATH = 'profile-page__data__total-month';
   private static readonly CACHE_TOTAL_YEAR_PATH = 'profile-page__data__total-year';
 
@@ -36,11 +36,13 @@ export class ProfilePageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.cache.isFresh(ProfilePageComponent.PROFILE_PAGE_CACHE_FRESH_CHECK_PATH)) {
+    if (this.cache.isFresh(PROFILE_PAGE_CACHE_FRESH_CHECK_PATH)) {
       this.summarizeMonth(this.cache.get<object>(ProfilePageComponent.CACHE_TOTAL_MONTH_PATH)!);
       this.summarizeYear(this.cache.get<object>(ProfilePageComponent.CACHE_TOTAL_YEAR_PATH)!);
       return;
     }
+
+    this.cache.makeFresh(PROFILE_PAGE_CACHE_FRESH_CHECK_PATH);
 
     this.fetchTotalForMonth();
     this.fetchTotalForYear();
