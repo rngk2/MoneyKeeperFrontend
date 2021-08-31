@@ -21,6 +21,7 @@ export default class AuthService {
 
   public logOut(): void {
     this.userService.currentUserService.removeCurrentUser();
+    sessionStorage.clear();
     this.stopRefreshTokenTimer();
   }
 
