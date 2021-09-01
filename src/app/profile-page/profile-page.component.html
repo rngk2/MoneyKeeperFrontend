@@ -1,18 +1,20 @@
 <main>
-  <h2 class="greeting center-text">Hi, {{user!.firstName}} {{user!.lastName}}!</h2>
+  <h2 class="greeting center-text">Hi, {{(user | async)?.firstName}} {{(user | async)?.lastName}}!</h2>
   <h3 class="center-text earned-info">Earned this month: {{earnedForMonth}}$</h3>
   <div class="charts">
     <div class="profile-page-summary__item">
       <h3>Spent this month: {{spent_month}}$</h3>
-      <wallet-chart *ngIf="amount_month.value.length && names_month.value.length" [chartLabelsObservable]="names_month.asObservable()"
-                    [chartDataObservable]="amount_month.asObservable()"
+      <wallet-chart *ngIf="amount_month.value.length && names_month.value.length"
+                    [chartLabels$]="names_month.asObservable()"
+                    [chartData$]="amount_month.asObservable()"
       >
       </wallet-chart>
     </div>
     <div class="profile-page-summary__item">
       <h3>Spent this year: {{spent_year}}$</h3>
-      <wallet-chart *ngIf="amount_year.value.length && names_year.value.length" [chartLabelsObservable]="names_year.asObservable()"
-                    [chartDataObservable]="amount_year.asObservable()"
+      <wallet-chart *ngIf="amount_year.value.length && names_year.value.length"
+                    [chartLabels$]="names_year.asObservable()"
+                    [chartData$]="amount_year.asObservable()"
       >
     </wallet-chart>
     </div>
