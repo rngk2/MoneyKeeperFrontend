@@ -1,19 +1,20 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import UserService from '../services/user.service';
 import User from '../entities/user.entity';
 import Transaction from '../entities/transaction.entity';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import CacheService from '../services/cache.service'
 import {PROFILE_PAGE_CACHE_FRESH_CHECK_PATH} from "../constants";
+import {takeUntil} from "rxjs/operators";
 
 @Component({
   selector: 'profile-page',
   templateUrl: './profile-page.component.html',
   styleUrls: ['./profile-page.component.scss']
 })
-export class ProfilePageComponent implements OnInit {
+export class ProfilePageComponent implements OnInit, OnDestroy {
 
-  public user: User | null = null;
+  public user: Observable<User | null>
 
   public earnedForMonth: number = 0;
 
@@ -26,13 +27,14 @@ export class ProfilePageComponent implements OnInit {
   public spent_month = 0;
   public spent_year = 0;
 
+  private readonly subs = new Subject<void>();
+
   private static readonly CACHE_TOTAL_MONTH_PATH = 'profile-page__data__total-month';
   private static readonly CACHE_TOTAL_YEAR_PATH = 'profile-page__data__total-year';
 
   constructor(private readonly userService: UserService,
               private readonly cache: CacheService) {
-    userService.currentUserService.getCurrentUserAsObservable()
-      .subscribe(user => this.user = user);
+    this.user =  userService.currentUserService.getCurrentUserAsObservable()
   }
 
   ngOnInit(): void {
@@ -50,6 +52,7 @@ export class ProfilePageComponent implements OnInit {
 
   private fetchTotalForMonth(): void {
     this.userService.api.totalMonthList()
+      .pipe(takeUntil(this.subs))
       .subscribe(res => {
         this.cache.save<object>(ProfilePageComponent.CACHE_TOTAL_MONTH_PATH, res.data);
         this.summarizeMonth(res.data);
@@ -58,6 +61,7 @@ export class ProfilePageComponent implements OnInit {
 
   private fetchTotalForYear(): void {
     this.userService.api.totalYearList()
+      .pipe(takeUntil(this.subs))
       .subscribe(res => {
         this.cache.save<object>(ProfilePageComponent.CACHE_TOTAL_YEAR_PATH, res.data);
         this.summarizeYear(res.data);
@@ -94,6 +98,14 @@ export class ProfilePageComponent implements OnInit {
   }
 
   public reduce(a: number[]): number {
+    if (a.length === 0) {
+      return 0;
+    }
     return a.reduce((acc, curr) => acc + curr);
+  }
+
+  public ngOnDestroy(): void {
+    this.subs.next();
+    this.subs.unsubscribe();
   }
 }

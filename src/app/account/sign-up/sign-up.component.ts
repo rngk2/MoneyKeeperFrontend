@@ -1,18 +1,22 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, OnDestroy} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {BASE_SERVER_URL} from '../../app.config';
 import UserService from '../../services/user.service';
 import {CreateUserDto} from '../../../api/api.generated';
+import {Subject} from "rxjs";
+import {takeUntil} from "rxjs/operators";
 
 @Component({
   selector: 'sign-up-form',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss']
 })
-export class SignUpComponent {
+export class SignUpComponent implements OnDestroy {
 
   public signUpForm: FormGroup;
+
+  private readonly subs = new Subject<void>();
 
   constructor(private readonly router: Router,
               private readonly fb: FormBuilder,
@@ -61,6 +65,12 @@ export class SignUpComponent {
     };
 
     this.userService.api.usersCreate(user)
+      .pipe(takeUntil(this.subs))
       .subscribe(() => this.router.navigate(['/sign-in']));
+  }
+
+  public ngOnDestroy(): void {
+    this.subs.next();
+    this.subs.unsubscribe();
   }
 }
