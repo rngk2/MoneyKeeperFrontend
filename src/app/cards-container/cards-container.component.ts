@@ -109,11 +109,9 @@ export class CardsContainerComponent implements OnInit, OnDestroy {
   }
 
   public addCategory(): void {
-    const dialogRef = this.dialog.open(AddCategoryFormComponent, {
+    this.dialog.open(AddCategoryFormComponent, {
       width: '40rem'
-    });
-
-    dialogRef.afterClosed()
+    }).afterClosed()
       .pipe(takeUntil(this.subs))
       .subscribe(() => {
         document.getElementById('add-btn')!.blur();
@@ -121,13 +119,12 @@ export class CardsContainerComponent implements OnInit, OnDestroy {
   }
 
   public addEarning(): void {
-    const dialogRef = this.dialog.open(AddEarningFormComponent, {
+    this.dialog.open(AddEarningFormComponent, {
       width: '40rem'
-    });
-
-    dialogRef.afterClosed().subscribe(() => {
-      this.cardsStore.updateState();
-      document.getElementById('add-btn')!.blur();
+    }).afterClosed()
+      .pipe(takeUntil(this.subs))
+      .subscribe(() => {
+        document.getElementById('add-btn')!.blur();
     });
   }
 
