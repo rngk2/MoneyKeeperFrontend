@@ -41,6 +41,7 @@ import CategoryService from './services/category.service'
 import TransactionService from './services/transaction.service'
 import AuthService from './services/auth.service'
 import ApiConnector from '../api/api.connector'
+import CacheService from './services/cache.service'
 
 // store
 import CardsContainerStore from './store/cards-store/cards-container.store'
@@ -49,6 +50,7 @@ import {cardsContainerReducer} from './store/cards-store/cards-container.reducer
 // app config
 import {environment} from '../environments/environment'
 import {BASE_SERVER_URL} from './app.config'
+import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 
 @NgModule({
   declarations: [
@@ -88,6 +90,10 @@ import {BASE_SERVER_URL} from './app.config'
     NgxMatNativeDateModule,
     InfiniteScrollModule,
     StoreModule.forRoot({cards: cardsContainerReducer}),
+    StoreDevtoolsModule.instrument({
+      name: 'MK App',
+      logOnly: environment.production
+    }),
     MatMenuModule,
     MatProgressSpinnerModule
   ],
@@ -99,7 +105,8 @@ import {BASE_SERVER_URL} from './app.config'
     TransactionService,
     AuthService,
     {provide: BASE_SERVER_URL, useValue: environment.serverUrl},
-    CardsContainerStore
+    CardsContainerStore,
+    CacheService,
   ],
   bootstrap: [
     AppComponent

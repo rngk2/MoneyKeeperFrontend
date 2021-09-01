@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {ChartOptions, ChartType} from 'chart.js';
 import {Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip, SingleDataSet} from 'ng2-charts';
 import {Observable} from 'rxjs';
@@ -8,7 +8,7 @@ import {Observable} from 'rxjs';
   templateUrl: './wallet-chart.component.html',
   styleUrls: ['./wallet-chart.component.scss']
 })
-export class WalletChartComponent implements OnInit {
+export class WalletChartComponent {
 
   public chartType: ChartType = 'doughnut';
   public chartLegend = true;
@@ -28,19 +28,11 @@ export class WalletChartComponent implements OnInit {
     },
   };
 
-  public chartLabels: Label[] | undefined = undefined;
-  public chartData: SingleDataSet | undefined = undefined;
-
-  @Input() public chartLabelsObservable!: Observable<Label[]>;
-  @Input() public chartDataObservable!: Observable<SingleDataSet>;
+  @Input() public chartLabels$!: Observable<Label[]>;
+  @Input() public chartData$!: Observable<SingleDataSet>;
 
   constructor() {
     monkeyPatchChartJsTooltip();
     monkeyPatchChartJsLegend();
-  }
-
-  ngOnInit(): void {
-    this.chartLabelsObservable.subscribe(labels => this.chartLabels = labels);
-    this.chartDataObservable.subscribe(data => this.chartData = data);
   }
 }

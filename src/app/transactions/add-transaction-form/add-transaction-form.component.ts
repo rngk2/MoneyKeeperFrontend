@@ -3,6 +3,8 @@ import {FormControl} from '@angular/forms';
 import CardsContainerStore from '../../store/cards-store/cards-container.store';
 import UserService from '../../services/user.service';
 import TransactionService from '../../services/transaction.service';
+import CacheService from '../../services/cache.service';
+import {CACHE_TRANSACTIONS_PATH, PROFILE_PAGE_CACHE_FRESH_CHECK_PATH} from "../../constants";
 
 @Component({
   selector: 'add-transaction-form',
@@ -21,16 +23,21 @@ export class AddTransactionFormComponent {
 
   constructor(private readonly cardsStore: CardsContainerStore,
               private readonly userService: UserService,
-              private readonly transactionService: TransactionService) {
+              private readonly transactionService: TransactionService,
+              private readonly cache: CacheService) {
   }
 
   public addTransaction(): void {
-    (this.transactionService.api.transactionsCreate({
+    this.transactionService.api.transactionsCreate({
       userId: this.userService.currentUserService.getCurrentUser()?.id!,
       categoryId: this.categoryId,
       amount: this.amount,
       timestamp: this.timestampControl.value,
       comment: this.comment
-    })).subscribe(() => this.cardsStore.updateState());
+    }).subscribe(() => {
+      this.cache.remove(PROFILE_PAGE_CACHE_FRESH_CHECK_PATH);
+      this.cache.remove(CACHE_TRANSACTIONS_PATH);
+      this.cardsStore.updateState()
+    });
   }
 }

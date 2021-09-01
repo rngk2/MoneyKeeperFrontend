@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import Transaction from '../entities/transaction.entity';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {MatDialog} from '@angular/material/dialog';
@@ -6,6 +6,8 @@ import {AboutTransactionComponent} from '../transactions/about-transaction/about
 import {ConfirmPopupComponent} from '../confirm-popup/confirm-popup.component';
 import CardsContainerStore from '../store/cards-store/cards-container.store';
 import CategoryService from '../services/category.service';
+import {Subject} from "rxjs";
+import {takeUntil} from "rxjs/operators";
 
 @Component({
   selector: 'category-card',
@@ -20,7 +22,7 @@ import CategoryService from '../services/category.service';
     ])
   ]
 })
-export class CategoryCardComponent implements OnInit {
+export class CategoryCardComponent implements OnInit, OnDestroy {
 
   public state: 'collapsed' | 'expanded' = 'collapsed';
   public addTransaction = false;
@@ -31,6 +33,8 @@ export class CategoryCardComponent implements OnInit {
   @Input() public lastTransactions!: Transaction[];
 
   private static readonly lastTransactionsMaxLength = 5;
+
+  private readonly subs = new Subject<void>();
 
   constructor(private readonly dialog: MatDialog,
               private readonly confirm: MatDialog,
@@ -57,7 +61,8 @@ export class CategoryCardComponent implements OnInit {
     });
     confirmRef.componentInstance.onAnswer.subscribe((ok: boolean) => {
       if (ok) {
-        (this.categoryService.api.categoriesDelete(this.categoryId))
+        this.categoryService.api.categoriesDelete(this.categoryId)
+          .pipe(takeUntil(this.subs))
           .subscribe(() => this.cardsStore.updateState());
       }
       confirmRef.close();
@@ -69,5 +74,10 @@ export class CategoryCardComponent implements OnInit {
       width: '20rem',
       data: transaction
     });
+  }
+
+  public ngOnDestroy(): void {
+    this.subs.next();
+    this.subs.unsubscribe();
   }
 }

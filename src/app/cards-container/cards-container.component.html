@@ -42,8 +42,8 @@
   </div>
   <div class="chart" *ngIf="category_transactions.value.size">
     <wallet-chart
-      [chartLabelsObservable]="categoriesNames.asObservable()"
-      [chartDataObservable]="amountForCategories.asObservable()"
+      [chartLabels$]="categoriesNames.asObservable()"
+      [chartData$]="amountForCategories.asObservable()"
     >
     </wallet-chart>
   </div>
