@@ -10,7 +10,7 @@ export default abstract class AbstractStore {
     this.state$ = store.select(select);
   }
 
-  public getState(): Observable<number> {
+  public getState(): Observable<any> {
     return this.state$;
   }
 
