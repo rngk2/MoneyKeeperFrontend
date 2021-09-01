@@ -1,19 +1,4 @@
-<form>
-  <mat-form-field>
-    <input matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date" [formControl]="timestampControl"
-           [min]="minDate" [max]="maxDate">
-    <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
-    <ngx-mat-datetime-picker #picker [showSpinners]="true" [showSeconds]="false"
-                             [stepHour]="1" [stepMinute]="1"
-                             [touchUi]="false" [enableMeridian]="true"
-                             [disableMinute]="false" [hideTime]="false">
-    </ngx-mat-datetime-picker>
-  </mat-form-field>
-  <mat-form-field>
-    <input type="number" min="1" matInput [(ngModel)]="amount" [ngModelOptions]="{standalone: true}" placeholder="Amount" class="amount-input" required>
-  </mat-form-field>
-  <mat-form-field>
-    <input type="text" matInput [(ngModel)]="comment" [ngModelOptions]="{standalone: true}" placeholder="Comment" class="comment-input" required>
-  </mat-form-field>
-  <button class="submit" mat-button color="primary" (click)="addEarning()">Submit</button>
-</form>
+<add-transaction-form
+  [categoryId]="earningsId"
+  (onSubmit)="onSubmit()">
+</add-transaction-form>

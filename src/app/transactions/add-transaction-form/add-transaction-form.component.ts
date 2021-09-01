@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import CardsContainerStore from '../../store/cards-store/cards-container.store';
 import UserService from '../../services/user.service';
@@ -21,11 +21,12 @@ export class AddTransactionFormComponent {
 
   @Input() public categoryId!: number;
 
+  @Output() public onSubmit = new EventEmitter();
+
   constructor(private readonly cardsStore: CardsContainerStore,
               private readonly userService: UserService,
               private readonly transactionService: TransactionService,
-              private readonly cache: CacheService) {
-  }
+              private readonly cache: CacheService) { }
 
   public addTransaction(): void {
     this.transactionService.api.transactionsCreate({
@@ -38,6 +39,7 @@ export class AddTransactionFormComponent {
       this.cache.remove(PROFILE_PAGE_CACHE_FRESH_CHECK_PATH);
       this.cache.remove(CACHE_TRANSACTIONS_PATH);
       this.cardsStore.updateState()
+      this.onSubmit.emit();
     });
   }
 }
