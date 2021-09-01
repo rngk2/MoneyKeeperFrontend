@@ -1,7 +1,7 @@
-<div style="display: block;" *ngIf="chartLabels && chartData">
+<div style="display: block;" *ngIf="(chartLabels$ | async)?.length > 0 && (chartData$ | async)?.length > 0">
   <canvas baseChart
-          [data]="chartData"
-          [labels]="chartLabels"
+          [data]="chartData$ | async"
+          [labels]="chartLabels$ | async"
           [chartType]="chartType"
           [options]="chartOptions"
           [plugins]="chartPlugins"
