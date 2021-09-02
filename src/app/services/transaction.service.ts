@@ -16,9 +16,11 @@ class TransactionServiceUtils {
   public calculateAmountForMonth(transactions: Transaction[] | TransactionDto[]): number {
     const currentMonth = new Date().getMonth();
     let amountForMonth = 0;
-    for (const transaction of transactions)
-      if (new Date(transaction.timestamp!).getMonth() === currentMonth)
+    for (const transaction of transactions) {
+      if (new Date(transaction.timestamp!).getMonth() === currentMonth) {
         amountForMonth += transaction.amount!;
+      }
+    }
 
     return amountForMonth;
   }
