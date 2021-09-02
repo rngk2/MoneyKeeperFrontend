@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import Transaction from '../entities/transaction.entity';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import {MatDialog} from '@angular/material/dialog';
@@ -32,14 +32,23 @@ export class CategoryCardComponent implements OnInit, OnDestroy {
   @Input() public spendThisMonth!: number;
   @Input() public lastTransactions!: Transaction[];
 
+  @ViewChild('editInput') public editInput!: ElementRef;
+  // @ViewChild('editInput') public set (content: ElementRef): void {
+  //   if (content) {
+  //     this.editInput = content;
+  //   }
+  // }
+
   private static readonly lastTransactionsMaxLength = 5;
 
   private readonly subs = new Subject<void>();
+  public edit: boolean = false;
 
   constructor(private readonly dialog: MatDialog,
               private readonly confirm: MatDialog,
               private readonly cardsStore: CardsContainerStore,
-              private readonly categoryService: CategoryService) {
+              private readonly categoryService: CategoryService,
+              private readonly changeDetector: ChangeDetectorRef) {
   }
 
   public ngOnInit(): void {
@@ -74,6 +83,12 @@ export class CategoryCardComponent implements OnInit, OnDestroy {
       width: '20rem',
       data: transaction
     });
+  }
+
+  public enableEdit(): void {
+    this.edit = true;
+    this.changeDetector.detectChanges();
+    this.editInput.nativeElement.focus();
   }
 
   public ngOnDestroy(): void {
