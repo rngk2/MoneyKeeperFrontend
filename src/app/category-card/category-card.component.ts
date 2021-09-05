@@ -1,13 +1,13 @@
-import {ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import Transaction from '../entities/transaction.entity';
-import {animate, state, style, transition, trigger} from '@angular/animations';
-import {MatDialog} from '@angular/material/dialog';
-import {AboutTransactionComponent} from '../transactions/about-transaction/about-transaction.component';
-import {ConfirmPopupComponent} from '../confirm-popup/confirm-popup.component';
-import CardsContainerStore from '../store/cards-store/cards-container.store';
-import CategoryService from '../services/category.service';
-import {Subject} from "rxjs";
-import {takeUntil} from "rxjs/operators";
+import {ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core'
+import Transaction from '../entities/transaction.entity'
+import {animate, state, style, transition, trigger} from '@angular/animations'
+import {MatDialog} from '@angular/material/dialog'
+import {AboutTransactionComponent} from '../transactions/about-transaction/about-transaction.component'
+import {ConfirmPopupComponent} from '../confirm-popup/confirm-popup.component'
+import CardsContainerStore from '../store/cards-store/cards-container.store'
+import CategoryService from '../services/category.service'
+import {Subject} from 'rxjs'
+import {takeUntil} from 'rxjs/operators'
 
 @Component({
   selector: 'category-card',
@@ -33,11 +33,6 @@ export class CategoryCardComponent implements OnInit, OnDestroy {
   @Input() public lastTransactions!: Transaction[];
 
   @ViewChild('editInput') public editInput!: ElementRef;
-  // @ViewChild('editInput') public set (content: ElementRef): void {
-  //   if (content) {
-  //     this.editInput = content;
-  //   }
-  // }
 
   private static readonly lastTransactionsMaxLength = 5;
 
@@ -85,11 +80,26 @@ export class CategoryCardComponent implements OnInit, OnDestroy {
     });
   }
 
-  public enableEdit(): void {
+  public edit_enable(): void {
     this.edit = true;
     this.changeDetector.detectChanges();
     this.editInput.nativeElement.focus();
   }
+
+  public edit_save(): void {
+    this.categoryService.api.categoriesUpdate(this.categoryId, {
+      name:  this.editInput.nativeElement.value
+    })
+      .pipe(takeUntil(this.subs))
+      .subscribe(() => {
+        this.cardsStore.updateState();
+      });
+  }
+
+  public edit_disable(): void {
+    this.edit = false;
+  }
+
 
   public ngOnDestroy(): void {
     this.subs.next();
