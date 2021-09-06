@@ -12,7 +12,7 @@ export default class AuthService {
     this.userService.api.authenticateCreate({
       ...(credentials),
     }).subscribe(res => {
-      const user: User = res.data as User;
+      const user: User = res.data.value as User;
       this.userService.currentUserService.setCurrentUser(user);
       this.startRefreshTokenTimer();
       cb && cb();
@@ -28,7 +28,7 @@ export default class AuthService {
   public refreshToken(): void {
     this.userService.api.refreshTokenCreate()
       .subscribe(res => {
-        this.userService.currentUserService.setCurrentUser({...this.userService.currentUserService.getCurrentUser(), jwtToken: res.data.newToken as string});
+        this.userService.currentUserService.setCurrentUser({...this.userService.currentUserService.getCurrentUser(), jwtToken: res.data.value.newToken as string});
         this.startRefreshTokenTimer();
       });
   }

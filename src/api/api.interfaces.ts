@@ -19,19 +19,18 @@ export interface UsersApi {
 }
 
 export interface CategoriesApi {
-  categoriesDelete: (id: number, params?: RequestParams) => any;
   categoriesDetail: (id: number, params?: RequestParams) => any;
+  categoriesUpdate: (id: string, data: UpdateCategoryDto, query?: { categoryId?: number }, params?: RequestParams) => any;
+  categoriesDelete: (id: number, params?: RequestParams) => any;
   categoriesList: (params?: RequestParams) => any;
-  bynameDelete: (categoryName: string, params?: RequestParams) => any;
-  categoriesUpdate: (id: number, data: UpdateCategoryDto, params?: RequestParams) => any;
-  categoriesCreate: (data: CreateCategoryDto, params?: RequestParams) => any
+  categoriesCreate: (data: CreateCategoryDto, params?: RequestParams) => any;
+  byNameDelete: (categoryName: string, params?: RequestParams) => any;
 }
 
 export interface TransactionsApi {
-  ofUserList: (query: { from: number; to: number; like?: string; when?: string }, params?: RequestParams) => any;
   transactionsDetail: (id: number, params?: RequestParams) => any;
-  transactionsCreate: (data: CreateTransactionDto, params?: RequestParams) => any;
   transactionsDelete: (id: number, params?: RequestParams) => any;
-  transactionsList: (params?: RequestParams) => any
+  ofUserList: (query: { from: number; to: number; like?: string; when?: string }, params?: RequestParams) => any;
+  transactionsCreate: (data: CreateTransactionDto, params?: RequestParams) => any;
 }
 

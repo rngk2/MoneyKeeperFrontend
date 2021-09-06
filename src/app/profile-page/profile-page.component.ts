@@ -54,8 +54,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     this.userService.api.totalMonthList()
       .pipe(takeUntil(this.subs))
       .subscribe(res => {
-        this.cache.save<object>(ProfilePageComponent.CACHE_TOTAL_MONTH_PATH, res.data);
-        this.summarizeMonth(res.data);
+        this.cache.save<object>(ProfilePageComponent.CACHE_TOTAL_MONTH_PATH, res.data.value);
+        this.summarizeMonth(res.data.value);
       });
   }
 
@@ -63,8 +63,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     this.userService.api.totalYearList()
       .pipe(takeUntil(this.subs))
       .subscribe(res => {
-        this.cache.save<object>(ProfilePageComponent.CACHE_TOTAL_YEAR_PATH, res.data);
-        this.summarizeYear(res.data);
+        this.cache.save<object>(ProfilePageComponent.CACHE_TOTAL_YEAR_PATH, res.data.value);
+        this.summarizeYear(res.data.value);
       });
   }
 

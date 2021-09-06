@@ -25,7 +25,7 @@ export class AddEarningFormComponent implements OnDestroy {
     this.categoryService.api.categoriesList()
       .pipe(takeUntil(this.subs))
       .subscribe(res => {
-        const categories = res.data;
+        const categories = res.data.value;
         const e_index = categories.findIndex((value: { name: string }) => value.name === Transaction.inputTransactionName);
         this.earningsId = categories[e_index].id;
       });

@@ -7,21 +7,25 @@ import {MatButtonModule} from '@angular/material/button'
 import {TransactionsModule} from '../transactions/transactions.module'
 import {CommonModule} from '@angular/common'
 import {RouterModule} from '@angular/router'
+import {MatInputModule} from "@angular/material/input";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
     CategoryCardComponent
   ],
-  imports: [
-    TransactionsModule,
+    imports: [
+        TransactionsModule,
 
-    MatIconModule,
-    MatDividerModule,
-    MatCardModule,
-    MatButtonModule,
-    CommonModule,
-    RouterModule,
-  ],
+        MatIconModule,
+        MatDividerModule,
+        MatCardModule,
+        MatButtonModule,
+        CommonModule,
+        RouterModule,
+        MatInputModule,
+        FormsModule,
+    ],
   exports: [
     CategoryCardComponent
   ]

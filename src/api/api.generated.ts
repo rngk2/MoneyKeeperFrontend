@@ -21,6 +21,12 @@ export interface AuthenticateResponse {
   lastName?: string | null;
   email?: string | null;
   jwtToken?: string | null;
+  refreshToken?: string | null;
+}
+
+export interface AuthenticateResponseApiResult {
+  value?: AuthenticateResponse;
+  error?: IError;
 }
 
 export interface CategoryDto {
@@ -30,6 +36,16 @@ export interface CategoryDto {
 
   /** @format int32 */
   userId?: number;
+}
+
+export interface CategoryDtoApiResult {
+  value?: CategoryDto;
+  error?: IError;
+}
+
+export interface CategoryDtoIEnumerableApiResult {
+  value?: CategoryDto[] | null;
+  error?: IError;
 }
 
 export interface CreateCategoryDto {
@@ -68,8 +84,23 @@ export interface CreateUserDto {
   password: string;
 }
 
+export interface IError {
+  code?: string | null;
+  message?: string | null;
+}
+
 export interface RefreshTokenResponse {
-  newToken?: string | null;
+  token?: string | null;
+}
+
+export interface RefreshTokenResponseApiResult {
+  value?: RefreshTokenResponse;
+  error?: IError;
+}
+
+export interface StringDecimalDictionaryApiResult {
+  value?: Record<string, number>;
+  error?: IError;
 }
 
 export interface SummaryUnit {
@@ -91,6 +122,11 @@ export interface SummaryUnit {
   comment?: string | null;
 }
 
+export interface SummaryUnitIEnumerableApiResult {
+  value?: SummaryUnit[] | null;
+  error?: IError;
+}
+
 export interface TransactionDto {
   /** @format int32 */
   id?: number;
@@ -108,6 +144,16 @@ export interface TransactionDto {
   /** @format date-time */
   timestamp?: string;
   comment?: string | null;
+}
+
+export interface TransactionDtoApiResult {
+  value?: TransactionDto;
+  error?: IError;
+}
+
+export interface TransactionDtoIEnumerableApiResult {
+  value?: TransactionDto[] | null;
+  error?: IError;
 }
 
 export interface UpdateCategoryDto {
@@ -134,6 +180,11 @@ export interface UserDto {
   firstName?: string | null;
   lastName?: string | null;
   email?: string | null;
+}
+
+export interface UserDtoApiResult {
+  value?: UserDto;
+  error?: IError;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -358,7 +409,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/Categories/{id}
      */
     categoriesDetail: (id: number, params: RequestParams = {}) =>
-      this.request<CategoryDto, any>({
+      this.request<CategoryDtoApiResult, any>({
         path: `/Categories/${id}`,
         method: "GET",
         format: "json",
@@ -372,12 +423,19 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name CategoriesUpdate
      * @request PUT:/Categories/{id}
      */
-    categoriesUpdate: (id: number, data: UpdateCategoryDto, params: RequestParams = {}) =>
-      this.request<void, any>({
+    categoriesUpdate: (
+      id: string,
+      data: UpdateCategoryDto,
+      query?: { categoryId?: number },
+      params: RequestParams = {},
+    ) =>
+      this.request<CategoryDtoApiResult, any>({
         path: `/Categories/${id}`,
         method: "PUT",
+        query: query,
         body: data,
         type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
@@ -389,9 +447,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request DELETE:/Categories/{id}
      */
     categoriesDelete: (id: number, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<CategoryDtoApiResult, any>({
         path: `/Categories/${id}`,
         method: "DELETE",
+        format: "json",
         ...params,
       }),
 
@@ -403,7 +462,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/Categories
      */
     categoriesList: (params: RequestParams = {}) =>
-      this.request<CategoryDto[], any>({
+      this.request<CategoryDtoIEnumerableApiResult, any>({
         path: `/Categories`,
         method: "GET",
         format: "json",
@@ -418,7 +477,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/Categories
      */
     categoriesCreate: (data: CreateCategoryDto, params: RequestParams = {}) =>
-      this.request<CategoryDto, any>({
+      this.request<CategoryDtoApiResult, any>({
         path: `/Categories`,
         method: "POST",
         body: data,
@@ -431,13 +490,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Categories
-     * @name BynameDelete
-     * @request DELETE:/Categories/byname/{categoryName}
+     * @name ByNameDelete
+     * @request DELETE:/Categories/byName/{categoryName}
      */
-    bynameDelete: (categoryName: string, params: RequestParams = {}) =>
-      this.request<void, any>({
-        path: `/Categories/byname/${categoryName}`,
+    byNameDelete: (categoryName: string, params: RequestParams = {}) =>
+      this.request<CategoryDtoApiResult, any>({
+        path: `/Categories/byName/${categoryName}`,
         method: "DELETE",
+        format: "json",
         ...params,
       }),
   };
@@ -450,7 +510,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/Transactions/{id}
      */
     transactionsDetail: (id: number, params: RequestParams = {}) =>
-      this.request<TransactionDto, any>({
+      this.request<TransactionDtoApiResult, any>({
         path: `/Transactions/${id}`,
         method: "GET",
         format: "json",
@@ -465,40 +525,9 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request DELETE:/Transactions/{id}
      */
     transactionsDelete: (id: number, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<TransactionDtoApiResult, any>({
         path: `/Transactions/${id}`,
         method: "DELETE",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Transactions
-     * @name TransactionsList
-     * @request GET:/Transactions
-     */
-    transactionsList: (params: RequestParams = {}) =>
-      this.request<TransactionDto[], any>({
-        path: `/Transactions`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Transactions
-     * @name TransactionsCreate
-     * @request POST:/Transactions
-     */
-    transactionsCreate: (data: CreateTransactionDto, params: RequestParams = {}) =>
-      this.request<TransactionDto, any>({
-        path: `/Transactions`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -511,10 +540,27 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/Transactions/ofUser
      */
     ofUserList: (query: { from: number; to: number; like?: string; when?: string }, params: RequestParams = {}) =>
-      this.request<TransactionDto[], any>({
+      this.request<TransactionDtoIEnumerableApiResult, any>({
         path: `/Transactions/ofUser`,
         method: "GET",
         query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Transactions
+     * @name TransactionsCreate
+     * @request POST:/Transactions
+     */
+    transactionsCreate: (data: CreateTransactionDto, params: RequestParams = {}) =>
+      this.request<TransactionDtoApiResult, any>({
+        path: `/Transactions`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
         format: "json",
         ...params,
       }),
@@ -528,7 +574,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/Users
      */
     usersList: (params: RequestParams = {}) =>
-      this.request<UserDto, any>({
+      this.request<UserDtoApiResult, any>({
         path: `/Users`,
         method: "GET",
         format: "json",
@@ -543,7 +589,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/Users
      */
     usersCreate: (data: CreateUserDto, params: RequestParams = {}) =>
-      this.request<UserDto, any>({
+      this.request<UserDtoApiResult, any>({
         path: `/Users`,
         method: "POST",
         body: data,
@@ -560,11 +606,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request PUT:/Users
      */
     usersUpdate: (data: UpdateUserDto, params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<UserDtoApiResult, any>({
         path: `/Users`,
         method: "PUT",
         body: data,
         type: ContentType.Json,
+        format: "json",
         ...params,
       }),
 
@@ -576,9 +623,10 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request DELETE:/Users
      */
     usersDelete: (params: RequestParams = {}) =>
-      this.request<void, any>({
+      this.request<UserDtoApiResult, any>({
         path: `/Users`,
         method: "DELETE",
+        format: "json",
         ...params,
       }),
 
@@ -590,7 +638,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/Users/summary
      */
     summaryList: (params: RequestParams = {}) =>
-      this.request<SummaryUnit[], any>({
+      this.request<SummaryUnitIEnumerableApiResult, any>({
         path: `/Users/summary`,
         method: "GET",
         format: "json",
@@ -605,7 +653,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/Users/total/month
      */
     totalMonthList: (params: RequestParams = {}) =>
-      this.request<Record<string, number>, any>({
+      this.request<StringDecimalDictionaryApiResult, any>({
         path: `/Users/total/month`,
         method: "GET",
         format: "json",
@@ -620,7 +668,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/Users/total/year
      */
     totalYearList: (params: RequestParams = {}) =>
-      this.request<Record<string, number>, any>({
+      this.request<StringDecimalDictionaryApiResult, any>({
         path: `/Users/total/year`,
         method: "GET",
         format: "json",
@@ -635,7 +683,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/Users/authenticate
      */
     authenticateCreate: (data: AuthenticateRequest, params: RequestParams = {}) =>
-      this.request<AuthenticateResponse, any>({
+      this.request<AuthenticateResponseApiResult, any>({
         path: `/Users/authenticate`,
         method: "POST",
         body: data,
@@ -652,7 +700,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/Users/refresh-token
      */
     refreshTokenCreate: (params: RequestParams = {}) =>
-      this.request<RefreshTokenResponse, any>({
+      this.request<RefreshTokenResponseApiResult, any>({
         path: `/Users/refresh-token`,
         method: "POST",
         format: "json",

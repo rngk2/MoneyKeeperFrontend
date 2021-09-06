@@ -57,9 +57,9 @@ export class TransactionsListComponent implements OnInit {
 
   private fetchTransactions(range: Range): void {
     this.transactionService.api.ofUserList({from: range.begin, to: range.end})
-      .subscribe(transactions => this.transactions =
+      .subscribe(res => this.transactions =
           this.transactionService.utils
-          .sortByDate([...this.transactions, ...transactions.data])
+          .sortByDate([...this.transactions, ...res.data.value])
           .filter(this.filter)
     );
   }
@@ -67,11 +67,11 @@ export class TransactionsListComponent implements OnInit {
   private fetchTransactionsWithPattern(range: Range): void {
     const pattern = `%${this.searchControl.value}%`;
     this.transactionService.api.ofUserList({from: range.begin, to: range.end, like: pattern})
-      .subscribe(transactions => {
+      .subscribe(res => {
         const append = range.begin === 0 ? new Set<Transaction>([]) : this.transactions;
         this.transactions =
           this.transactionService.utils
-            .sortByDate([...append, ...transactions.data])
+            .sortByDate([...append, ...res.data.value])
             .filter(this.filter);
       });
   }
