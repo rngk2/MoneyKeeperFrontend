@@ -1,7 +1,14 @@
 <mat-card class="card">
-  <mat-card-header (click)="edit_enable()">
+  <mat-card-header>
     <mat-card-title *ngIf="!edit">{{categoryName}}</mat-card-title>
-    <input class="card__edit-name" matInput #editInput *ngIf="edit" autocomplete="off" (blur)="edit_disable()">
+    <mat-icon *ngIf="!edit" (click)="edit_enable()">edit</mat-icon>
+    <input class="card__edit-name-input"
+       *ngIf="edit"
+       #editInput
+       matInput
+       autocomplete="off"
+       [ngModel]="categoryName"
+    >
   </mat-card-header>
 
   <mat-card-content>

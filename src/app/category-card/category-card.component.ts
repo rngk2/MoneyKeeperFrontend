@@ -26,6 +26,7 @@ export class CategoryCardComponent implements OnInit, OnDestroy {
 
   public state: 'collapsed' | 'expanded' = 'collapsed';
   public addTransaction = false;
+  public edit: boolean = false;
 
   @Input() public categoryName!: string;
   @Input() public categoryId!: number;
@@ -37,7 +38,6 @@ export class CategoryCardComponent implements OnInit, OnDestroy {
   private static readonly lastTransactionsMaxLength = 5;
 
   private readonly subs = new Subject<void>();
-  public edit: boolean = false;
 
   constructor(private readonly dialog: MatDialog,
               private readonly confirm: MatDialog,
@@ -83,17 +83,19 @@ export class CategoryCardComponent implements OnInit, OnDestroy {
   public edit_enable(): void {
     this.edit = true;
     this.changeDetector.detectChanges();
-    this.editInput.nativeElement.focus();
+    // this.editInput.nativeElement.focus();
   }
 
   public edit_save(): void {
-    this.categoryService.api.categoriesUpdate(this.categoryId, {
+    this.categoryService.api.categoriesUpdate(this.categoryId.toString(), {
       name:  this.editInput.nativeElement.value
+    }, {
+      categoryId: this.categoryId
     })
       .pipe(takeUntil(this.subs))
-      .subscribe(() => {
-        this.cardsStore.updateState();
-      });
+      .subscribe(
+        () => this.cardsStore.updateState(),
+        () => this.cardsStore.updateState());
   }
 
   public edit_disable(): void {

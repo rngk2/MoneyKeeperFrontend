@@ -10,26 +10,38 @@
     align-items: center;
   }
 
-  &__see-all {
+  &__when-expanded__see-all {
     font-size: 16px;
     font-weight: 500;
     cursor: pointer;
     letter-spacing: .4px;
   }
 
-  &__edit-name {
+  %card__title__font-style {
     font-family: 'Lato', sans-serif;
     font-weight: bold;
     letter-spacing: 1px;
     font-size: 23px;
   }
 
-  mat-card-title {
-    text-align: center;
-    font-family: 'Lato', sans-serif;
-    font-weight: bold;
-    letter-spacing: 1px;
-    font-size: 23px;
+  &__edit-name-input {
+    @extend %card__title__font-style;
+    width: 100%;
+  }
+
+  mat-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+
+    mat-card-title {
+      @extend %card__title__font-style;
+      text-align: center;
+    }
+
+    mat-icon {
+      font-size: 20px;
+    }
   }
 
   mat-card-content p.spend {

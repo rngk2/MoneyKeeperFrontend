@@ -62,8 +62,8 @@ export class CardsContainerComponent implements OnInit, OnDestroy {
     this.userService.api.summaryList()
       .pipe(takeUntil(this.subs))
       .subscribe(res => {
-        this.cache.save<TransactionDto[] | Transaction[]>(CACHE_TRANSACTIONS_PATH, res.data);
-        this.summarize(res.data);
+        this.cache.save<TransactionDto[] | Transaction[]>(CACHE_TRANSACTIONS_PATH, res.data.value);
+        this.summarize(res.data.value);
       });
   }
 
