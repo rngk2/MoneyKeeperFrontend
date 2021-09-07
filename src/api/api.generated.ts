@@ -400,6 +400,39 @@ export class HttpClient<SecurityDataType = unknown> {
  * @version v1
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  auth = {
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name AuthenticateCreate
+     * @request POST:/Auth/authenticate
+     */
+    authenticateCreate: (data: AuthenticateRequest, params: RequestParams = {}) =>
+      this.request<AuthenticateResponseApiResult, any>({
+        path: `/Auth/authenticate`,
+        method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Auth
+     * @name RefreshTokenCreate
+     * @request POST:/Auth/refresh-token
+     */
+    refreshTokenCreate: (params: RequestParams = {}) =>
+      this.request<RefreshTokenResponseApiResult, any>({
+        path: `/Auth/refresh-token`,
+        method: "POST",
+        format: "json",
+        ...params,
+      }),
+  };
   categories = {
     /**
      * No description
@@ -490,13 +523,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Categories
-     * @name ByNameDelete
-     * @request DELETE:/Categories/byName/{categoryName}
+     * @name CategoriesDelete2
+     * @request DELETE:/Categories
+     * @originalName categoriesDelete
+     * @duplicate
      */
-    byNameDelete: (categoryName: string, params: RequestParams = {}) =>
+    categoriesDelete2: (query?: { categoryName?: string }, params: RequestParams = {}) =>
       this.request<CategoryDtoApiResult, any>({
-        path: `/Categories/byName/${categoryName}`,
+        path: `/Categories`,
         method: "DELETE",
+        query: query,
         format: "json",
         ...params,
       }),
@@ -536,12 +572,15 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Transactions
-     * @name OfUserList
-     * @request GET:/Transactions/ofUser
+     * @name UserTransactionsList
+     * @request GET:/Transactions/user/transactions
      */
-    ofUserList: (query: { from: number; to: number; like?: string; when?: string }, params: RequestParams = {}) =>
+    userTransactionsList: (
+      query: { from: number; to: number; like?: string; when?: string },
+      params: RequestParams = {},
+    ) =>
       this.request<TransactionDtoIEnumerableApiResult, any>({
-        path: `/Transactions/ofUser`,
+        path: `/Transactions/user/transactions`,
         method: "GET",
         query: query,
         format: "json",
@@ -671,38 +710,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<StringDecimalDictionaryApiResult, any>({
         path: `/Users/total/year`,
         method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Users
-     * @name AuthenticateCreate
-     * @request POST:/Users/authenticate
-     */
-    authenticateCreate: (data: AuthenticateRequest, params: RequestParams = {}) =>
-      this.request<AuthenticateResponseApiResult, any>({
-        path: `/Users/authenticate`,
-        method: "POST",
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Users
-     * @name RefreshTokenCreate
-     * @request POST:/Users/refresh-token
-     */
-    refreshTokenCreate: (params: RequestParams = {}) =>
-      this.request<RefreshTokenResponseApiResult, any>({
-        path: `/Users/refresh-token`,
-        method: "POST",
         format: "json",
         ...params,
       }),

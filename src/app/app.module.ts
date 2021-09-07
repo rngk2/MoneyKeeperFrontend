@@ -51,7 +51,13 @@ import {cardsContainerReducer} from './store/cards-store/cards-container.reducer
 import {environment} from '../environments/environment'
 import {BASE_SERVER_URL} from './app.config'
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
+import {reducers} from "./store/reducers";
+import {EffectsModule} from "@ngrx/effects";
+import AuthEffects from "./store/user/auth.effects";
+import {authReducer} from "./store/user/user.reducers";
 
+
+// @ts-ignore
 @NgModule({
   declarations: [
     AppComponent,
@@ -89,7 +95,8 @@ import {StoreDevtoolsModule} from "@ngrx/store-devtools";
     NgxMatDatetimePickerModule,
     NgxMatNativeDateModule,
     InfiniteScrollModule,
-    StoreModule.forRoot({cards: cardsContainerReducer}),
+    StoreModule.forRoot({cards: cardsContainerReducer, auth: authReducer}),
+    EffectsModule.forRoot([AuthEffects]),
     StoreDevtoolsModule.instrument({
       name: 'MK App',
       logOnly: environment.production

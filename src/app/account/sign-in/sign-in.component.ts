@@ -2,6 +2,13 @@ import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import AuthService from '../../services/auth.service';
+import {Store} from "@ngrx/store";
+import {LogIn} from "../../store/user/user.actions";
+import {AuthState} from "../../store/user/user.reducers";
+
+interface  AppState {
+  authState: AuthState;
+}
 
 @Component({
   selector: 'sign-in-form',
@@ -14,7 +21,8 @@ export class SignInComponent {
 
   constructor(private readonly router: Router,
               private readonly fb: FormBuilder,
-              private readonly authService: AuthService) {
+              private readonly authService: AuthService,
+              private readonly store: Store<AppState>) {
     this.signInForm = this.fb.group({
       email: new FormControl('', [
         Validators.required
@@ -34,9 +42,13 @@ export class SignInComponent {
   }
 
   public submit(): void {
-    this.authService.logIn({
-      email: this.email?.value,
-      password: this.password?.value
-    }, () => this.router.navigate(['/wallet']));
+    this.store.dispatch(new LogIn({
+        email: this.email?.value,
+        password: this.password?.value
+      }));
+    // this.authService.logIn({
+    //   email: this.email?.value,
+    //   password: this.password?.value
+    // }, () => this.router.navigate(['/wallet']));
   }
 }
