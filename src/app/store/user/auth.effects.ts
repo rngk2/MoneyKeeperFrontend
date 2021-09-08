@@ -36,15 +36,13 @@ export default class AuthEffects {
     ), {dispatch: false}
   );
 
-  public readonly loginFailure = createEffect(() =>
+  public readonly logInFailure = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActionTypes.LOGIN_FAILURE),
       tap((action: LogInFailure) => {
-        console.log(action.payload)
         localStorage.setItem('currentUser', JSON.stringify(action.payload));
-       // this.router.navigate(['/wallet/categories']);
       })
-    )
+    ), {dispatch: false}
   );
 
 }
