@@ -47,7 +47,7 @@ import CardsContainerStore from './store/cards-store/cards-container.store';
 import {cardsContainerReducer} from './store/cards-store/cards-container.reducer';
 import {EffectsModule} from "@ngrx/effects";
 import AuthEffects from "./store/user/auth.effects";
-import {authReducer} from "./store/user/user.reducers";
+import {authReducer} from "./store/user/auth.reducers";
 import UserStore from "./store/user/user.store";
 import {appMetaReducers} from "./store/meta/meta";
 import {HydrationEffects} from "./store/meta/rehydration/hydration.effects";

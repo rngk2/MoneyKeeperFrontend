@@ -6,7 +6,7 @@ import User from "../../entities/user.entity";
 import {Router} from "@angular/router";
 import {IError} from "../../../api/api.generated";
 import {LOCALSTORAGE_USER_PATH} from "../../constants";
-import {AuthActions} from "./user.actions";
+import {AuthActions} from "./auth.actions";
 import UserService from "../../services/user.service";
 
 @Injectable()
@@ -44,6 +44,15 @@ export default class AuthEffects {
       ofType(AuthActions.LogInFailure),
       tap((payload) => {
         console.error(payload);
+      })
+    ), {dispatch: false}
+  );
+
+  public readonly logOut = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.LogOut),
+      tap(() => {
+        localStorage.removeItem(LOCALSTORAGE_USER_PATH);
       })
     ), {dispatch: false}
   );

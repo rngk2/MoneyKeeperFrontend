@@ -5,8 +5,7 @@ import {BASE_SERVER_URL} from '../../app.config';
 import UserService from '../../services/user.service';
 import {CreateUserDto} from '../../../api/api.generated';
 import {Subject} from "rxjs";
-import {AuthActions} from "../../store/user/user.actions";
-import {Store} from "@ngrx/store";
+import UserStore from "../../store/user/user.store";
 
 
 @Component({
@@ -24,7 +23,7 @@ export class SignUpComponent implements OnDestroy {
               private readonly fb: FormBuilder,
               private readonly userService: UserService,
               @Inject(BASE_SERVER_URL) private readonly serverUrl: string,
-              private readonly userStore: Store<any>) {
+              private readonly userStore: UserStore) {
     this.signUpForm = this.fb.group({
       firstName: new FormControl('', [
         Validators.required
@@ -59,7 +58,7 @@ export class SignUpComponent implements OnDestroy {
     return this.signUpForm.get('password');
   }
 
-  public submit(): void {
+  public signUp(): void {
     const user: CreateUserDto = {
       firstName: this.firstName?.value,
       lastName: this.lastName?.value,
@@ -67,9 +66,7 @@ export class SignUpComponent implements OnDestroy {
       password: this.password?.value
     };
 
-    // this.userService.api.usersCreate(user);
-    console.log('inSubmit');
-    this.userStore.dispatch(AuthActions.SignUp(user));
+    this.userStore.signUp(user);
   }
 
   public ngOnDestroy(): void {
