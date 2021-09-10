@@ -44,10 +44,8 @@ import CacheService from './services/cache.service';
 
 // store
 import CardsContainerStore from './store/cards-store/cards-container.store';
-import {cardsContainerReducer} from './store/cards-store/cards-container.reducer';
 import {EffectsModule} from "@ngrx/effects";
 import AuthEffects from "./store/user/auth.effects";
-import {authReducer} from "./store/user/auth.reducers";
 import UserStore from "./store/user/user.store";
 import {appMetaReducers} from "./store/meta/meta";
 import {HydrationEffects} from "./store/meta/rehydration/hydration.effects";
@@ -55,6 +53,7 @@ import {HydrationEffects} from "./store/meta/rehydration/hydration.effects";
 // app config
 import {environment} from '../environments/environment';
 import {BASE_SERVER_URL} from './app.config';
+import {appReducers} from "./store/app.reducers";
 
 @NgModule({
   declarations: [
@@ -93,7 +92,7 @@ import {BASE_SERVER_URL} from './app.config';
     NgxMatDatetimePickerModule,
     NgxMatNativeDateModule,
     InfiniteScrollModule,
-    StoreModule.forRoot({cards: cardsContainerReducer, auth: authReducer}, {metaReducers: appMetaReducers}),
+    StoreModule.forRoot(appReducers, {metaReducers: appMetaReducers}),
     EffectsModule.forRoot([AuthEffects, HydrationEffects]),
     MatMenuModule,
     MatProgressSpinnerModule
