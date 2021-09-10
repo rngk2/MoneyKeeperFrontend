@@ -30,8 +30,7 @@ export class AddCategoryFormComponent implements OnDestroy {
               private readonly cardsStore: CardsContainerStore,
               private readonly categoryService: CategoryService,
               private readonly userService: UserService,
-              private readonly cache: CacheService,
-              private readonly userStore: UserStore) {
+              private readonly cache: CacheService) {
   }
 
   public addCategory(): void {
@@ -39,19 +38,16 @@ export class AddCategoryFormComponent implements OnDestroy {
       return;
     }
 
-    this.userStore.getUser().subscribe(user => {
-      this.categoryService.api.categoriesCreate({
+    this.categoryService.api.categoriesCreate({
         name: this.categoryService.utils.normalizeNameString(this.data.categoryName),
-        userId: user?.id!
       }).pipe(takeUntil(this.subs))
         .subscribe(res => {
-          if (!res.error) {
+          if (!res.data.error) {
             this.cache.remove(PROFILE_PAGE_CACHE_FRESH_CHECK_PATH);
             this.cache.remove(CACHE_TRANSACTIONS_PATH);
             this.cardsStore.updateState();
           }
         });
-    });
 
     this.dialogRef.close();
   }

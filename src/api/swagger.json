@@ -866,17 +866,12 @@
       },
       "CreateCategoryDto": {
         "required": [
-          "name",
-          "userId"
+          "name"
         ],
         "type": "object",
         "properties": {
           "name": {
             "type": "string"
-          },
-          "userId": {
-            "type": "integer",
-            "format": "int32"
           }
         },
         "additionalProperties": false
@@ -886,15 +881,10 @@
           "amount",
           "categoryId",
           "comment",
-          "timestamp",
-          "userId"
+          "timestamp"
         ],
         "type": "object",
         "properties": {
-          "userId": {
-            "type": "integer",
-            "format": "int32"
-          },
           "categoryId": {
             "type": "integer",
             "format": "int32"

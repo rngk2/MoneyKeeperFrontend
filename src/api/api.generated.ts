@@ -49,15 +49,9 @@ export interface CategoryDtoIEnumerableApiResult {
 
 export interface CreateCategoryDto {
   name: string;
-
-  /** @format int32 */
-  userId: number;
 }
 
 export interface CreateTransactionDto {
-  /** @format int32 */
-  userId: number;
-
   /** @format int32 */
   categoryId: number;
 
