@@ -1,5 +1,4 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import AuthService from '../services/auth.service';
 import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
 import UserStore from "../store/user/user.store";
@@ -15,8 +14,7 @@ export class NavbarComponent implements OnInit, OnDestroy  {
 
   private readonly subs = new Subject<void>();
 
-  constructor(private readonly userStore: UserStore,
-              private readonly authService: AuthService,) {
+  constructor(private readonly userStore: UserStore) {
   }
 
   public ngOnInit(): void {
@@ -27,8 +25,8 @@ export class NavbarComponent implements OnInit, OnDestroy  {
     });
   }
 
-  public signOut(): void {
-    this.authService.logOut();
+  public logOut(): void {
+    this.userStore.logOut();
   }
 
   public ngOnDestroy(): void {
