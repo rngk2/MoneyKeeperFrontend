@@ -1,17 +1,19 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import CardsContainerStore from '../../store/cards-store/cards-container.store';
 import UserService from '../../services/user.service';
 import TransactionService from '../../services/transaction.service';
 import CacheService from '../../services/cache.service';
 import {CACHE_TRANSACTIONS_PATH, PROFILE_PAGE_CACHE_FRESH_CHECK_PATH} from "../../constants";
+import UserStore from "../../store/user/user.store";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'add-transaction-form',
   templateUrl: './add-transaction-form.component.html',
   styleUrls: ['./add-transaction-form.component.scss']
 })
-export class AddTransactionFormComponent {
+export class AddTransactionFormComponent implements OnDestroy {
 
   public amount!: number;
   public comment!: string;
@@ -23,6 +25,8 @@ export class AddTransactionFormComponent {
 
   @Output() public onSubmit = new EventEmitter();
 
+  private readonly subs = new Subject<void>();
+
   constructor(private readonly cardsStore: CardsContainerStore,
               private readonly userService: UserService,
               private readonly transactionService: TransactionService,
@@ -30,16 +34,22 @@ export class AddTransactionFormComponent {
 
   public addTransaction(): void {
     this.transactionService.api.transactionsCreate({
-      userId: this.userService.currentUserService.getCurrentUser()?.id!,
-      categoryId: this.categoryId,
-      amount: this.amount,
-      timestamp: this.timestampControl.value,
-      comment: this.comment
-    }).subscribe(() => {
-      this.cache.remove(PROFILE_PAGE_CACHE_FRESH_CHECK_PATH);
-      this.cache.remove(CACHE_TRANSACTIONS_PATH);
-      this.cardsStore.updateState()
-      this.onSubmit.emit();
-    });
+        categoryId: this.categoryId,
+        amount: this.amount,
+        timestamp: this.timestampControl.value,
+        comment: this.comment
+      }).subscribe((res) => {
+        if (!res.data.error) {
+          this.cache.remove(PROFILE_PAGE_CACHE_FRESH_CHECK_PATH);
+          this.cache.remove(CACHE_TRANSACTIONS_PATH);
+          this.cardsStore.updateState()
+        }
+        this.onSubmit.emit();
+      });
+  }
+
+  public ngOnDestroy(): void {
+    this.subs.next();
+    this.subs.unsubscribe();
   }
 }

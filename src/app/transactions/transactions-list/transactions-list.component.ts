@@ -8,7 +8,7 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import TransactionService from '../../services/transaction.service';
 import {TransactionDto} from '../../../api/api.generated';
 
-class RangeOffsetController {
+export class RangeOffsetController {
 
   constructor(private beginOffset: number = 0,
               private step: number = 20) {
@@ -56,7 +56,7 @@ export class TransactionsListComponent implements OnInit {
   }
 
   private fetchTransactions(range: Range): void {
-    this.transactionService.api.ofUserList({from: range.begin, to: range.end})
+    this.transactionService.api.userTransactionsList({from: range.begin, to: range.end})
       .subscribe(res => this.transactions =
           this.transactionService.utils
           .sortByDate([...this.transactions, ...res.data.value])
@@ -66,7 +66,7 @@ export class TransactionsListComponent implements OnInit {
 
   private fetchTransactionsWithPattern(range: Range): void {
     const pattern = `%${this.searchControl.value}%`;
-    this.transactionService.api.ofUserList({from: range.begin, to: range.end, like: pattern})
+    this.transactionService.api.userTransactionsList({from: range.begin, to: range.end, like: pattern})
       .subscribe(res => {
         const append = range.begin === 0 ? new Set<Transaction>([]) : this.transactions;
         this.transactions =

@@ -6,13 +6,56 @@ import {AddCategoryFormComponent} from '../add-category-form/add-category-form.c
 import {BASE_SERVER_URL} from '../app.config';
 import CardsContainerStore from '../store/cards-store/cards-container.store';
 import {AddEarningFormComponent} from '../transactions/add-earning-form/add-earning-form.component';
-import {BehaviorSubject, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import TransactionService from '../services/transaction.service';
 import CategoryService from '../services/category.service';
 import {TransactionDto} from '../../api/api.generated';
 import {takeUntil} from "rxjs/operators";
 import CacheService from "../services/cache.service";
 import {CACHE_TRANSACTIONS_PATH} from "../constants";
+import {RangeOffsetController} from "../transactions/transactions-list/transactions-list.component";
+import {Range} from "../utils/Utils";
+
+export class LazyFetch<E> {
+
+  private elements = new BehaviorSubject<E[]>([]);
+
+  private range: RangeOffsetController;
+
+  constructor(private readonly bundleSize: number,
+              private readonly fetchFunc: (range: Range, ...args: any[]) => Observable<E[]>,
+              private readonly fetchFuncArgs: any[],
+              private readonly dataProcessingFuncs: ( (data: E[]) => E[] )[]) {
+    this.range = new RangeOffsetController(0, bundleSize);
+  }
+
+  public resetRange(): void {
+    this.range = new RangeOffsetController(0, this.bundleSize);
+  }
+
+  public getNext(): void {
+    this.fetchFunc(this.range.getNextRange(), this.fetchFuncArgs)
+      .subscribe(elements => {
+        const newSet = this.elements.value;
+        for (const e of elements) {
+          newSet.push(e);
+        }
+        for (const func of this.dataProcessingFuncs) {
+          func(newSet);
+        }
+
+        this.elements.next(newSet);
+      })
+  }
+
+  public getElementsAsObservable(): Observable<E[]> {
+    return this.elements.asObservable();
+  }
+
+  public getCurrentElements(): E[] {
+    return this.elements.value;
+  }
+}
 
 @Component({
   selector: 'cards-container',

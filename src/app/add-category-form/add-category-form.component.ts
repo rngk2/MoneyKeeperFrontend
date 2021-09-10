@@ -7,6 +7,7 @@ import CacheService from '../services/cache.service';
 import {CACHE_TRANSACTIONS_PATH, PROFILE_PAGE_CACHE_FRESH_CHECK_PATH} from "../constants";
 import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
+import UserStore from "../store/user/user.store";
 
 interface DialogData {
   categoryName: string
@@ -38,16 +39,15 @@ export class AddCategoryFormComponent implements OnDestroy {
     }
 
     this.categoryService.api.categoriesCreate({
-      name: this.categoryService.utils.normalizeNameString(this.data.categoryName),
-      userId: this.userService.currentUserService.getCurrentUser()?.id!
-    }).pipe(takeUntil(this.subs))
-      .subscribe(res => {
-        if (!res.error) {
-          this.cache.remove(PROFILE_PAGE_CACHE_FRESH_CHECK_PATH);
-          this.cache.remove(CACHE_TRANSACTIONS_PATH);
-          this.cardsStore.updateState();
-        }
-      });
+        name: this.categoryService.utils.normalizeNameString(this.data.categoryName),
+      }).pipe(takeUntil(this.subs))
+        .subscribe(res => {
+          if (!res.data.error) {
+            this.cache.remove(PROFILE_PAGE_CACHE_FRESH_CHECK_PATH);
+            this.cache.remove(CACHE_TRANSACTIONS_PATH);
+            this.cardsStore.updateState();
+          }
+        });
 
     this.dialogRef.close();
   }
