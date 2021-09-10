@@ -24,10 +24,7 @@ export default class UserStore {
   }
 
   public logIn(credentials: {email: string, password: string}): void {
-    this.dispatch(AuthActions.LogIn({
-      email: credentials.email,
-      password: credentials.password
-    }));
+    this.dispatch(AuthActions.LogIn(credentials));
   }
 
   public signUp(user: CreateUserDto): void {
