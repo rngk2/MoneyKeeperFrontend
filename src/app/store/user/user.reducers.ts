@@ -1,39 +1,14 @@
-import {AuthActions, AuthActionTypes, LogInSuccess} from "./user.actions";
-import {Action, createAction, createReducer, on, State} from "@ngrx/store";
-import User from "../../entities/user.entity";
+import {Action, createReducer, on} from "@ngrx/store";
+import {AuthActions} from "./user.actions";
+import AuthState from "./auth.state";
 
-export interface AuthState {
-  user?: User;
-  errorMessage?: string;
-}
-
-export const initialState: AuthState = {
-  user: undefined,
-  errorMessage: undefined
-};
-
+const initialState = { };
 const _authReducer = createReducer(
   initialState,
-  on(createAction(AuthActionTypes.LOGIN_SUCCESS), (state, updatedValue) => ({ ...state, prop: updatedValue }))
-)
+  on(AuthActions.LogInSuccess, (state, updatedValue) => ({ user: updatedValue})),
+  on(AuthActions.LogInFailure, (state, updatedValue) => ({ error: updatedValue})),
+  on(AuthActions.SignUpSuccess, (state, updatedValue) => ({ user: updatedValue})),
+  on(AuthActions.SignUpFailure, (state, updatedValue) => ({ error: updatedValue}))
+);
 
-export const authReducer = (state: any, action: Action) => _authReducer(state, action);
-//
-// export const authReducer = (state: User | undefined = initialState, action: AuthActions) => {
-//   switch (action.type) {
-//     case AuthActionTypes.LOGIN_SUCCESS:
-//       return {
-//         ...state,
-//         ...action.payload
-//       };
-//
-//     case AuthActionTypes.LOGIN_FAILURE:
-//       return {
-//         ...state,
-//         ...action.payload
-//       };
-//
-//     default:
-//       return state;
-//   }
-// }
+export const authReducer = (state: AuthState, action: Action) => _authReducer(state, action);

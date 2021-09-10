@@ -8,7 +8,7 @@ import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import TransactionService from '../../services/transaction.service';
 import {TransactionDto} from '../../../api/api.generated';
 
-class RangeOffsetController {
+export class RangeOffsetController {
 
   constructor(private beginOffset: number = 0,
               private step: number = 20) {

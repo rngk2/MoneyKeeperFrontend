@@ -1,28 +1,29 @@
-import {Action} from "@ngrx/store";
+import {createAction, props} from "@ngrx/store";
 import User from "../../entities/user.entity";
+import {CreateUserDto, IError} from "../../../api/api.generated";
 
 export enum AuthActionTypes {
   LOGIN = '[Auth] Login',
   LOGIN_SUCCESS = '[Auth] Login Success',
-  LOGIN_FAILURE = '[Auth] Login Failure'
+  LOGIN_FAILURE = '[Auth] Login Failure',
+  SIGNUP = '[Auth] Signup',
+  SIGNUP_SUCCESS = '[Auth] Signup Success',
+  SIGNUP_FAILURE = '[Auth] Signup Failure'
 }
 
-export class LogIn implements Action {
-  public readonly type: string = AuthActionTypes.LOGIN;
-  constructor(public readonly payload: {email: string, password: string}) { }
-}
+const LogIn = createAction(AuthActionTypes.LOGIN, props<{email: string, password: string}>());
+const LogInSuccess = createAction(AuthActionTypes.LOGIN_SUCCESS, props<User>());
+const LogInFailure = createAction(AuthActionTypes.LOGIN_FAILURE, props<IError>());
 
-export class LogInSuccess implements Action {
-  public readonly type: string = AuthActionTypes.LOGIN_SUCCESS;
-  constructor(public readonly payload: User) { }
-}
+const SignUp = createAction(AuthActionTypes.SIGNUP, props<CreateUserDto>());
+const SignUpSuccess = createAction(AuthActionTypes.SIGNUP_SUCCESS, props<User>());
+const SignUpFailure = createAction(AuthActionTypes.SIGNUP_FAILURE, props<IError>());
 
-export class LogInFailure implements Action {
-  public readonly type: string = AuthActionTypes.LOGIN_FAILURE;
-  constructor(public readonly payload: {error: string}) { }
-}
-
-export type AuthActions =
-  | LogIn
-  | LogInSuccess
-  | LogInFailure;
+export const AuthActions = {
+  LogIn,
+  LogInSuccess,
+  LogInFailure,
+  SignUp,
+  SignUpSuccess,
+  SignUpFailure
+};

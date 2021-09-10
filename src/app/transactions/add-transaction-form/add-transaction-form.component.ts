@@ -5,6 +5,7 @@ import UserService from '../../services/user.service';
 import TransactionService from '../../services/transaction.service';
 import CacheService from '../../services/cache.service';
 import {CACHE_TRANSACTIONS_PATH, PROFILE_PAGE_CACHE_FRESH_CHECK_PATH} from "../../constants";
+import UserStore from "../../store/user/user.store";
 
 @Component({
   selector: 'add-transaction-form',
@@ -26,20 +27,23 @@ export class AddTransactionFormComponent {
   constructor(private readonly cardsStore: CardsContainerStore,
               private readonly userService: UserService,
               private readonly transactionService: TransactionService,
-              private readonly cache: CacheService) { }
+              private readonly cache: CacheService,
+              private readonly userStore: UserStore) { }
 
   public addTransaction(): void {
-    this.transactionService.api.transactionsCreate({
-      userId: this.userService.currentUserService.getCurrentUser()?.id!,
-      categoryId: this.categoryId,
-      amount: this.amount,
-      timestamp: this.timestampControl.value,
-      comment: this.comment
-    }).subscribe(() => {
-      this.cache.remove(PROFILE_PAGE_CACHE_FRESH_CHECK_PATH);
-      this.cache.remove(CACHE_TRANSACTIONS_PATH);
-      this.cardsStore.updateState()
-      this.onSubmit.emit();
-    });
+    this.userStore.getUser().subscribe(user => {
+      this.transactionService.api.transactionsCreate({
+        userId: user?.id!,
+        categoryId: this.categoryId,
+        amount: this.amount,
+        timestamp: this.timestampControl.value,
+        comment: this.comment
+      }).subscribe(() => {
+        this.cache.remove(PROFILE_PAGE_CACHE_FRESH_CHECK_PATH);
+        this.cache.remove(CACHE_TRANSACTIONS_PATH);
+        this.cardsStore.updateState()
+        this.onSubmit.emit();
+      });
+    })
   }
 }

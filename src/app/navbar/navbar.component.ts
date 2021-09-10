@@ -1,9 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import UserService from '../services/user.service';
-import User from '../entities/user.entity';
 import AuthService from '../services/auth.service';
 import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
+import UserStore from "../store/user/user.store";
 
 @Component({
   selector: 'navbar',
@@ -16,14 +15,14 @@ export class NavbarComponent implements OnInit, OnDestroy  {
 
   private readonly subs = new Subject<void>();
 
-  constructor(private readonly userService: UserService,
-              private readonly authService: AuthService) {
+  constructor(private readonly userStore: UserStore,
+              private readonly authService: AuthService,) {
   }
 
   public ngOnInit(): void {
-    this.userService.currentUserService.getCurrentUserAsObservable()
+    this.userStore.getUser()
       .pipe(takeUntil(this.subs))
-      .subscribe((user: User | null) => {
+      .subscribe((user) => {
         this.loggedIn = !!user;
     });
   }

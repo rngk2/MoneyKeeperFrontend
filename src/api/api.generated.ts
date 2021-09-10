@@ -21,7 +21,6 @@ export interface AuthenticateResponse {
   lastName?: string | null;
   email?: string | null;
   jwtToken?: string | null;
-  refreshToken?: string | null;
 }
 
 export interface AuthenticateResponseApiResult {

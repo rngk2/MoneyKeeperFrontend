@@ -6,6 +6,7 @@ import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import CacheService from '../services/cache.service'
 import {PROFILE_PAGE_CACHE_FRESH_CHECK_PATH} from "../constants";
 import {takeUntil} from "rxjs/operators";
+import UserStore from "../store/user/user.store";
 
 @Component({
   selector: 'profile-page',
@@ -14,7 +15,7 @@ import {takeUntil} from "rxjs/operators";
 })
 export class ProfilePageComponent implements OnInit, OnDestroy {
 
-  public user: Observable<User | null>
+  public user: Observable<User | undefined>
 
   public earnedForMonth: number = 0;
 
@@ -33,8 +34,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   private static readonly CACHE_TOTAL_YEAR_PATH = 'profile-page__data__total-year';
 
   constructor(private readonly userService: UserService,
-              private readonly cache: CacheService) {
-    this.user =  userService.currentUserService.getCurrentUserAsObservable()
+              private readonly cache: CacheService,
+              private readonly userStore: UserStore) {
+    this.user =  this.userStore.getUser();
   }
 
   ngOnInit(): void {

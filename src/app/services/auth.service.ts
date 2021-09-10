@@ -6,6 +6,7 @@ import {AuthApi} from "../../api/api.interfaces";
 import {convertToObserved, Observed} from "../utils/Utils";
 import ApiConnector from "../../api/api.connector";
 import {map} from "rxjs/operators";
+import {IError} from "../../api/api.generated";
 
 @Injectable()
 export default class AuthService {
@@ -22,24 +23,20 @@ export default class AuthService {
   }
 
 
-  public logIn(credentials: { email: string, password: string }, cb?: () => void): Observable<User | {error: string}> {
+  public logIn(credentials: { email: string, password: string }, cb?: () => void): Observable<User | IError> {
     return this.api.authenticateCreate({
       ...(credentials),
     }).pipe(map(res => {
         if (res.data.error) {
           return res.data.error;
         }
-
         const user: User = res.data.value as User;
-        // this.userService.currentUserService.setCurrentUser(user);
         this.startRefreshTokenTimer();
-        //cb && cb();
         return user;
       }));
   }
 
   public logOut(): void {
-    this.userService.currentUserService.removeCurrentUser();
     sessionStorage.clear();
     this.stopRefreshTokenTimer();
   }
@@ -47,7 +44,6 @@ export default class AuthService {
   public refreshToken(): void {
     this.api.refreshTokenCreate()
       .subscribe(res => {
-        this.userService.currentUserService.setCurrentUser({...this.userService.currentUserService.getCurrentUser(), jwtToken: res.data.value.newToken as string});
         this.startRefreshTokenTimer();
       });
   }
