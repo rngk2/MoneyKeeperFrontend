@@ -25,6 +25,7 @@
     "@material/fab": "^12.0.0",
     "@ngrx/effects": "^12.4.0",
     "@ngrx/store": "^12.4.0",
+    "@ngrx/store-devtools": "^12.4.0",
     "chart.js": "^2.9.3",
     "ng2-charts": "^2.2.3",
     "ngx-infinite-scroll": "^10.0.1",

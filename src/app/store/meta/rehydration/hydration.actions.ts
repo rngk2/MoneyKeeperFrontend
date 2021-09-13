@@ -1,5 +1,5 @@
 import {createAction, props} from "@ngrx/store";
-import AppState from "../../state";
+import AppState from "../../app.state";
 
 export enum HydrationActionTypes {
   HYDRATE = '[Hydration] Hydrate',

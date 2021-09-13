@@ -297,7 +297,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/Categories/byName/{categoryName}": {
       "delete": {
         "tags": [
           "Categories"
@@ -305,7 +307,8 @@
         "parameters": [
           {
             "name": "categoryName",
-            "in": "query",
+            "in": "path",
+            "required": true,
             "schema": {
               "type": "string"
             }

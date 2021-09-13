@@ -43,7 +43,7 @@ import ApiConnector from '../api/api.connector';
 import CacheService from './services/cache.service';
 
 // store
-import CardsContainerStore from './store/cards-store/cards-container.store';
+import CardsStore from './store/cards/cards.store';
 import {EffectsModule} from "@ngrx/effects";
 import AuthEffects from "./store/user/auth.effects";
 import UserStore from "./store/user/user.store";
@@ -54,6 +54,8 @@ import {HydrationEffects} from "./store/meta/rehydration/hydration.effects";
 import {environment} from '../environments/environment';
 import {BASE_SERVER_URL} from './app.config';
 import {appReducers} from "./store/app.reducers";
+import {StoreDevtoolsModule} from "@ngrx/store-devtools";
+import {CardsEffects} from "./store/cards/cards.effects";
 
 @NgModule({
   declarations: [
@@ -93,7 +95,12 @@ import {appReducers} from "./store/app.reducers";
     NgxMatNativeDateModule,
     InfiniteScrollModule,
     StoreModule.forRoot(appReducers, {metaReducers: appMetaReducers}),
-    EffectsModule.forRoot([AuthEffects, HydrationEffects]),
+    EffectsModule.forRoot([AuthEffects, HydrationEffects, CardsEffects]),
+    // StoreDevtoolsModule.instrument({
+    //   maxAge: 25,
+    //   logOnly: environment.production,
+    //   autoPause: true,
+    // }),
     MatMenuModule,
     MatProgressSpinnerModule
   ],
@@ -104,7 +111,7 @@ import {appReducers} from "./store/app.reducers";
     TransactionService,
     AuthService,
     {provide: BASE_SERVER_URL, useValue: environment.serverUrl},
-    CardsContainerStore,
+    CardsStore,
     UserStore,
     CacheService,
   ],

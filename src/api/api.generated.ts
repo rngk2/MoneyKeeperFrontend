@@ -516,16 +516,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Categories
-     * @name CategoriesDelete2
-     * @request DELETE:/Categories
-     * @originalName categoriesDelete
-     * @duplicate
+     * @name ByNameDelete
+     * @request DELETE:/Categories/byName/{categoryName}
      */
-    categoriesDelete2: (query?: { categoryName?: string }, params: RequestParams = {}) =>
+    byNameDelete: (categoryName: string, params: RequestParams = {}) =>
       this.request<CategoryDtoApiResult, any>({
-        path: `/Categories`,
+        path: `/Categories/byName/${categoryName}`,
         method: "DELETE",
-        query: query,
         format: "json",
         ...params,
       }),

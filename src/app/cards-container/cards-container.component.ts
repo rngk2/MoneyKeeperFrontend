@@ -4,7 +4,7 @@ import UserService from '../services/user.service';
 import {MatDialog} from '@angular/material/dialog';
 import {AddCategoryFormComponent} from '../add-category-form/add-category-form.component';
 import {BASE_SERVER_URL} from '../app.config';
-import CardsContainerStore from '../store/cards-store/cards-container.store';
+import CardsStore from '../store/cards/cards.store';
 import {AddEarningFormComponent} from '../transactions/add-earning-form/add-earning-form.component';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import TransactionService from '../services/transaction.service';
@@ -15,6 +15,7 @@ import CacheService from "../services/cache.service";
 import {CACHE_TRANSACTIONS_PATH} from "../constants";
 import {RangeOffsetController} from "../transactions/transactions-list/transactions-list.component";
 import {Range} from "../utils/Utils";
+import {Summary} from "../store/cards/types";
 
 export class LazyFetch<E> {
 
@@ -74,7 +75,7 @@ export class CardsContainerComponent implements OnInit, OnDestroy {
   constructor(private readonly dialog: MatDialog,
               private readonly userService: UserService,
               @Inject(BASE_SERVER_URL) private readonly serverUrl: string,
-              private readonly cardsStore: CardsContainerStore,
+              private readonly cardsStore: CardsStore,
               private readonly transactionsService: TransactionService,
               private readonly categoryService: CategoryService,
               private readonly cache: CacheService) { }
@@ -86,19 +87,10 @@ export class CardsContainerComponent implements OnInit, OnDestroy {
         this.categoriesNames.next(this.getCategoriesNames());
         this.amountForCategories.next(this.getAmountForCategories(this.getCategoriesNames()));
     });
-
-    this.cardsStore.getState()
+    this.cardsStore.getSummary()
       .pipe(takeUntil(this.subs))
-      .subscribe(() => {
-        this.fetchSummary();
-      });
-
-    if (this.cache.isFresh(CACHE_TRANSACTIONS_PATH)) {
-      this.fetchSummary_cached();
-      return;
-    }
-
-    this.fetchSummary();
+      .subscribe(data => this.summarize(data));
+    this.cardsStore.emit();
   }
 
   public fetchSummary(): void {
@@ -114,7 +106,10 @@ export class CardsContainerComponent implements OnInit, OnDestroy {
     this.summarize(this.cache.get<Transaction[] | TransactionDto[]>(CACHE_TRANSACTIONS_PATH)!);
   }
 
-  private summarize(transactions: Transaction[] | TransactionDto[]): void {
+  private summarize(transactions: Summary | undefined): void {
+    if (!transactions) {
+      return;
+    }
     let category_transactions = new Map<string, TransactionDto[]>();
     for (const transaction of transactions) {
       if (transaction.categoryName === Transaction.inputTransactionName) {

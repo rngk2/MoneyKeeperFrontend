@@ -93,7 +93,4 @@ export default class AuthEffects {
       })
     ), {dispatch: false}
   );
-
-
-
 }

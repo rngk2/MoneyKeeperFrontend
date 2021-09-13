@@ -4,7 +4,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations'
 import {MatDialog} from '@angular/material/dialog'
 import {AboutTransactionComponent} from '../transactions/about-transaction/about-transaction.component'
 import {ConfirmPopupComponent} from '../confirm-popup/confirm-popup.component'
-import CardsContainerStore from '../store/cards-store/cards-container.store'
+import CardsStore from '../store/cards/cards.store'
 import CategoryService from '../services/category.service'
 import {Subject} from 'rxjs'
 import {takeUntil} from 'rxjs/operators'
@@ -41,7 +41,7 @@ export class CategoryCardComponent implements OnInit, OnDestroy {
 
   constructor(private readonly dialog: MatDialog,
               private readonly confirm: MatDialog,
-              private readonly cardsStore: CardsContainerStore,
+              private readonly cardsStore: CardsStore,
               private readonly categoryService: CategoryService,
               private readonly changeDetector: ChangeDetectorRef) {
   }

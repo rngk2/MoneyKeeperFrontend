@@ -1,5 +1,5 @@
 import {createFeatureSelector, createSelector, Store} from "@ngrx/store";
-import AppState from "../state";
+import AppState from "../app.state";
 import AuthState from "./auth.state";
 import {Injectable} from "@angular/core";
 import User from "../../entities/user.entity";
@@ -7,8 +7,9 @@ import {Observable} from "rxjs";
 import {TypedAction} from "@ngrx/store/src/models";
 import {AuthActions} from "./auth.actions";
 import {CreateUserDto} from "../../../api/api.generated";
+import {AppFeatures} from "../app.features";
 
-const selectAuthFeature = createFeatureSelector<AppState, AuthState>('auth');
+const selectAuthFeature = createFeatureSelector<AppState, AuthState>(AppFeatures.Auth);
 const authSelector = createSelector(
   selectAuthFeature,
   (state) => state.user

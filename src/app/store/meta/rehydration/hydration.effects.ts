@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType, OnInitEffects} from "@ngrx/effects";
 import {Action, Store} from "@ngrx/store";
-import AppState from "../../state";
+import AppState from "../../app.state";
 import {distinctUntilChanged, map, switchMap, tap} from "rxjs/operators";
 import {HydrationActions} from "./hydration.actions";
 
