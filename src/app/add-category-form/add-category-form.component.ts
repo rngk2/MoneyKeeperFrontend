@@ -1,13 +1,12 @@
 import {Component, OnDestroy} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import UserService from '../services/user.service';
-import CardsContainerStore from '../store/cards-store/cards-container.store';
+import CardsStore from '../store/cards/cards.store';
 import CategoryService from '../services/category.service';
 import CacheService from '../services/cache.service';
-import {CACHE_TRANSACTIONS_PATH, PROFILE_PAGE_CACHE_FRESH_CHECK_PATH} from "../constants";
+import {CACHE_TRANSACTIONS_PATH} from "../constants";
 import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
-import UserStore from "../store/user/user.store";
 
 interface DialogData {
   categoryName: string
@@ -27,7 +26,7 @@ export class AddCategoryFormComponent implements OnDestroy {
   private readonly subs = new Subject<void>();
 
   constructor(private readonly dialogRef: MatDialogRef<AddCategoryFormComponent>,
-              private readonly cardsStore: CardsContainerStore,
+              private readonly cardsStore: CardsStore,
               private readonly categoryService: CategoryService,
               private readonly userService: UserService,
               private readonly cache: CacheService) {
@@ -43,7 +42,6 @@ export class AddCategoryFormComponent implements OnDestroy {
       }).pipe(takeUntil(this.subs))
         .subscribe(res => {
           if (!res.data.error) {
-            this.cache.remove(PROFILE_PAGE_CACHE_FRESH_CHECK_PATH);
             this.cache.remove(CACHE_TRANSACTIONS_PATH);
             this.cardsStore.updateState();
           }

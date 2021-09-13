@@ -1,11 +1,10 @@
 import {Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import CardsContainerStore from '../../store/cards-store/cards-container.store';
+import CardsStore from '../../store/cards/cards.store';
 import UserService from '../../services/user.service';
 import TransactionService from '../../services/transaction.service';
 import CacheService from '../../services/cache.service';
-import {CACHE_TRANSACTIONS_PATH, PROFILE_PAGE_CACHE_FRESH_CHECK_PATH} from "../../constants";
-import UserStore from "../../store/user/user.store";
+import {CACHE_TRANSACTIONS_PATH} from "../../constants";
 import {Subject} from "rxjs";
 
 @Component({
@@ -27,7 +26,7 @@ export class AddTransactionFormComponent implements OnDestroy {
 
   private readonly subs = new Subject<void>();
 
-  constructor(private readonly cardsStore: CardsContainerStore,
+  constructor(private readonly cardsStore: CardsStore,
               private readonly userService: UserService,
               private readonly transactionService: TransactionService,
               private readonly cache: CacheService) { }
@@ -40,7 +39,6 @@ export class AddTransactionFormComponent implements OnDestroy {
         comment: this.comment
       }).subscribe((res) => {
         if (!res.data.error) {
-          this.cache.remove(PROFILE_PAGE_CACHE_FRESH_CHECK_PATH);
           this.cache.remove(CACHE_TRANSACTIONS_PATH);
           this.cardsStore.updateState()
         }
