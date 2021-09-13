@@ -1,0 +1,16 @@
+import {createAction, props} from "@ngrx/store";
+import {CategoryDto, CreateCategoryDto, IError, UpdateCategoryDto} from "../../../api/api.generated";
+
+const CreateCategory = createAction('[Category] Create', props<CreateCategoryDto>());
+const UpdateCategory = createAction('[Category] Update', props<UpdateCategoryDto>());
+const DeleteCategory = createAction('[Category] Delete', props<{idOrName: number | string}>());
+const OperationSuccessful = createAction('[Category] Operation Successful', props<CategoryDto>());
+const OperationFailed = createAction('[Category] Operation Failed', props<IError>());
+
+export const CategoryActions = {
+  CreateCategory,
+  UpdateCategory,
+  DeleteCategory,
+  OperationSuccessful,
+  OperationFailed
+};
