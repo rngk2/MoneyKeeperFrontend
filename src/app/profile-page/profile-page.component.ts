@@ -3,8 +3,7 @@ import UserService from '../services/user.service';
 import User from '../entities/user.entity';
 import Transaction from '../entities/transaction.entity';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
-import CacheService from '../services/cache.service'
-import {PROFILE_PAGE_CACHE_FRESH_CHECK_PATH} from "../constants";
+import CacheService from '../services/cache.service';
 import {takeUntil} from "rxjs/operators";
 import UserStore from "../store/user/user.store";
 
@@ -40,14 +39,11 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    if (this.cache.isFresh(PROFILE_PAGE_CACHE_FRESH_CHECK_PATH)) {
+    if (this.cache.isFresh(ProfilePageComponent.CACHE_TOTAL_MONTH_PATH) && this.cache.isFresh(ProfilePageComponent.CACHE_TOTAL_YEAR_PATH)) {
       this.summarizeMonth(this.cache.get<object>(ProfilePageComponent.CACHE_TOTAL_MONTH_PATH)!);
       this.summarizeYear(this.cache.get<object>(ProfilePageComponent.CACHE_TOTAL_YEAR_PATH)!);
       return;
     }
-
-    this.cache.makeFresh(PROFILE_PAGE_CACHE_FRESH_CHECK_PATH);
-
     this.fetchTotalForMonth();
     this.fetchTotalForYear();
   }

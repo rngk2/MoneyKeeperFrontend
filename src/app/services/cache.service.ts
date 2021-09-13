@@ -3,9 +3,9 @@ export default class CacheService {
     sessionStorage.setItem(key, JSON.stringify(value));
   }
 
-  public get<T = any>(key: string): T | null {
+  public get<T = any>(key: string): T | undefined {
     const item = sessionStorage.getItem(key);
-    return (item === null || item === null as unknown as string) ? null : JSON.parse(item);
+    return (item === null || item === null as unknown as string) ? undefined : JSON.parse(item);
   }
 
   public update<T = any>(key: string, newValue: NonNullable<T>): void {
@@ -20,12 +20,7 @@ export default class CacheService {
     return !!sessionStorage.getItem(key);
   }
 
-  public makeFresh(key: string): void {
-    sessionStorage.setItem(key, 'fresh');
-  }
-
   public clear(): void {
     sessionStorage.clear();
   }
-
 }
