@@ -16,7 +16,6 @@ export class HydrationEffects implements OnInitEffects {
       ofType(HydrationActions.Hydrate),
       map(() => {
         const storageValue = localStorage.getItem('state');
-        console.log("hdr: ", storageValue)
         if (storageValue) {
           try {
             const state = JSON.parse(storageValue);

@@ -6,6 +6,12 @@ import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import CacheService from '../services/cache.service';
 import {takeUntil} from "rxjs/operators";
 import UserStore from "../store/user/user.store";
+import ChartStore from "../store/chart/chart.store";
+import {__classPrivateFieldGet} from "tslib";
+
+type Writeable<T> = {
+  -readonly [P in keyof T]: T[P];
+}
 
 @Component({
   selector: 'profile-page',
@@ -34,65 +40,79 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
   constructor(private readonly userService: UserService,
               private readonly cache: CacheService,
-              private readonly userStore: UserStore) {
+              private readonly userStore: UserStore,
+              private readonly chartStore: ChartStore) {
     this.user =  this.userStore.getUser();
+
   }
 
   ngOnInit(): void {
-    if (this.cache.isFresh(ProfilePageComponent.CACHE_TOTAL_MONTH_PATH) && this.cache.isFresh(ProfilePageComponent.CACHE_TOTAL_YEAR_PATH)) {
-      this.summarizeMonth(this.cache.get<object>(ProfilePageComponent.CACHE_TOTAL_MONTH_PATH)!);
-      this.summarizeYear(this.cache.get<object>(ProfilePageComponent.CACHE_TOTAL_YEAR_PATH)!);
-      return;
-    }
-    this.fetchTotalForMonth();
-    this.fetchTotalForYear();
-  }
-
-  private fetchTotalForMonth(): void {
-    this.userService.api.totalMonthList()
+    this.chartStore.totalMonth
       .pipe(takeUntil(this.subs))
-      .subscribe(res => {
-        this.cache.save<object>(ProfilePageComponent.CACHE_TOTAL_MONTH_PATH, res.data.value);
-        this.summarizeMonth(res.data.value);
-      });
-  }
+      .subscribe(value => value && this.summarizeMonth(value!))
 
-  private fetchTotalForYear(): void {
-    this.userService.api.totalYearList()
+    this.chartStore.totalYear
       .pipe(takeUntil(this.subs))
-      .subscribe(res => {
-        this.cache.save<object>(ProfilePageComponent.CACHE_TOTAL_YEAR_PATH, res.data.value);
-        this.summarizeYear(res.data.value);
-      });
+      .subscribe(value => value && this.summarizeYear(value!))
+
+    this.chartStore.fetchTotalForMonth();
+    this.chartStore.fetchTotalForYear()
   }
 
-  private summarizeMonth(totalMonth: object): void {
+  // private fetchTotalForMonth(): void {
+  //   this.userService.api.totalMonthList()
+  //     .pipe(takeUntil(this.subs))
+  //     .subscribe(res => {
+  //       this.cache.save<object>(ProfilePageComponent.CACHE_TOTAL_MONTH_PATH, res.data.value);
+  //       this.summarizeMonth(res.data.value);
+  //     });
+  // }
+
+  // private fetchTotalForYear(): void {
+  //   this.userService.api.totalYearList()
+  //     .pipe(takeUntil(this.subs))
+  //     .subscribe(res => {
+  //       this.cache.save<object>(ProfilePageComponent.CACHE_TOTAL_YEAR_PATH, res.data.value);
+  //       this.summarizeYear(res.data.value);
+  //     });
+  // }
+
+  private summarizeMonth(totalMonth: Record<string, number>): void {
     if (totalMonth.hasOwnProperty(Transaction.inputTransactionName)) {
-      // @ts-ignore
       this.earnedForMonth = totalMonth[Transaction.inputTransactionName];
-      // @ts-ignore
-      delete totalMonth[Transaction.inputTransactionName];
     }
     this.names_month.next(this.getCategoriesNames(totalMonth));
     this.amount_month.next(this.getAmountForCategories(totalMonth));
     this.spent_month = this.reduce(this.amount_month.value);
   }
 
-  private summarizeYear(totalYear: object): void {
-    totalYear.hasOwnProperty(Transaction.inputTransactionName) &&
-    // @ts-ignore
-    delete totalYear[Transaction.inputTransactionName];
+  private summarizeYear(totalYear: Record<string, number>): void {
+    // totalYear.hasOwnProperty(Transaction.inputTransactionName) &&
+    // // @ts-ignore
+    // delete totalYear[Transaction.inputTransactionName];
     this.names_year.next(this.getCategoriesNames(totalYear));
     this.amount_year.next(this.getAmountForCategories(totalYear));
     this.spent_year = this.reduce(this.amount_year.value);
   }
 
-  public getCategoriesNames(total: object): string[] {
-    return Object.keys(total);
+  /**
+   * @param total - is total spent for each category
+   * @returns {string[]} - Categories names with {Transaction.inputTransactionName} excluded
+   */
+  public getCategoriesNames(total: Record<string, number>): string[] {
+    return Object.keys(total).filter(value =>
+      value !== Transaction.inputTransactionName
+    );
   }
 
-  public getAmountForCategories(total: object): number[] {
-    return Object.values(total);
+  /**
+   * @param total - is total spent for each category
+   * @returns {number[]} - Spent for each category with {Transaction.inputTransactionName} excluded
+   */
+  public getAmountForCategories(total: Record<string, number>): number[] {
+    return Object.values(total).filter((value, index) =>
+      Object.keys(total)[index] !== Transaction.inputTransactionName
+    );
   }
 
   public reduce(a: number[]): number {

@@ -56,6 +56,12 @@ import {BASE_SERVER_URL} from './app.config';
 import {appReducers} from "./store/app.reducers";
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
 import {CardsEffects} from "./store/cards/cards.effects";
+import {TransactionsEffects} from "./store/transactions/transactions.effects";
+import TransactionsStore from "./store/transactions/transactions.store";
+import {CategoryEffects} from "./store/categories/category.effects";
+import CategoriesStore from "./store/categories/categories.store";
+import ChartStore from "./store/chart/chart.store";
+import {ChartEffects} from "./store/chart/chart.effects";
 
 @NgModule({
   declarations: [
@@ -95,7 +101,14 @@ import {CardsEffects} from "./store/cards/cards.effects";
     NgxMatNativeDateModule,
     InfiniteScrollModule,
     StoreModule.forRoot(appReducers, {metaReducers: appMetaReducers}),
-    EffectsModule.forRoot([AuthEffects, HydrationEffects, CardsEffects]),
+    EffectsModule.forRoot([
+      AuthEffects,
+      HydrationEffects,
+      CardsEffects,
+      TransactionsEffects,
+      CategoryEffects,
+      ChartEffects
+    ]),
     // StoreDevtoolsModule.instrument({
     //   maxAge: 25,
     //   logOnly: environment.production,
@@ -114,6 +127,9 @@ import {CardsEffects} from "./store/cards/cards.effects";
     CardsStore,
     UserStore,
     CacheService,
+    TransactionsStore,
+    CategoriesStore,
+    ChartStore
   ],
   bootstrap: [
     AppComponent

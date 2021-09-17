@@ -1,5 +1,6 @@
 import {createAction, props} from '@ngrx/store';
-import {IError, SummaryUnit} from "../../../api/api.generated";
+import {IError} from "../../../api/api.generated";
+import {Summary} from "./types";
 
 enum CardsActionsTypes {
   FETCH_SUMMARY = '[Cards] Fetch Summary',
@@ -10,7 +11,7 @@ enum CardsActionsTypes {
 
 const FetchSummary = createAction(CardsActionsTypes.FETCH_SUMMARY);
 const FetchFromCache = createAction(CardsActionsTypes.FETCH_CACHED);
-const FetchSuccess = createAction(CardsActionsTypes.FETCH_SUCCESS, props<{cards: SummaryUnit[]}>());
+const FetchSuccess = createAction(CardsActionsTypes.FETCH_SUCCESS, props<{cards: Summary}>());
 const FetchFailed = createAction(CardsActionsTypes.FETCH_FAILED, props<{error: IError}>());
 
 export const CardsActions = {

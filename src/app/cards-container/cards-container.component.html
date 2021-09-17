@@ -1,7 +1,12 @@
+<div infiniteScroll
+     [infiniteScrollDistance]="4"
+     [infiniteScrollThrottle]="1000"
+     (scrolled)="onScroll()"
+>
 <div class="column">
   <div class="page-container">
     <div class="cards-container">
-      <div class="nothing-in-history__hint" *ngIf="isFetched && !category_transactions.value.size else ok">
+      <div class="nothing-in-history__hint" *ngIf="isFetched && !overview.value.length else ok">
         <p >Nothing in your history for now...</p>
         <div class="not-found"></div>
       </div>
@@ -9,11 +14,10 @@
       <mat-spinner *ngIf="!isFetched" [diameter]="80" [strokeWidth]="4" class="spinner"></mat-spinner>
 
       <ng-template #ok>
-        <category-card *ngFor="let c_t of category_transactions.value | keyvalue"
-                       [categoryName]="c_t.key"
-                       [spendThisMonth]="calculateAmountForMonth(c_t.value)"
-                       [lastTransactions]="c_t.value"
-                       [categoryId]="c_t.value[0]?.categoryId!"
+        <category-card *ngFor="let o of (overview | async)"
+                       [categoryName]="o.categoryName"
+                       [spendThisMonth]="o.spentThisMonth"
+                       [categoryId]="o.categoryId"
         >
         </category-card>
       </ng-template>
@@ -40,11 +44,12 @@
     </mat-menu>
 
   </div>
-  <div class="chart" *ngIf="category_transactions.value.size">
+  <div class="chart" *ngIf="isFetched && overview.value.length > 1">
     <wallet-chart
       [chartLabels$]="categoriesNames.asObservable()"
       [chartData$]="amountForCategories.asObservable()"
     >
     </wallet-chart>
   </div>
+</div>
 </div>

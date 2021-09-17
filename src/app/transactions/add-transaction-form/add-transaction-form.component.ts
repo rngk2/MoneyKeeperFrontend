@@ -6,6 +6,7 @@ import TransactionService from '../../services/transaction.service';
 import CacheService from '../../services/cache.service';
 import {CACHE_TRANSACTIONS_PATH} from "../../constants";
 import {Subject} from "rxjs";
+import TransactionsStore from "../../store/transactions/transactions.store";
 
 @Component({
   selector: 'add-transaction-form',
@@ -29,21 +30,16 @@ export class AddTransactionFormComponent implements OnDestroy {
   constructor(private readonly cardsStore: CardsStore,
               private readonly userService: UserService,
               private readonly transactionService: TransactionService,
-              private readonly cache: CacheService) { }
+              private readonly cache: CacheService,
+              private readonly transactionsStore: TransactionsStore) { }
 
   public addTransaction(): void {
-    this.transactionService.api.transactionsCreate({
+    this.transactionsStore.createTransaction({
         categoryId: this.categoryId,
         amount: this.amount,
         timestamp: this.timestampControl.value,
         comment: this.comment
-      }).subscribe((res) => {
-        if (!res.data.error) {
-          this.cache.remove(CACHE_TRANSACTIONS_PATH);
-          this.cardsStore.updateState()
-        }
-        this.onSubmit.emit();
-      });
+    });
   }
 
   public ngOnDestroy(): void {

@@ -6,8 +6,10 @@ import {AboutTransactionComponent} from '../transactions/about-transaction/about
 import {ConfirmPopupComponent} from '../confirm-popup/confirm-popup.component'
 import CardsStore from '../store/cards/cards.store'
 import CategoryService from '../services/category.service'
-import {Subject} from 'rxjs'
+import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators'
+import TransactionsStore from "../store/transactions/transactions.store";
+import {TransactionDto} from "../../api/api.generated";
 
 @Component({
   selector: 'category-card',
@@ -31,7 +33,7 @@ export class CategoryCardComponent implements OnInit, OnDestroy {
   @Input() public categoryName!: string;
   @Input() public categoryId!: number;
   @Input() public spendThisMonth!: number;
-  @Input() public lastTransactions!: Transaction[];
+  public lastTransactions!: Transaction[] | TransactionDto[];
 
   @ViewChild('editInput') public editInput!: ElementRef;
 
@@ -43,16 +45,27 @@ export class CategoryCardComponent implements OnInit, OnDestroy {
               private readonly confirm: MatDialog,
               private readonly cardsStore: CardsStore,
               private readonly categoryService: CategoryService,
-              private readonly changeDetector: ChangeDetectorRef) {
+              private readonly changeDetector: ChangeDetectorRef,
+              private readonly transactionsStore: TransactionsStore) {
   }
 
   public ngOnInit(): void {
-    if (this.lastTransactions.length > CategoryCardComponent.lastTransactionsMaxLength) {
-      this.lastTransactions = this.lastTransactions.slice(0, CategoryCardComponent.lastTransactionsMaxLength - 1);
-    }
+    this.transactionsStore.transactionsForCategory(this.categoryId).subscribe(value => {
+      if (value) {
+        this.lastTransactions = Object.values(value);
+      }
+    });
   }
 
   public toggle(): void {
+    if (this.lastTransactions && this.lastTransactions.length < 1) {
+      this.transactionsStore.fetchTransactionsForCategory({
+        categoryId: this.categoryId,
+        from: 0,
+        to: CategoryCardComponent.lastTransactionsMaxLength
+      });
+    }
+
     this.state = this.state === 'collapsed' ? 'expanded' : 'collapsed';
     if (this.state === 'collapsed')
       this.addTransaction = false;

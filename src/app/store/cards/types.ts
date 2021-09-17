@@ -1,3 +1,3 @@
-import {SummaryUnit} from "../../../api/api.generated";
+import {TransactionDto} from "../../../api/api.generated";
 
-export type Summary = SummaryUnit[];
+export type Summary = TransactionDto[];

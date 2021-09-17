@@ -5,6 +5,7 @@ import {CategoriesApi} from '../../api/api.interfaces';
 import ApiConnector from '../../api/api.connector';
 import {BehaviorSubject} from "rxjs";
 import {convertToObserved, Observed} from "../utils/Utils";
+import Transaction from "../entities/transaction.entity";
 
 class CategoryServiceUtils {
   public normalizeNameString(name: string): string {
@@ -19,6 +20,26 @@ class CategoryServiceUtils {
       const transactions = category_transactions.get(key)!;
       return !(transactions.length === 0 || (transactions.length === 1 && transactions[0].amount === 0));
     });
+  }
+
+  /**
+   * @param total - is total spent for each category
+   * @returns {string[]} - Categories names with {Transaction.inputTransactionName} excluded
+   */
+  public getCategoriesNames(total: Record<string, number>): string[] {
+    return Object.keys(total).filter(value =>
+      value !== Transaction.inputTransactionName
+    );
+  }
+
+  /**
+   * @param total - is total spent for each category
+   * @returns {number[]} - Spent for each category with {Transaction.inputTransactionName} excluded
+   */
+  public getAmountForCategories(total: Record<string, number>): number[] {
+    return Object.values(total).filter((value, index) =>
+      Object.keys(total)[index] !== Transaction.inputTransactionName
+    );
   }
 }
 

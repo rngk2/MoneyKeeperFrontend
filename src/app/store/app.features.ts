@@ -1,4 +1,7 @@
 export enum AppFeatures {
   Auth = 'auth',
-  Cards = 'cards'
+  Cards = 'cards',
+  Transactions = 'transactions',
+  Categories = 'categories',
+  Chart = 'chart'
 }

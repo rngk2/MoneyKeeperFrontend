@@ -12,12 +12,23 @@ export class CategoryEffects {
               private readonly cardsStore: CardsStore) {
   }
 
+  public readonly getOverview = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CategoryActions.GetOverview),
+      switchMap(payload => this.categoryService.api.overviewList(payload)
+        .pipe(map(res => !res.data.error
+          ? CategoryActions.GetOverview_Success({data: res.data.value})
+          :  null as any
+          )
+        )
+      )
+    )
+  );
+
   public readonly categoryOperation = createEffect(() =>
     this.actions$.pipe(
       ofType(
-        CategoryActions.CreateCategory,
-        CategoryActions.UpdateCategory,
-        CategoryActions.DeleteCategory
+        CategoryActions.CreateCategory
       ),
       switchMap(payload => this.categoryService.api.categoriesCreate(payload)
         .pipe(map(res => !res.data.error
