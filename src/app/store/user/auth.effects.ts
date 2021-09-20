@@ -52,7 +52,7 @@ export default class AuthEffects {
     this.actions$.pipe(
       ofType(AuthActions.LogOut),
       tap(() => {
-        localStorage.removeItem(LOCALSTORAGE_USER_PATH);
+        localStorage.clear()
       })
     ), {dispatch: false}
   );
