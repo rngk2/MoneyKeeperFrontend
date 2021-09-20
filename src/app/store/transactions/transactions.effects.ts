@@ -9,9 +9,7 @@ import TransactionsStore from "./transactions.store";
 @Injectable()
 export class TransactionsEffects {
   constructor(private readonly actions$: Actions,
-              private readonly transactionService: TransactionService,
-              private readonly cardsStore: CardsStore,
-              private readonly transactionsStore: TransactionsStore) { }
+              private readonly transactionService: TransactionService) { }
 
   public readonly createTransaction = createEffect(() =>
     this.actions$.pipe(
@@ -34,8 +32,7 @@ export class TransactionsEffects {
         return this.transactionService.api.userTransactionsList(payload)
             .pipe(map(res => !res.data.error
               ? TransactionsActions.GetTransactionsSuccess({
-                data: res.data.value,
-                isSearch: !!payload.searchPattern
+                data: res.data.value
               })
               : TransactionsActions.OperationFailed(res.data.error)
             ))

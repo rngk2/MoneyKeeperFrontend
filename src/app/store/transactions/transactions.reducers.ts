@@ -15,15 +15,35 @@ const _transactionsReducer = createReducer(
   on(TransactionsActions.GetTransactionsSuccess, (state, updatedValue) => {
     return {
       transactions: isIterable(state.transactions) ? [...state.transactions!, ...updatedValue.data] : updatedValue.data,
-      isInSearchNow: false
     }
   }),
-  on(TransactionsActions.CreateTransactionSuccess, (state, {created}) => ({
-    transactions: isIterable(state.transactions) ? [...state.transactions!, created] : [created],
-  })),
-  on(TransactionsActions.DeleteTransactionSuccess, (state, {deleted}) => ({
-    transactions: state.transactions!.filter(t => t.id !== deleted.id),
-  })),
+  on(TransactionsActions.CreateTransactionSuccess, (state, {created}) => {
+    return ({
+      transactions: isIterable(state.transactions) ? [...state.transactions!, created] : [created],
+      categoriesTransactions: state.categoriesTransactions
+        ? {
+          ...state.categoriesTransactions,
+          [created.categoryId!]: state.categoriesTransactions[created.categoryId!]
+            ? [
+              ...state.categoriesTransactions[created.categoryId!], created
+            ]
+            : [created]
+        } : {
+          [created.categoryId!]: [created]
+        }
+    })
+  }),
+  on(TransactionsActions.DeleteTransactionSuccess, (state, {deleted}) => {
+    return {
+      transactions: isIterable(state.transactions) ? state.transactions!.filter(t => t.id !== deleted.id) : [],
+      categoriesTransactions: state.categoriesTransactions?.hasOwnProperty(deleted.categoryId!)
+        ? {
+          ...state.categoriesTransactions,
+          [deleted.categoryId!]: state.categoriesTransactions[deleted.categoryId!].filter(t => t.id !== deleted.id)
+        }
+        : state.categoriesTransactions
+    }
+  }),
   on(TransactionsActions.GetTransactionsForCategorySuccess, (state, {data}) => {
     if (data.length < 1) {
       return state;

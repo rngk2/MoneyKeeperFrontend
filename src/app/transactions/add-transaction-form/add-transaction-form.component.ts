@@ -4,7 +4,6 @@ import CardsStore from '../../store/cards/cards.store';
 import UserService from '../../services/user.service';
 import TransactionService from '../../services/transaction.service';
 import CacheService from '../../services/cache.service';
-import {CACHE_TRANSACTIONS_PATH} from "../../constants";
 import {Subject} from "rxjs";
 import TransactionsStore from "../../store/transactions/transactions.store";
 
@@ -40,6 +39,7 @@ export class AddTransactionFormComponent implements OnDestroy {
         timestamp: this.timestampControl.value,
         comment: this.comment
     });
+    this.onSubmit.emit();
   }
 
   public ngOnDestroy(): void {

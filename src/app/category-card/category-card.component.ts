@@ -27,13 +27,13 @@ import {TransactionDto} from "../../api/api.generated";
 export class CategoryCardComponent implements OnInit, OnDestroy {
 
   public state: 'collapsed' | 'expanded' = 'collapsed';
+  public lastTransactions!: Transaction[] | TransactionDto[];
   public addTransaction = false;
   public edit: boolean = false;
 
   @Input() public categoryName!: string;
   @Input() public categoryId!: number;
   @Input() public spendThisMonth!: number;
-  public lastTransactions!: Transaction[] | TransactionDto[];
 
   @ViewChild('editInput') public editInput!: ElementRef;
 
@@ -49,7 +49,13 @@ export class CategoryCardComponent implements OnInit, OnDestroy {
               private readonly transactionsStore: TransactionsStore) {
   }
 
-  public ngOnInit(): void { }
+  public ngOnInit(): void {
+    this.transactionsStore.transactionsForCategory().subscribe(value => {
+      if (value && value[this.categoryId]) {
+        this.lastTransactions = value[this.categoryId];
+      }
+    });
+  }
 
   public toggle(): void {
     if (!this.lastTransactions && this.state === 'collapsed') {
@@ -58,11 +64,7 @@ export class CategoryCardComponent implements OnInit, OnDestroy {
         from: 0,
         to: CategoryCardComponent.lastTransactionsMaxLength
       });
-      this.transactionsStore.transactionsForCategory().subscribe(value => {
-        if (value && value[this.categoryId]) {
-          this.lastTransactions = value[this.categoryId];
-        }
-      });
+
     }
 
     this.state = this.state === 'collapsed' ? 'expanded' : 'collapsed';
