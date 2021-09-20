@@ -12,7 +12,7 @@ class CategoryServiceUtils {
     const sym0 = name.charAt(0);
     if (sym0 == sym0.toUpperCase())
       return name;
-    return sym0.toUpperCase() + name.substr(1, name.length - 1);
+    return (sym0.toUpperCase() + name.substr(1, name.length - 1)).trim();
   }
 
   public extractCategoriesNames(category_transactions: Map<string, TransactionDto[]>): string[] {
