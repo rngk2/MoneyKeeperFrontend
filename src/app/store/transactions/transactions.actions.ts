@@ -25,8 +25,7 @@ export namespace TransactionsActions {
   export const GetTransactionsSuccess = createAction(
     '[Transactions] Get: Success',
     props<{
-      data: TransactionDto[],
-      isSearch: boolean
+      data: TransactionDto[]
     }>()
   );
   export const GetTransactionsForCategory = createAction(
@@ -55,6 +54,9 @@ export namespace TransactionsActions {
       deleted: TransactionDto
     }>()
   );
+  export const InitSearch = createAction(
+    '[Transactions] Init Search'
+  )
   export const OperationFailed = createAction(
     '[Transactions] Operations Failed',
     props<IError>()

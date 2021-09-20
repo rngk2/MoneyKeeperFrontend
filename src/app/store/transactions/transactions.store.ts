@@ -23,11 +23,10 @@ export default class TransactionsStore {
     return this.store.select(transactionsSelector);
   }
 
-  public transactionsForCategory(categoryId: number): Observable<object> {
+  public transactionsForCategory(): Observable<Record<number, Transaction[] | TransactionDto[]> | undefined> {
     const selectCategoryTransactions = createSelector(
       selectTransactionsFeature,
-      // @ts-ignore
-      (state) => state.categoriesTransactions[categoryId]
+      (state) => state.categoriesTransactions
     );
     return this.store.select(selectCategoryTransactions);
   }
@@ -44,6 +43,10 @@ export default class TransactionsStore {
     this.store.dispatch(TransactionsActions.CreateTransaction(transaction));
   }
 
+  public removeTransaction(transactionId: number): void {
+    this.store.dispatch(TransactionsActions.DeleteTransaction({id: transactionId}));
+  }
+
   public fetchTransactions(params: {
     from: number,
     to: number,
@@ -51,6 +54,9 @@ export default class TransactionsStore {
     order: OrderType
     searchPattern?: string,
   }): void {
+    if (params.searchPattern || /*fixme*/ params.from === 0) {
+      this.store.dispatch(TransactionsActions.InitSearch());
+    }
     this.store.dispatch(TransactionsActions.GetTransactions(params));
   }
 }

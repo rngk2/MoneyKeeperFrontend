@@ -1,13 +1,13 @@
-import {ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core'
-import Transaction from '../entities/transaction.entity'
-import {animate, state, style, transition, trigger} from '@angular/animations'
-import {MatDialog} from '@angular/material/dialog'
-import {AboutTransactionComponent} from '../transactions/about-transaction/about-transaction.component'
-import {ConfirmPopupComponent} from '../confirm-popup/confirm-popup.component'
-import CardsStore from '../store/cards/cards.store'
-import CategoryService from '../services/category.service'
-import {Observable, Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators'
+import {ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import Transaction from '../entities/transaction.entity';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import {MatDialog} from '@angular/material/dialog';
+import {AboutTransactionComponent} from '../transactions/about-transaction/about-transaction.component';
+import {ConfirmPopupComponent} from '../confirm-popup/confirm-popup.component';
+import CardsStore from '../store/cards/cards.store';
+import CategoryService from '../services/category.service';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 import TransactionsStore from "../store/transactions/transactions.store";
 import {TransactionDto} from "../../api/api.generated";
 
@@ -49,20 +49,19 @@ export class CategoryCardComponent implements OnInit, OnDestroy {
               private readonly transactionsStore: TransactionsStore) {
   }
 
-  public ngOnInit(): void {
-    this.transactionsStore.transactionsForCategory(this.categoryId).subscribe(value => {
-      if (value) {
-        this.lastTransactions = Object.values(value);
-      }
-    });
-  }
+  public ngOnInit(): void { }
 
   public toggle(): void {
-    if (this.lastTransactions && this.lastTransactions.length < 1) {
+    if (!this.lastTransactions && this.state === 'collapsed') {
       this.transactionsStore.fetchTransactionsForCategory({
         categoryId: this.categoryId,
         from: 0,
         to: CategoryCardComponent.lastTransactionsMaxLength
+      });
+      this.transactionsStore.transactionsForCategory().subscribe(value => {
+        if (value && value[this.categoryId]) {
+          this.lastTransactions = value[this.categoryId];
+        }
       });
     }
 

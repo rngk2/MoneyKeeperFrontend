@@ -17,11 +17,11 @@
     </p>
 
     <div [@bodyExpansion]="state" class="expandable-content">
-<!--      <div *ngFor="let transaction of lastTransactions" (click)="showMoreForTransaction(transaction)" style="cursor: pointer">-->
-<!--        <p *ngIf="transaction.amount !== 0">-->
-<!--          {{transaction.timestamp | date: "mediumDate"}}: {{transaction.amount}}$-->
-<!--        </p>-->
-<!--      </div>-->
+      <div *ngFor="let transaction of lastTransactions" (click)="showMoreForTransaction(transaction)" style="cursor: pointer">
+        <p *ngIf="transaction.amount !== 0">
+          {{transaction.timestamp | date: "mediumDate"}}: {{transaction.amount}}$
+        </p>
+      </div>
 
       <section class="card__when-expanded__bottom" (click)="addTransaction = true">
         <mat-icon *ngIf="!addTransaction" class="material-icons-outlined">add</mat-icon>
