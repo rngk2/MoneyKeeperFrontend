@@ -30,10 +30,13 @@ export class CategoryCardComponent implements OnInit, OnDestroy {
   public lastTransactions!: ITransaction[] | TransactionDto[];
   public addTransaction = false;
   public edit: boolean = false;
+
   @Input() public categoryName!: string;
   @Input() public categoryId!: number;
   @Input() public spendThisMonth!: number;
+
   @ViewChild('editInput') public editInput!: ElementRef;
+
   private readonly subs$ = new Subject<void>();
 
   constructor(
@@ -91,6 +94,7 @@ export class CategoryCardComponent implements OnInit, OnDestroy {
   public editEnable(): void {
     this.edit = true;
     this.changeDetector.detectChanges();
+    this.editInput.nativeElement.focus();
   }
 
   public editSave(): void {
