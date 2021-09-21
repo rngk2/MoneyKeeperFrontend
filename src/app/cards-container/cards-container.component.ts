@@ -28,7 +28,6 @@ export class CardsContainerComponent implements OnInit {
 
   private readonly categoryUtils = new CategoryService.CategoryServiceUtils();
 
-
   private range = new RangeOffsetController(CARDS_LAZY_LOADING_OPTIONS.BEGIN_OFFSET, CARDS_LAZY_LOADING_OPTIONS.STEP);
 
   constructor(
@@ -39,19 +38,9 @@ export class CardsContainerComponent implements OnInit {
     this.categoriesStore.overview
       .subscribe(value => {
         this.overview$.next(
-          value.filter(o => o.categoryName !== INPUT_TRANSACTION_NAME)
-            .sort((a, b) => {
-              if (!a.categoryName || !b.categoryName) {
-                return 0;
-              }
-              else if (a.categoryName < b.categoryName) {
-                return -1;
-              }
-              else if (a.categoryName > b.categoryName) {
-                return 1;
-              }
-              return 0;
-            })
+          this.categoryUtils.sortOverviewAlphabetically(
+            value.filter(o => o.categoryName !== INPUT_TRANSACTION_NAME)
+          )
         );
         this.isFetched = true;
       });

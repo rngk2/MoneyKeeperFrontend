@@ -3,6 +3,7 @@ import { UntilDestroy } from "@ngneat/until-destroy";
 import { BehaviorSubject } from "rxjs";
 
 import ApiConnector from '../../api/api.connector';
+import { CategoryOverview } from "../../api/api.generated";
 import { CategoriesApi } from '../../api/api.interfaces';
 import { INPUT_TRANSACTION_NAME } from "../entities/transaction.entity";
 import { Total } from "../store/chart/types";
@@ -35,6 +36,22 @@ class CategoryServiceUtils {
     return Object.values(total).filter((value, index) =>
       Object.keys(total)[index] !== INPUT_TRANSACTION_NAME
     );
+  }
+
+  public sortOverviewAlphabetically(array: CategoryOverview[]): CategoryOverview[] {
+    array.sort((a, b) => {
+      if (!a.categoryName || !b.categoryName) {
+        return 0;
+      }
+      else if (a.categoryName < b.categoryName) {
+        return -1;
+      }
+      else if (a.categoryName > b.categoryName) {
+        return 1;
+      }
+      return 0;
+    });
+    return array;
   }
 }
 
