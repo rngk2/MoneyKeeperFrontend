@@ -1,9 +1,11 @@
 import { Inject, Injectable } from "@angular/core";
+import { UntilDestroy } from "@ngneat/until-destroy";
 import { BehaviorSubject, Observable } from "rxjs";
 import { BASE_SERVER_URL } from "../app/app.config";
 import UserStore from "../app/store/user/user.store";
 import { Api } from './api.generated';
 
+@UntilDestroy()
 @Injectable()
 export default class ApiConnector {
 

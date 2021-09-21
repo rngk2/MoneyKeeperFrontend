@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { UntilDestroy } from "@ngneat/until-destroy";
 import { BehaviorSubject } from "rxjs";
 
 import ApiConnector from '../../api/api.connector';
@@ -37,6 +38,7 @@ class CategoryServiceUtils {
   }
 }
 
+@UntilDestroy()
 @Injectable()
 export default class CategoryService {
 

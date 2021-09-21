@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { UntilDestroy } from "@ngneat/until-destroy";
 import { BehaviorSubject, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
@@ -8,6 +9,7 @@ import { AuthApi } from "../../api/api.interfaces";
 import IUser from '../entities/user.entity';
 import { convertToObserved, Observed } from "../utils";
 
+@UntilDestroy()
 @Injectable()
 export default class AuthService {
 
