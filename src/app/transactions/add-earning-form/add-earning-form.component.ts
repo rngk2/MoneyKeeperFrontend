@@ -1,7 +1,7 @@
 import {Component, OnDestroy} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import UserService from '../../services/user.service';
-import CardsContainerStore from '../../store/cards-store/cards-container.store';
+import CardsStore from '../../store/cards/cards.store';
 import CategoryService from '../../services/category.service';
 import Transaction from "../../entities/transaction.entity";
 import {Subject} from "rxjs";
@@ -20,7 +20,7 @@ export class AddEarningFormComponent implements OnDestroy {
 
   constructor(private readonly dialogRef: MatDialogRef<AddEarningFormComponent>,
               private readonly userService: UserService,
-              private readonly cardsStore: CardsContainerStore,
+              private readonly cardsStore: CardsStore,
               private readonly categoryService: CategoryService) {
     this.categoryService.api.categoriesList()
       .pipe(takeUntil(this.subs))

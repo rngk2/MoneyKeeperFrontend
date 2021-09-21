@@ -3,8 +3,9 @@ import Transaction from '../../entities/transaction.entity';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {HttpClient} from '@angular/common/http';
 import {BASE_SERVER_URL} from '../../app.config';
-import CardsContainerStore from '../../store/cards-store/cards-container.store';
+import CardsStore from '../../store/cards/cards.store';
 import TransactionService from '../../services/transaction.service';
+import TransactionsStore from "../../store/transactions/transactions.store";
 
 @Component({
   selector: 'app-about-transaction',
@@ -17,13 +18,13 @@ export class AboutTransactionComponent {
               private readonly dialogRef: MatDialogRef<AboutTransactionComponent>,
               @Inject(MAT_DIALOG_DATA) public readonly data: Transaction,
               @Inject(BASE_SERVER_URL) private readonly serverUrl: string,
-              private readonly cardsStore: CardsContainerStore,
-              private readonly transactionService: TransactionService) {
+              private readonly cardsStore: CardsStore,
+              private readonly transactionService: TransactionService,
+              private readonly transactionsStore: TransactionsStore) {
   }
 
   public deleteTransaction(): void {
-    (this.transactionService.api.transactionsDelete(this.data.id!))
-      .subscribe(() => this.cardsStore.updateState());
+    this.transactionsStore.removeTransaction(this.data.id!);
     this.dialogRef.close();
   }
 }

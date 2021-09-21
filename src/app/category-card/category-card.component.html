@@ -29,7 +29,7 @@
       </section>
 
       <section *ngIf="addTransaction">
-        <add-transaction-form [categoryId]="categoryId"></add-transaction-form>
+        <add-transaction-form [categoryId]="categoryId" (onSubmit)="addTransaction = false"></add-transaction-form>
       </section>
     </div>
 

@@ -1,13 +1,16 @@
-import {ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core'
-import Transaction from '../entities/transaction.entity'
-import {animate, state, style, transition, trigger} from '@angular/animations'
-import {MatDialog} from '@angular/material/dialog'
-import {AboutTransactionComponent} from '../transactions/about-transaction/about-transaction.component'
-import {ConfirmPopupComponent} from '../confirm-popup/confirm-popup.component'
-import CardsContainerStore from '../store/cards-store/cards-container.store'
-import CategoryService from '../services/category.service'
-import {Subject} from 'rxjs'
-import {takeUntil} from 'rxjs/operators'
+import {ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import Transaction from '../entities/transaction.entity';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import {MatDialog} from '@angular/material/dialog';
+import {AboutTransactionComponent} from '../transactions/about-transaction/about-transaction.component';
+import {ConfirmPopupComponent} from '../confirm-popup/confirm-popup.component';
+import CardsStore from '../store/cards/cards.store';
+import CategoryService from '../services/category.service';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
+import TransactionsStore from "../store/transactions/transactions.store";
+import {TransactionDto} from "../../api/api.generated";
+import CategoriesStore from "../store/categories/categories.store";
 
 @Component({
   selector: 'category-card',
@@ -25,13 +28,13 @@ import {takeUntil} from 'rxjs/operators'
 export class CategoryCardComponent implements OnInit, OnDestroy {
 
   public state: 'collapsed' | 'expanded' = 'collapsed';
+  public lastTransactions!: Transaction[] | TransactionDto[];
   public addTransaction = false;
   public edit: boolean = false;
 
   @Input() public categoryName!: string;
   @Input() public categoryId!: number;
   @Input() public spendThisMonth!: number;
-  @Input() public lastTransactions!: Transaction[];
 
   @ViewChild('editInput') public editInput!: ElementRef;
 
@@ -41,18 +44,30 @@ export class CategoryCardComponent implements OnInit, OnDestroy {
 
   constructor(private readonly dialog: MatDialog,
               private readonly confirm: MatDialog,
-              private readonly cardsStore: CardsContainerStore,
-              private readonly categoryService: CategoryService,
-              private readonly changeDetector: ChangeDetectorRef) {
+              private readonly cardsStore: CardsStore,
+              private readonly changeDetector: ChangeDetectorRef,
+              private readonly transactionsStore: TransactionsStore,
+              private readonly categoriesStore: CategoriesStore) {
   }
 
   public ngOnInit(): void {
-    if (this.lastTransactions.length > CategoryCardComponent.lastTransactionsMaxLength) {
-      this.lastTransactions = this.lastTransactions.slice(0, CategoryCardComponent.lastTransactionsMaxLength - 1);
-    }
+    this.transactionsStore.transactionsForCategory().subscribe(value => {
+      if (value && value[this.categoryId]) {
+        this.lastTransactions = value[this.categoryId];
+      }
+    });
   }
 
   public toggle(): void {
+    if (!this.lastTransactions && this.state === 'collapsed') {
+      this.transactionsStore.fetchTransactionsForCategory({
+        categoryId: this.categoryId,
+        from: 0,
+        to: CategoryCardComponent.lastTransactionsMaxLength
+      });
+
+    }
+
     this.state = this.state === 'collapsed' ? 'expanded' : 'collapsed';
     if (this.state === 'collapsed')
       this.addTransaction = false;
@@ -65,9 +80,7 @@ export class CategoryCardComponent implements OnInit, OnDestroy {
     });
     confirmRef.componentInstance.onAnswer.subscribe((ok: boolean) => {
       if (ok) {
-        this.categoryService.api.categoriesDelete(this.categoryId)
-          .pipe(takeUntil(this.subs))
-          .subscribe(() => this.cardsStore.updateState());
+        this.categoriesStore.deleteCategory(this.categoryId);
       }
       confirmRef.close();
     });
@@ -83,25 +96,24 @@ export class CategoryCardComponent implements OnInit, OnDestroy {
   public edit_enable(): void {
     this.edit = true;
     this.changeDetector.detectChanges();
-    // this.editInput.nativeElement.focus();
   }
 
   public edit_save(): void {
-    this.categoryService.api.categoriesUpdate(this.categoryId.toString(), {
-      name:  this.editInput.nativeElement.value
-    }, {
-      categoryId: this.categoryId
-    })
-      .pipe(takeUntil(this.subs))
-      .subscribe(
-        () => this.cardsStore.updateState(),
-        () => this.cardsStore.updateState());
+    if (!this.editInput.nativeElement.value) {
+      return;
+    }
+    this.categoriesStore.updateCategory( {
+      categoryId: this.categoryId,
+      data: {
+        name: this.editInput.nativeElement.value
+      }
+    });
+    this.edit_disable();
   }
 
   public edit_disable(): void {
     this.edit = false;
   }
-
 
   public ngOnDestroy(): void {
     this.subs.next();

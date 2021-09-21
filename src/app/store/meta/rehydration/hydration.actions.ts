@@ -1,18 +1,16 @@
 import {createAction, props} from "@ngrx/store";
-import AppState from "../../state";
+import AppState from "../../app.state";
 
-export enum HydrationActionTypes {
-  HYDRATE = '[Hydration] Hydrate',
-  HYDRATION_SUCCESS = '[Hydration] Success',
-  HYDRATION_FAILURE = '[Hydration] Failure'
+export namespace HydrationActions {
+  export const Hydrate = createAction(
+    '[Hydration] Hydrate'
+  );
+  export const HydrationSuccess = createAction(
+    '[Hydration] Success',
+    props<{state: AppState}>()
+  );
+  export const HydrationFailure = createAction(
+    '[Hydration] Failure'
+  );
 }
 
-const Hydrate = createAction(HydrationActionTypes.HYDRATE);
-const HydrationSuccess = createAction(HydrationActionTypes.HYDRATION_SUCCESS, props<{state: AppState}>());
-const HydrationFailure = createAction(HydrationActionTypes.HYDRATION_FAILURE);
-
-export const HydrationActions = {
-  Hydrate,
-  HydrationSuccess,
-  HydrationFailure
-}

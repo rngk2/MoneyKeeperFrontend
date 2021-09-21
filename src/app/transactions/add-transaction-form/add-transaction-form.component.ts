@@ -1,12 +1,11 @@
 import {Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
 import {FormControl} from '@angular/forms';
-import CardsContainerStore from '../../store/cards-store/cards-container.store';
+import CardsStore from '../../store/cards/cards.store';
 import UserService from '../../services/user.service';
 import TransactionService from '../../services/transaction.service';
 import CacheService from '../../services/cache.service';
-import {CACHE_TRANSACTIONS_PATH, PROFILE_PAGE_CACHE_FRESH_CHECK_PATH} from "../../constants";
-import UserStore from "../../store/user/user.store";
 import {Subject} from "rxjs";
+import TransactionsStore from "../../store/transactions/transactions.store";
 
 @Component({
   selector: 'add-transaction-form',
@@ -27,25 +26,20 @@ export class AddTransactionFormComponent implements OnDestroy {
 
   private readonly subs = new Subject<void>();
 
-  constructor(private readonly cardsStore: CardsContainerStore,
+  constructor(private readonly cardsStore: CardsStore,
               private readonly userService: UserService,
               private readonly transactionService: TransactionService,
-              private readonly cache: CacheService) { }
+              private readonly cache: CacheService,
+              private readonly transactionsStore: TransactionsStore) { }
 
   public addTransaction(): void {
-    this.transactionService.api.transactionsCreate({
+    this.transactionsStore.createTransaction({
         categoryId: this.categoryId,
         amount: this.amount,
         timestamp: this.timestampControl.value,
         comment: this.comment
-      }).subscribe((res) => {
-        if (!res.data.error) {
-          this.cache.remove(PROFILE_PAGE_CACHE_FRESH_CHECK_PATH);
-          this.cache.remove(CACHE_TRANSACTIONS_PATH);
-          this.cardsStore.updateState()
-        }
-        this.onSubmit.emit();
-      });
+    });
+    this.onSubmit.emit();
   }
 
   public ngOnDestroy(): void {

@@ -47,6 +47,20 @@ export interface CategoryDtoIEnumerableApiResult {
   error?: IError;
 }
 
+export interface CategoryOverview {
+  /** @format int32 */
+  categoryId?: number;
+  categoryName?: string | null;
+
+  /** @format double */
+  spentThisMonth?: number;
+}
+
+export interface CategoryOverviewIEnumerableApiResult {
+  value?: CategoryOverview[] | null;
+  error?: IError;
+}
+
 export interface CreateCategoryDto {
   name: string;
 }
@@ -82,6 +96,11 @@ export interface IError {
   message?: string | null;
 }
 
+export enum OrderType {
+  ASC = "ASC",
+  DESC = "DESC",
+}
+
 export interface RefreshTokenResponse {
   token?: string | null;
 }
@@ -93,30 +112,6 @@ export interface RefreshTokenResponseApiResult {
 
 export interface StringDecimalDictionaryApiResult {
   value?: Record<string, number>;
-  error?: IError;
-}
-
-export interface SummaryUnit {
-  /** @format int32 */
-  id?: number;
-
-  /** @format int32 */
-  userId?: number;
-  categoryName?: string | null;
-
-  /** @format int32 */
-  categoryId?: number;
-
-  /** @format double */
-  amount?: number;
-
-  /** @format date-time */
-  timestamp?: string;
-  comment?: string | null;
-}
-
-export interface SummaryUnitIEnumerableApiResult {
-  value?: SummaryUnit[] | null;
   error?: IError;
 }
 
@@ -147,6 +142,13 @@ export interface TransactionDtoApiResult {
 export interface TransactionDtoIEnumerableApiResult {
   value?: TransactionDto[] | null;
   error?: IError;
+}
+
+export enum TransactionField {
+  CategoryName = "CategoryName",
+  Amount = "Amount",
+  Timestamp = "Timestamp",
+  Comment = "Comment",
 }
 
 export interface UpdateCategoryDto {
@@ -446,21 +448,13 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Categories
-     * @name CategoriesUpdate
-     * @request PUT:/Categories/{id}
+     * @name CategoriesDelete
+     * @request DELETE:/Categories/{id}
      */
-    categoriesUpdate: (
-      id: string,
-      data: UpdateCategoryDto,
-      query?: { categoryId?: number },
-      params: RequestParams = {},
-    ) =>
+    categoriesDelete: (id: number, params: RequestParams = {}) =>
       this.request<CategoryDtoApiResult, any>({
         path: `/Categories/${id}`,
-        method: "PUT",
-        query: query,
-        body: data,
-        type: ContentType.Json,
+        method: "DELETE",
         format: "json",
         ...params,
       }),
@@ -469,13 +463,14 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Categories
-     * @name CategoriesDelete
-     * @request DELETE:/Categories/{id}
+     * @name OverviewList
+     * @request GET:/Categories/overview
      */
-    categoriesDelete: (id: number, params: RequestParams = {}) =>
-      this.request<CategoryDtoApiResult, any>({
-        path: `/Categories/${id}`,
-        method: "DELETE",
+    overviewList: (query?: { from?: number; to?: number }, params: RequestParams = {}) =>
+      this.request<CategoryOverviewIEnumerableApiResult, any>({
+        path: `/Categories/overview`,
+        method: "GET",
+        query: query,
         format: "json",
         ...params,
       }),
@@ -516,16 +511,30 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Categories
-     * @name CategoriesDelete2
-     * @request DELETE:/Categories
-     * @originalName categoriesDelete
-     * @duplicate
+     * @name CategoriesUpdate
+     * @request PUT:/Categories/{categoryId}
      */
-    categoriesDelete2: (query?: { categoryName?: string }, params: RequestParams = {}) =>
+    categoriesUpdate: (categoryId: number, data: UpdateCategoryDto, params: RequestParams = {}) =>
       this.request<CategoryDtoApiResult, any>({
-        path: `/Categories`,
+        path: `/Categories/${categoryId}`,
+        method: "PUT",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Categories
+     * @name ByNameDelete
+     * @request DELETE:/Categories/byName/{categoryName}
+     */
+    byNameDelete: (categoryName: string, params: RequestParams = {}) =>
+      this.request<CategoryDtoApiResult, any>({
+        path: `/Categories/byName/${categoryName}`,
         method: "DELETE",
-        query: query,
         format: "json",
         ...params,
       }),
@@ -565,17 +574,93 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Transactions
+     * @name CategoryTransactionsDetail
+     * @request GET:/Transactions/category/{categoryId}/transactions
+     */
+    categoryTransactionsDetail: (categoryId: number, query: { from: number; to: number }, params: RequestParams = {}) =>
+      this.request<TransactionDtoIEnumerableApiResult, any>({
+        path: `/Transactions/category/${categoryId}/transactions`,
+        method: "GET",
+        query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Transactions
      * @name UserTransactionsList
      * @request GET:/Transactions/user/transactions
      */
     userTransactionsList: (
-      query: { from: number; to: number; like?: string; when?: string },
+      query: { from: number; to: number; orderByField: TransactionField; order: OrderType; searchPattern?: string },
       params: RequestParams = {},
     ) =>
       this.request<TransactionDtoIEnumerableApiResult, any>({
         path: `/Transactions/user/transactions`,
         method: "GET",
         query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Transactions
+     * @name SummaryList
+     * @request GET:/Transactions/summary
+     */
+    summaryList: (params: RequestParams = {}) =>
+      this.request<TransactionDtoIEnumerableApiResult, any>({
+        path: `/Transactions/summary`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Transactions
+     * @name TotalList
+     * @request GET:/Transactions/total
+     */
+    totalList: (params: RequestParams = {}) =>
+      this.request<StringDecimalDictionaryApiResult, any>({
+        path: `/Transactions/total`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Transactions
+     * @name TotalMonthList
+     * @request GET:/Transactions/total/month
+     */
+    totalMonthList: (params: RequestParams = {}) =>
+      this.request<StringDecimalDictionaryApiResult, any>({
+        path: `/Transactions/total/month`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Transactions
+     * @name TotalYearList
+     * @request GET:/Transactions/total/year
+     */
+    totalYearList: (params: RequestParams = {}) =>
+      this.request<StringDecimalDictionaryApiResult, any>({
+        path: `/Transactions/total/year`,
+        method: "GET",
         format: "json",
         ...params,
       }),
@@ -658,51 +743,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<UserDtoApiResult, any>({
         path: `/Users`,
         method: "DELETE",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Users
-     * @name SummaryList
-     * @request GET:/Users/summary
-     */
-    summaryList: (params: RequestParams = {}) =>
-      this.request<SummaryUnitIEnumerableApiResult, any>({
-        path: `/Users/summary`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Users
-     * @name TotalMonthList
-     * @request GET:/Users/total/month
-     */
-    totalMonthList: (params: RequestParams = {}) =>
-      this.request<StringDecimalDictionaryApiResult, any>({
-        path: `/Users/total/month`,
-        method: "GET",
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Users
-     * @name TotalYearList
-     * @request GET:/Users/total/year
-     */
-    totalYearList: (params: RequestParams = {}) =>
-      this.request<StringDecimalDictionaryApiResult, any>({
-        path: `/Users/total/year`,
-        method: "GET",
         format: "json",
         ...params,
       }),

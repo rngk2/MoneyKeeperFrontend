@@ -6,7 +6,9 @@ import {HttpClient} from '@angular/common/http';
 import {BASE_SERVER_URL} from '../../app.config';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import TransactionService from '../../services/transaction.service';
-import {TransactionDto} from '../../../api/api.generated';
+import {OrderType, TransactionDto, TransactionField} from '../../../api/api.generated';
+import TransactionsStore from "../../store/transactions/transactions.store";
+
 
 export class RangeOffsetController {
 
@@ -30,7 +32,7 @@ export class RangeOffsetController {
 })
 export class TransactionsListComponent implements OnInit {
 
-  public transactions = new Array<TransactionDto>();
+  public transactions!: Transaction[] | TransactionDto[]
   public searchControl = new FormControl('');
 
   @Input() public filter: (value: any, index: number, array: any[]) => unknown = () => true;
@@ -42,7 +44,13 @@ export class TransactionsListComponent implements OnInit {
 
   constructor(private readonly http: HttpClient,
               @Inject(BASE_SERVER_URL) private readonly serverUrl: string,
-              private readonly transactionService: TransactionService) {
+              private readonly transactionService: TransactionService,
+              private readonly transactionsStore: TransactionsStore) {
+    transactionsStore.transactions.subscribe(value => {
+      if (value) {
+        this.transactions = value.filter(this.filter)
+      }
+    })
   }
 
   public ngOnInit(): void {
@@ -56,24 +64,23 @@ export class TransactionsListComponent implements OnInit {
   }
 
   private fetchTransactions(range: Range): void {
-    this.transactionService.api.userTransactionsList({from: range.begin, to: range.end})
-      .subscribe(res => this.transactions =
-          this.transactionService.utils
-          .sortByDate([...this.transactions, ...res.data.value])
-          .filter(this.filter)
-    );
+    this.transactionsStore.fetchTransactions({
+      from: range.begin,
+      to: range.end,
+      orderByField: TransactionField.Timestamp,
+      order: OrderType.DESC
+    });
   }
 
   private fetchTransactionsWithPattern(range: Range): void {
     const pattern = `%${this.searchControl.value}%`;
-    this.transactionService.api.userTransactionsList({from: range.begin, to: range.end, like: pattern})
-      .subscribe(res => {
-        const append = range.begin === 0 ? new Set<Transaction>([]) : this.transactions;
-        this.transactions =
-          this.transactionService.utils
-            .sortByDate([...append, ...res.data.value])
-            .filter(this.filter);
-      });
+    this.transactionsStore.fetchTransactions({
+      from: range.begin,
+      to: range.end,
+      order: OrderType.DESC,
+      orderByField: TransactionField.Timestamp,
+      searchPattern: pattern
+    });
   }
 
   public onScroll(): void {

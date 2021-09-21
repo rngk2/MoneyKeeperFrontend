@@ -1,13 +1,10 @@
 import {Component, OnDestroy} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import UserService from '../services/user.service';
-import CardsContainerStore from '../store/cards-store/cards-container.store';
-import CategoryService from '../services/category.service';
+import CardsStore from '../store/cards/cards.store';
 import CacheService from '../services/cache.service';
-import {CACHE_TRANSACTIONS_PATH, PROFILE_PAGE_CACHE_FRESH_CHECK_PATH} from "../constants";
 import {Subject} from "rxjs";
-import {takeUntil} from "rxjs/operators";
-import UserStore from "../store/user/user.store";
+import CategoriesStore from "../store/categories/categories.store";
 
 interface DialogData {
   categoryName: string
@@ -27,10 +24,10 @@ export class AddCategoryFormComponent implements OnDestroy {
   private readonly subs = new Subject<void>();
 
   constructor(private readonly dialogRef: MatDialogRef<AddCategoryFormComponent>,
-              private readonly cardsStore: CardsContainerStore,
-              private readonly categoryService: CategoryService,
+              private readonly cardsStore: CardsStore,
               private readonly userService: UserService,
-              private readonly cache: CacheService) {
+              private readonly cache: CacheService,
+              private readonly categoriesStore: CategoriesStore) {
   }
 
   public addCategory(): void {
@@ -38,17 +35,9 @@ export class AddCategoryFormComponent implements OnDestroy {
       return;
     }
 
-    this.categoryService.api.categoriesCreate({
-        name: this.categoryService.utils.normalizeNameString(this.data.categoryName),
-      }).pipe(takeUntil(this.subs))
-        .subscribe(res => {
-          if (!res.data.error) {
-            this.cache.remove(PROFILE_PAGE_CACHE_FRESH_CHECK_PATH);
-            this.cache.remove(CACHE_TRANSACTIONS_PATH);
-            this.cardsStore.updateState();
-          }
-        });
-
+    this.categoriesStore.createCategory({
+        name: this.categoriesStore.normalizeNameString(this.data.categoryName),
+    });
     this.dialogRef.close();
   }
 
