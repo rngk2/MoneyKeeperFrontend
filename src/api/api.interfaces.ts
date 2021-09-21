@@ -1,7 +1,11 @@
 import {
-  AuthenticateRequest, CreateCategoryDto, CreateTransactionDto,
-  CreateUserDto, OrderType,
-  RequestParams, TransactionField,
+  AuthenticateRequest,
+  CreateCategoryDto,
+  CreateTransactionDto,
+  CreateUserDto,
+  OrderType,
+  RequestParams,
+  TransactionField,
   UpdateCategoryDto,
   UpdateUserDto
 } from './api.generated';
@@ -20,12 +24,12 @@ export interface UsersApi {
 
 export interface CategoriesApi {
   categoriesDetail: (id: number, params?: RequestParams) => any;
-  categoriesUpdate: (categoryId: number, data: UpdateCategoryDto, params?: RequestParams) => any
+  categoriesUpdate: (categoryId: number, data: UpdateCategoryDto, params?: RequestParams) => any;
   categoriesDelete: (id: number, params?: RequestParams) => any;
   categoriesList: (params?: RequestParams) => any;
   categoriesCreate: (data: CreateCategoryDto, params?: RequestParams) => any;
   byNameDelete: (categoryName: string, params?: RequestParams) => any;
-  overviewList: (query?: { from?: number; to?: number }, params?: RequestParams) => any
+  overviewList: (query?: { from?: number; to?: number }, params?: RequestParams) => any;
 }
 
 export interface TransactionsApi {

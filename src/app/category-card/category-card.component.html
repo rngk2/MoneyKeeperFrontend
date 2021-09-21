@@ -1,13 +1,13 @@
 <mat-card class="card">
   <mat-card-header>
     <mat-card-title *ngIf="!edit">{{categoryName}}</mat-card-title>
-    <mat-icon *ngIf="!edit" (click)="edit_enable()">edit</mat-icon>
-    <input class="card__edit-name-input"
-       *ngIf="edit"
-       #editInput
-       matInput
-       autocomplete="off"
-       [ngModel]="categoryName"
+    <mat-icon (click)="editEnable()" *ngIf="!edit">edit</mat-icon>
+    <input #editInput
+           *ngIf="edit"
+           [ngModel]="categoryName"
+           autocomplete="off"
+           class="card__edit-name-input"
+           matInput
     >
   </mat-card-header>
 
@@ -17,19 +17,20 @@
     </p>
 
     <div [@bodyExpansion]="state" class="expandable-content">
-      <div *ngFor="let transaction of lastTransactions" (click)="showMoreForTransaction(transaction)" style="cursor: pointer">
+      <div (click)="showMoreForTransaction(transaction)" *ngFor="let transaction of lastTransactions"
+           style="cursor: pointer">
         <p *ngIf="transaction.amount !== 0">
           {{transaction.timestamp | date: "mediumDate"}}: {{transaction.amount}}$
         </p>
       </div>
 
-      <section class="card__when-expanded__bottom" (click)="addTransaction = true">
+      <section (click)="addTransaction = true" class="card__when-expanded__bottom">
         <mat-icon *ngIf="!addTransaction" class="material-icons-outlined">add</mat-icon>
         <span class="card__when-expanded__see-all" routerLink="/wallet/transactions/{{categoryName}}">See all</span>
       </section>
 
       <section *ngIf="addTransaction">
-        <add-transaction-form [categoryId]="categoryId" (onSubmit)="addTransaction = false"></add-transaction-form>
+        <add-transaction-form (onSubmit)="addTransaction = false" [categoryId]="categoryId"></add-transaction-form>
       </section>
     </div>
 
@@ -37,12 +38,12 @@
   </mat-card-content>
 
   <mat-card-actions *ngIf="!edit">
-    <button mat-button (click)="toggle()" color="primary">{{state === "collapsed" ? "More" : "Less"}}</button>
-    <button mat-button (click)="delete()" color="warn">Delete</button>
+    <button (click)="toggle()" color="primary" mat-button>{{state === "collapsed" ? "More" : "Less"}}</button>
+    <button (click)="deleteCategory()" color="warn" mat-button>Delete</button>
   </mat-card-actions>
 
   <mat-card-actions *ngIf="edit">
-    <button mat-button (click)="edit_save()" color="primary">Save</button>
-    <button mat-button (click)="edit_disable()" color="warn">Cancel</button>
+    <button (click)="editSave()" color="primary" mat-button>Save</button>
+    <button (click)="editDisable()" color="warn" mat-button>Cancel</button>
   </mat-card-actions>
 </mat-card>

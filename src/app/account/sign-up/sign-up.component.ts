@@ -1,10 +1,8 @@
-import {Component, Inject, OnDestroy} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
-import {BASE_SERVER_URL} from '../../app.config';
-import UserService from '../../services/user.service';
-import {CreateUserDto} from '../../../api/api.generated';
-import {Subject} from "rxjs";
+import { Component, OnDestroy } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subject } from "rxjs";
+
+import { CreateUserDto } from '../../../api/api.generated';
 import UserStore from "../../store/user/user.store";
 
 
@@ -17,13 +15,12 @@ export class SignUpComponent implements OnDestroy {
 
   public signUpForm: FormGroup;
 
-  private readonly subs = new Subject<void>();
+  private readonly subs$ = new Subject<void>();
 
-  constructor(private readonly router: Router,
-              private readonly fb: FormBuilder,
-              private readonly userService: UserService,
-              @Inject(BASE_SERVER_URL) private readonly serverUrl: string,
-              private readonly userStore: UserStore) {
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly userStore: UserStore
+  ) {
     this.signUpForm = this.fb.group({
       firstName: new FormControl('', [
         Validators.required
@@ -70,7 +67,7 @@ export class SignUpComponent implements OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.subs.next();
-    this.subs.unsubscribe();
+    this.subs$.next();
+    this.subs$.unsubscribe();
   }
 }

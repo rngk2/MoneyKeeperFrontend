@@ -1,10 +1,6 @@
-import {Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import CardsStore from '../../store/cards/cards.store';
-import UserService from '../../services/user.service';
-import TransactionService from '../../services/transaction.service';
-import CacheService from '../../services/cache.service';
-import {Subject} from "rxjs";
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Subject } from "rxjs";
 import TransactionsStore from "../../store/transactions/transactions.store";
 
 @Component({
@@ -24,26 +20,25 @@ export class AddTransactionFormComponent implements OnDestroy {
 
   @Output() public onSubmit = new EventEmitter();
 
-  private readonly subs = new Subject<void>();
+  private readonly subs$ = new Subject<void>();
 
-  constructor(private readonly cardsStore: CardsStore,
-              private readonly userService: UserService,
-              private readonly transactionService: TransactionService,
-              private readonly cache: CacheService,
-              private readonly transactionsStore: TransactionsStore) { }
+  constructor(
+    private readonly transactionsStore: TransactionsStore
+  ) {
+  }
 
   public addTransaction(): void {
     this.transactionsStore.createTransaction({
-        categoryId: this.categoryId,
-        amount: this.amount,
-        timestamp: this.timestampControl.value,
-        comment: this.comment
+      categoryId: this.categoryId,
+      amount: this.amount,
+      timestamp: this.timestampControl.value,
+      comment: this.comment
     });
     this.onSubmit.emit();
   }
 
   public ngOnDestroy(): void {
-    this.subs.next();
-    this.subs.unsubscribe();
+    this.subs$.next();
+    this.subs$.unsubscribe();
   }
 }

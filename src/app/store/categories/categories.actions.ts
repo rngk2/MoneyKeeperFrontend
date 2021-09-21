@@ -1,5 +1,12 @@
-import {createAction, props} from "@ngrx/store";
-import {CategoryDto, CategoryOverview, CreateCategoryDto, IError, UpdateCategoryDto} from "../../../api/api.generated";
+import { createAction, props } from "@ngrx/store";
+
+import {
+  CategoryDto,
+  CategoryOverview,
+  CreateCategoryDto,
+  IError,
+  UpdateCategoryDto
+} from "../../../api/api.generated";
 
 export namespace CategoryActions {
   export const GetOverview = createAction(
@@ -40,7 +47,7 @@ export namespace CategoryActions {
   export const DeleteCategory = createAction(
     '[Category] Delete',
     props<{
-    idOrName: number | string
+      idOrName: number | string
     }>()
   );
   export const DeleteCategorySuccess = createAction(

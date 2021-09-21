@@ -1,66 +1,70 @@
-import {Component, Inject, Input, OnInit} from '@angular/core';
-import {Range} from '../../utils/Utils';
-import Transaction from '../../entities/transaction.entity';
-import {FormControl} from '@angular/forms';
-import {HttpClient} from '@angular/common/http';
-import {BASE_SERVER_URL} from '../../app.config';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
-import TransactionService from '../../services/transaction.service';
-import {OrderType, TransactionDto, TransactionField} from '../../../api/api.generated';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Subject } from "rxjs";
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+
+import { OrderType, TransactionField } from '../../../api/api.generated';
+import ITransaction, { INPUT_TRANSACTION_NAME } from '../../entities/transaction.entity';
 import TransactionsStore from "../../store/transactions/transactions.store";
-
-
-export class RangeOffsetController {
-
-  constructor(private beginOffset: number = 0,
-              private step: number = 20) {
-  }
-
-  getNextRange(): Range {
-    const begin = this.beginOffset;
-    const end = begin + this.step;
-    this.beginOffset += this.step + 1;
-
-    return {begin, end};
-  }
-}
+import { Range, RangeOffsetController } from '../../utils';
+import { SEARCH_OPTIONS, TRANSACTIONS_LAZY_LOADING_OPTIONS } from "./transactions-list.constants";
 
 @Component({
   selector: 'transactions-list',
   templateUrl: './transactions-list.component.html',
   styleUrls: ['./transactions-list.component.scss']
 })
-export class TransactionsListComponent implements OnInit {
+export class TransactionsListComponent implements OnInit, OnDestroy {
 
-  public transactions!: Transaction[] | TransactionDto[]
+  public transactions?: ITransaction[];
   public searchControl = new FormControl('');
 
-  @Input() public filter: (value: any, index: number, array: any[]) => unknown = () => true;
+  @Input() public filter?: (value: any, index: number, array: any[]) => unknown;
 
-  private rangeForAll = new RangeOffsetController();
-  private rangeForSearch = new RangeOffsetController();
+  private readonly subs$ = new Subject<void>();
 
-  private static readonly SEARCH_DEBOUNCE_DURATION = 400;
+  private rangeForAll
+    = new RangeOffsetController(TRANSACTIONS_LAZY_LOADING_OPTIONS.BEGIN_OFFSET, TRANSACTIONS_LAZY_LOADING_OPTIONS.STEP);
+  private rangeForSearch
+    = new RangeOffsetController(TRANSACTIONS_LAZY_LOADING_OPTIONS.BEGIN_OFFSET, TRANSACTIONS_LAZY_LOADING_OPTIONS.STEP);
 
-  constructor(private readonly http: HttpClient,
-              @Inject(BASE_SERVER_URL) private readonly serverUrl: string,
-              private readonly transactionService: TransactionService,
-              private readonly transactionsStore: TransactionsStore) {
-    transactionsStore.transactions.subscribe(value => {
-      if (value) {
-        this.transactions = value.filter(this.filter)
-      }
-    })
+  constructor(
+    private readonly transactionsStore: TransactionsStore
+  ) {
+    transactionsStore.transactions
+      .pipe(takeUntil(this.subs$))
+      .subscribe(value => {
+        if (value) {
+          this.transactions = this.filter ? value.filter(this.filter) : value;
+        }
+      });
   }
 
   public ngOnInit(): void {
     this.searchControl.valueChanges
-      .pipe(debounceTime(TransactionsListComponent.SEARCH_DEBOUNCE_DURATION), distinctUntilChanged())
+      .pipe(debounceTime(SEARCH_OPTIONS.DEBOUNCE_DURATION), distinctUntilChanged())
       .subscribe(() => {
-        this.rangeForSearch = this.rangeForAll = new RangeOffsetController();
+        this.rangeForSearch
+          = this.rangeForAll
+          = new RangeOffsetController(TRANSACTIONS_LAZY_LOADING_OPTIONS.BEGIN_OFFSET, TRANSACTIONS_LAZY_LOADING_OPTIONS.STEP);
         this.fetchTransactionsWithPattern(this.rangeForSearch.getNextRange());
       });
     this.fetchTransactions(this.rangeForAll.getNextRange());
+  }
+
+  public onScroll(): void {
+    this.searchControl!.value.length === 0
+      ? this.fetchTransactions(this.rangeForAll.getNextRange())
+      : this.fetchTransactionsWithPattern(this.rangeForSearch.getNextRange());
+  }
+
+  public getInputTransactionName(): string {
+    return INPUT_TRANSACTION_NAME;
+  }
+
+  public ngOnDestroy(): void {
+    this.subs$.next();
+    this.subs$.unsubscribe();
   }
 
   private fetchTransactions(range: Range): void {
@@ -73,23 +77,13 @@ export class TransactionsListComponent implements OnInit {
   }
 
   private fetchTransactionsWithPattern(range: Range): void {
-    const pattern = `%${this.searchControl.value}%`;
+    const searchPattern = `%${ this.searchControl.value }%`;
     this.transactionsStore.fetchTransactions({
       from: range.begin,
       to: range.end,
       order: OrderType.DESC,
       orderByField: TransactionField.Timestamp,
-      searchPattern: pattern
+      searchPattern
     });
-  }
-
-  public onScroll(): void {
-    this.searchControl!.value.length === 0 ?
-      this.fetchTransactions(this.rangeForAll.getNextRange()) :
-      this.fetchTransactionsWithPattern(this.rangeForSearch.getNextRange());
-  }
-
-  public inputTransactionName(): string {
-    return Transaction.inputTransactionName;
   }
 }

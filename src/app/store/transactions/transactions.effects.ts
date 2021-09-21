@@ -1,16 +1,12 @@
-import {Injectable} from "@angular/core";
-import {Actions, createEffect, ofType} from "@ngrx/effects";
-import {TransactionsActions} from "./transactions.actions";
-import {map, switchMap, tap} from "rxjs/operators";
+import { Injectable } from "@angular/core";
+import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { map, switchMap, tap } from "rxjs/operators";
+
 import TransactionService from "../../services/transaction.service";
-import CardsStore from "../cards/cards.store";
-import TransactionsStore from "./transactions.store";
+import { TransactionsActions } from "./transactions.actions";
 
 @Injectable()
 export class TransactionsEffects {
-  constructor(private readonly actions$: Actions,
-              private readonly transactionService: TransactionService) { }
-
   public readonly createTransaction = createEffect(() =>
     this.actions$.pipe(
       ofType(TransactionsActions.CreateTransaction),
@@ -24,42 +20,39 @@ export class TransactionsEffects {
       )
     )
   );
-
   public readonly getTransactions = createEffect(() =>
     this.actions$.pipe(
       ofType(TransactionsActions.GetTransactions),
       switchMap(payload => {
-        return this.transactionService.api.userTransactionsList(payload)
+          return this.transactionService.api.userTransactionsList(payload)
             .pipe(map(res => !res.data.error
               ? TransactionsActions.GetTransactionsSuccess({
                 data: res.data.value
               })
               : TransactionsActions.OperationFailed(res.data.error)
-            ))
+            ));
         }
       )
     )
   );
-
   public readonly getTransactionsForCategory = createEffect(() =>
     this.actions$.pipe(
       ofType(TransactionsActions.GetTransactionsForCategory),
       switchMap(payload => {
           return this.transactionService.api.categoryTransactionsDetail(
             payload.categoryId, {
-            from: payload.from,
-            to: payload.to
-          }).pipe(map(res => !res.data.error
-              ? TransactionsActions.GetTransactionsForCategorySuccess({
-                data: res.data.value,
-              })
-              : TransactionsActions.OperationFailed(res.data.error)
-            ))
+              from: payload.from,
+              to: payload.to
+            }).pipe(map(res => !res.data.error
+            ? TransactionsActions.GetTransactionsForCategorySuccess({
+              data: res.data.value,
+            })
+            : TransactionsActions.OperationFailed(res.data.error)
+          ));
         }
       )
     )
   );
-
   public readonly deleteTransactions = createEffect(() =>
     this.actions$.pipe(
       ofType(TransactionsActions.DeleteTransaction),
@@ -72,11 +65,16 @@ export class TransactionsEffects {
         ))
     )
   );
-
   public readonly operationFailed = createEffect(() =>
     this.actions$.pipe(
       ofType(TransactionsActions.OperationFailed),
       tap(error => console.error(error))
-    ), {dispatch: false}
+    ), { dispatch: false }
   );
+
+  constructor(
+    private readonly actions$: Actions,
+    private readonly transactionService: TransactionService
+  ) {
+  }
 }

@@ -1,11 +1,10 @@
-import {Component, OnDestroy} from '@angular/core';
-import {MatDialogRef} from '@angular/material/dialog';
-import UserService from '../../services/user.service';
-import CardsStore from '../../store/cards/cards.store';
+import { Component, OnDestroy } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
+
+import { INPUT_TRANSACTION_NAME } from "../../entities/transaction.entity";
 import CategoryService from '../../services/category.service';
-import Transaction from "../../entities/transaction.entity";
-import {Subject} from "rxjs";
-import {takeUntil} from "rxjs/operators";
 
 @Component({
   selector: 'add-earning-form',
@@ -16,17 +15,17 @@ export class AddEarningFormComponent implements OnDestroy {
 
   public earningsId!: number;
 
-  private readonly subs = new Subject<void>();
+  private readonly subs$ = new Subject<void>();
 
-  constructor(private readonly dialogRef: MatDialogRef<AddEarningFormComponent>,
-              private readonly userService: UserService,
-              private readonly cardsStore: CardsStore,
-              private readonly categoryService: CategoryService) {
+  constructor(
+    private readonly dialogRef: MatDialogRef<AddEarningFormComponent>,
+    private readonly categoryService: CategoryService
+  ) {
     this.categoryService.api.categoriesList()
-      .pipe(takeUntil(this.subs))
+      .pipe(takeUntil(this.subs$))
       .subscribe(res => {
         const categories = res.data.value;
-        const e_index = categories.findIndex((value: { name: string }) => value.name === Transaction.inputTransactionName);
+        const e_index = categories.findIndex((value: { name: string }) => value.name === INPUT_TRANSACTION_NAME);
         this.earningsId = categories[e_index].id;
       });
   }
@@ -36,7 +35,7 @@ export class AddEarningFormComponent implements OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.subs.next();
-    this.subs.unsubscribe();
+    this.subs$.next();
+    this.subs$.unsubscribe();
   }
 }

@@ -1,33 +1,35 @@
-import {NgModule} from '@angular/core'
-import {CategoryCardComponent} from './category-card.component'
-import {MatIconModule} from '@angular/material/icon'
-import {MatDividerModule} from '@angular/material/divider'
-import {MatCardModule} from '@angular/material/card'
-import {MatButtonModule} from '@angular/material/button'
-import {TransactionsModule} from '../transactions/transactions.module'
-import {CommonModule} from '@angular/common'
-import {RouterModule} from '@angular/router'
-import {MatInputModule} from "@angular/material/input";
-import {FormsModule} from "@angular/forms";
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { FormsModule } from "@angular/forms";
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from "@angular/material/input";
+import { RouterModule } from '@angular/router';
+
+import { TransactionsModule } from '../transactions/transactions.module';
+import { CategoryCardComponent } from './category-card.component';
 
 @NgModule({
   declarations: [
     CategoryCardComponent
   ],
-    imports: [
-        TransactionsModule,
+  imports: [
+    TransactionsModule,
 
-        MatIconModule,
-        MatDividerModule,
-        MatCardModule,
-        MatButtonModule,
-        CommonModule,
-        RouterModule,
-        MatInputModule,
-        FormsModule,
-    ],
+    MatIconModule,
+    MatDividerModule,
+    MatCardModule,
+    MatButtonModule,
+    CommonModule,
+    RouterModule,
+    MatInputModule,
+    FormsModule,
+  ],
   exports: [
     CategoryCardComponent
   ]
 })
-export class CategoryCardModule { }
+export class CategoryCardModule {
+}

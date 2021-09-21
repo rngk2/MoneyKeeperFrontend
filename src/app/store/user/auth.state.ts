@@ -1,7 +1,7 @@
-import User from "../../entities/user.entity";
-import {IError} from "../../../api/api.generated";
+import { IError } from "../../../api/api.generated";
+import IUser from "../../entities/user.entity";
 
 export default interface AuthState {
-  user?: User;
+  user?: IUser;
   error?: IError;
 }

@@ -1,9 +1,10 @@
-import {NgModule} from "@angular/core";
-import {ProfilePageComponent} from "./profile-page.component";
-import {CommonModule} from "@angular/common";
-import {RouterModule} from "@angular/router";
-import {ProfilePageRoutingModule} from "./profile-page-routing.module";
-import {WalletChartModule} from "../wallet-chart/wallet-chart.module";
+import { CommonModule } from "@angular/common";
+import { NgModule } from "@angular/core";
+import { RouterModule } from "@angular/router";
+
+import { WalletChartModule } from "../wallet-chart/wallet-chart.module";
+import { ProfilePageRoutingModule } from "./profile-page-routing.module";
+import { ProfilePageComponent } from "./profile-page.component";
 
 
 @NgModule({
@@ -17,4 +18,5 @@ import {WalletChartModule} from "../wallet-chart/wallet-chart.module";
     WalletChartModule
   ]
 })
-export class ProfilePageModule { }
+export class ProfilePageModule {
+}

@@ -1,10 +1,7 @@
-import {Component, Inject} from '@angular/core';
-import Transaction from '../../entities/transaction.entity';
-import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {HttpClient} from '@angular/common/http';
-import {BASE_SERVER_URL} from '../../app.config';
-import CardsStore from '../../store/cards/cards.store';
-import TransactionService from '../../services/transaction.service';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+
+import ITransaction from '../../entities/transaction.entity';
 import TransactionsStore from "../../store/transactions/transactions.store";
 
 @Component({
@@ -14,13 +11,11 @@ import TransactionsStore from "../../store/transactions/transactions.store";
 })
 export class AboutTransactionComponent {
 
-  constructor(private readonly httpClient: HttpClient,
-              private readonly dialogRef: MatDialogRef<AboutTransactionComponent>,
-              @Inject(MAT_DIALOG_DATA) public readonly data: Transaction,
-              @Inject(BASE_SERVER_URL) private readonly serverUrl: string,
-              private readonly cardsStore: CardsStore,
-              private readonly transactionService: TransactionService,
-              private readonly transactionsStore: TransactionsStore) {
+  constructor(
+    private readonly dialogRef: MatDialogRef<AboutTransactionComponent>,
+    @Inject(MAT_DIALOG_DATA) public readonly data: ITransaction,
+    private readonly transactionsStore: TransactionsStore
+  ) {
   }
 
   public deleteTransaction(): void {

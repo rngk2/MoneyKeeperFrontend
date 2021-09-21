@@ -1,4 +1,4 @@
-import {Total} from "./types";
+import { Total } from "./types";
 
 export default interface ChartState {
   total?: Total;

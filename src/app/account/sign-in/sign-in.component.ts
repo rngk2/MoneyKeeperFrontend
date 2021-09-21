@@ -1,6 +1,5 @@
-import {Component} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
+import { Component } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import UserStore from "../../store/user/user.store";
 
 @Component({
@@ -12,9 +11,10 @@ export class SignInComponent {
 
   public signInForm: FormGroup;
 
-  constructor(private readonly router: Router,
-              private readonly fb: FormBuilder,
-              private readonly userStore: UserStore) {
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly userStore: UserStore
+  ) {
     this.signInForm = this.fb.group({
       email: new FormControl('', [
         Validators.required

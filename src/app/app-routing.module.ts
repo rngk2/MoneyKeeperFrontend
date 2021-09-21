@@ -1,6 +1,7 @@
-import {NgModule} from '@angular/core'
-import {RouterModule, Routes} from '@angular/router'
-import {CanActivateUserRoutes, Permissions} from './guards'
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+import { CanActivateUserRoutes, Permissions } from './guards';
 
 const routes: Routes = [
   {
@@ -35,7 +36,8 @@ const routes: Routes = [
   {
     path: 'sign-out',
     redirectTo: '/account/sign-in',
-    pathMatch: 'full'},
+    pathMatch: 'full'
+  },
   {
     path: '**',
     loadChildren: () => import('./page404/page404.module').then(m => m.Page404Module)
@@ -54,4 +56,5 @@ const routes: Routes = [
     Permissions
   ]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

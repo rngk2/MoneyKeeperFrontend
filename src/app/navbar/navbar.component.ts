@@ -1,6 +1,7 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Subject} from "rxjs";
-import {takeUntil} from "rxjs/operators";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from "rxjs";
+import { takeUntil } from "rxjs/operators";
+
 import UserStore from "../store/user/user.store";
 
 @Component({
@@ -8,21 +9,23 @@ import UserStore from "../store/user/user.store";
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit, OnDestroy  {
+export class NavbarComponent implements OnInit, OnDestroy {
 
   public loggedIn: boolean = false;
 
-  private readonly subs = new Subject<void>();
+  private readonly subs$ = new Subject<void>();
 
-  constructor(private readonly userStore: UserStore) {
+  constructor(
+    private readonly userStore: UserStore
+  ) {
   }
 
   public ngOnInit(): void {
     this.userStore.getUser()
-      .pipe(takeUntil(this.subs))
+      .pipe(takeUntil(this.subs$))
       .subscribe((user) => {
         this.loggedIn = !!user;
-    });
+      });
   }
 
   public logOut(): void {
@@ -30,7 +33,7 @@ export class NavbarComponent implements OnInit, OnDestroy  {
   }
 
   public ngOnDestroy(): void {
-    this.subs.next();
-    this.subs.unsubscribe();
+    this.subs$.next();
+    this.subs$.unsubscribe();
   }
 }

@@ -1,55 +1,55 @@
-<div infiniteScroll
+<div (scrolled)="onScroll()"
      [infiniteScrollDistance]="4"
      [infiniteScrollThrottle]="1000"
-     (scrolled)="onScroll()"
+     infiniteScroll
 >
-<div class="column">
-  <div class="page-container">
-    <div class="cards-container">
-      <div class="nothing-in-history__hint" *ngIf="isFetched && !overview.value.length else ok">
-        <p >Nothing in your history for now...</p>
-        <div class="not-found"></div>
+  <div class="column">
+    <div class="page-container">
+      <div class="cards-container">
+        <div *ngIf="isFetched && !overview$.value.length else ok" class="nothing-in-history__hint">
+          <p>Nothing in your history for now...</p>
+          <div class="not-found"></div>
+        </div>
+
+        <mat-spinner *ngIf="!isFetched" [diameter]="80" [strokeWidth]="4" class="spinner"></mat-spinner>
+
+        <ng-template #ok>
+          <category-card *ngFor="let o of (overview$.asObservable() | async)"
+                         [categoryId]="o.categoryId"
+                         [categoryName]="o.categoryName"
+                         [spendThisMonth]="o.spentThisMonth"
+          >
+          </category-card>
+        </ng-template>
       </div>
 
-      <mat-spinner *ngIf="!isFetched" [diameter]="80" [strokeWidth]="4" class="spinner"></mat-spinner>
-
-      <ng-template #ok>
-        <category-card *ngFor="let o of (overview.asObservable() | async)"
-                       [categoryName]="o.categoryName"
-                       [spendThisMonth]="o.spentThisMonth"
-                       [categoryId]="o.categoryId"
-        >
-        </category-card>
-      </ng-template>
-    </div>
-
-    <div class="add-button" *ngIf="isFetched" [matMenuTriggerFor]="menu">
-      <div class="mdc-touch-target-wrapper">
-        <button id="add-btn" class="mdc-fab mdc-fab--mini mdc-fab--touch">
-          <div class="mdc-fab__ripple"></div>
-          <span class="material-icons mdc-fab__icon icon">add</span>
-          <div class="mdc-fab__touch"></div>
+      <div *ngIf="isFetched" [matMenuTriggerFor]="menu" class="add-button">
+        <div class="mdc-touch-target-wrapper">
+          <button class="mdc-fab mdc-fab--mini mdc-fab--touch" id="add-btn">
+            <div class="mdc-fab__ripple"></div>
+            <span class="material-icons mdc-fab__icon icon">add</span>
+            <div class="mdc-fab__touch"></div>
+          </button>
+        </div>
+      </div>
+      <mat-menu #menu="matMenu">
+        <button (click)="addCategory()" mat-menu-item>
+          <mat-icon>add</mat-icon>
+          <span>Category</span>
         </button>
-      </div>
-    </div>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="addCategory()">
-        <mat-icon>add</mat-icon>
-        <span>Category</span>
-      </button>
-      <button mat-menu-item (click)="addEarning()">
-        <mat-icon>add</mat-icon>
-        <span>Earning</span>
-      </button>
-    </mat-menu>
+        <button (click)="addEarning()" mat-menu-item>
+          <mat-icon>add</mat-icon>
+          <span>Earning</span>
+        </button>
+      </mat-menu>
 
+    </div>
+    <div *ngIf="isFetched && overview$.value.length > 1" class="chart">
+      <wallet-chart
+        [chartData$]="amountForCategories$.asObservable()"
+        [chartLabels$]="categoriesNames$.asObservable()"
+      >
+      </wallet-chart>
+    </div>
   </div>
-  <div class="chart" *ngIf="isFetched && overview.value.length > 1">
-    <wallet-chart
-      [chartLabels$]="categoriesNames.asObservable()"
-      [chartData$]="amountForCategories.asObservable()"
-    >
-    </wallet-chart>
-  </div>
-</div>
 </div>

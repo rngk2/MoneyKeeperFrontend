@@ -1,5 +1,6 @@
-import {createAction, props} from "@ngrx/store";
-import {CreateTransactionDto, IError, OrderType, TransactionDto, TransactionField} from "../../../api/api.generated";
+import { createAction, props } from "@ngrx/store";
+
+import { CreateTransactionDto, IError, OrderType, TransactionDto, TransactionField } from "../../../api/api.generated";
 
 export namespace TransactionsActions {
   export const CreateTransaction = createAction(
@@ -54,11 +55,9 @@ export namespace TransactionsActions {
       deleted: TransactionDto
     }>()
   );
-  export const InitSearch = createAction(
-    '[Transactions] Init Search'
-  )
+  export const InitSearch = createAction('[Transactions] Init Search');
   export const OperationFailed = createAction(
-    '[Transactions] Operations Failed',
+    '[Transactions] Operation Failed',
     props<IError>()
   );
 }

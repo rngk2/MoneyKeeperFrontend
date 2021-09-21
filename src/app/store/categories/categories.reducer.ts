@@ -1,4 +1,5 @@
 import { Action, createReducer, on } from "@ngrx/store";
+
 import { CategoryActions } from "./categories.actions";
 import CategoriesState from "./categories.state";
 

@@ -1,10 +1,10 @@
-<div style="display: block;" *ngIf="(chartLabels$ | async)?.length > 0 && (chartData$ | async)?.length > 0">
-  <canvas baseChart
+<div *ngIf="(chartLabels$ | async)?.length > 0 && (chartData$ | async)?.length > 0" style="display: block;">
+  <canvas [chartType]="chartType"
           [data]="chartData$ | async"
           [labels]="chartLabels$ | async"
-          [chartType]="chartType"
+          [legend]="chartLegend"
           [options]="chartOptions"
           [plugins]="chartPlugins"
-          [legend]="chartLegend">
+          baseChart>
   </canvas>
 </div>

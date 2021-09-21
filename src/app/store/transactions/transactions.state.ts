@@ -1,7 +1,6 @@
-import Transaction from "../../entities/transaction.entity";
-import {TransactionDto} from "../../../api/api.generated";
+import ITransaction from "../../entities/transaction.entity";
 
 export default interface TransactionsState {
-  transactions?: Transaction[] | TransactionDto[];
-  categoriesTransactions?: Record<number, Transaction[] | TransactionDto[]>;
+  transactions?: ITransaction[];
+  categoriesTransactions?: Record<number, ITransaction[]>;
 }

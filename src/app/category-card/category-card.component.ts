@@ -1,16 +1,14 @@
-import {ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import Transaction from '../entities/transaction.entity';
-import {animate, state, style, transition, trigger} from '@angular/animations';
-import {MatDialog} from '@angular/material/dialog';
-import {AboutTransactionComponent} from '../transactions/about-transaction/about-transaction.component';
-import {ConfirmPopupComponent} from '../confirm-popup/confirm-popup.component';
-import CardsStore from '../store/cards/cards.store';
-import CategoryService from '../services/category.service';
-import {Subject} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
-import TransactionsStore from "../store/transactions/transactions.store";
-import {TransactionDto} from "../../api/api.generated";
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { Subject } from 'rxjs';
+
+import { TransactionDto } from "../../api/api.generated";
+import { ConfirmPopupComponent } from '../confirm-popup/confirm-popup.component';
+import ITransaction from '../entities/transaction.entity';
 import CategoriesStore from "../store/categories/categories.store";
+import TransactionsStore from "../store/transactions/transactions.store";
+import { AboutTransactionComponent } from '../transactions/about-transaction/about-transaction.component';
 
 @Component({
   selector: 'category-card',
@@ -18,8 +16,8 @@ import CategoriesStore from "../store/categories/categories.store";
   styleUrls: ['./category-card.component.scss'],
   animations: [
     trigger('bodyExpansion', [
-      state('collapsed, void', style({height: '0px', visibility: 'hidden'})),
-      state('expanded', style({height: '*', visibility: 'visible'})),
+      state('collapsed, void', style({ height: '0px', visibility: 'hidden' })),
+      state('expanded', style({ height: '*', visibility: 'visible' })),
       transition('expanded <=> collapsed, void => collapsed',
         animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ])
@@ -27,27 +25,23 @@ import CategoriesStore from "../store/categories/categories.store";
 })
 export class CategoryCardComponent implements OnInit, OnDestroy {
 
+  private static readonly lastTransactionsMaxLength = 5;
   public state: 'collapsed' | 'expanded' = 'collapsed';
-  public lastTransactions!: Transaction[] | TransactionDto[];
+  public lastTransactions!: ITransaction[] | TransactionDto[];
   public addTransaction = false;
   public edit: boolean = false;
-
   @Input() public categoryName!: string;
   @Input() public categoryId!: number;
   @Input() public spendThisMonth!: number;
-
   @ViewChild('editInput') public editInput!: ElementRef;
+  private readonly subs$ = new Subject<void>();
 
-  private static readonly lastTransactionsMaxLength = 5;
-
-  private readonly subs = new Subject<void>();
-
-  constructor(private readonly dialog: MatDialog,
-              private readonly confirm: MatDialog,
-              private readonly cardsStore: CardsStore,
-              private readonly changeDetector: ChangeDetectorRef,
-              private readonly transactionsStore: TransactionsStore,
-              private readonly categoriesStore: CategoriesStore) {
+  constructor(
+    private readonly dialog: MatDialog,
+    private readonly changeDetector: ChangeDetectorRef,
+    private readonly transactionsStore: TransactionsStore,
+    private readonly categoriesStore: CategoriesStore
+  ) {
   }
 
   public ngOnInit(): void {
@@ -65,18 +59,19 @@ export class CategoryCardComponent implements OnInit, OnDestroy {
         from: 0,
         to: CategoryCardComponent.lastTransactionsMaxLength
       });
-
     }
 
     this.state = this.state === 'collapsed' ? 'expanded' : 'collapsed';
-    if (this.state === 'collapsed')
+
+    if (this.state === 'collapsed') {
       this.addTransaction = false;
+    }
   }
 
-  public delete(): void {
+  public deleteCategory(): void {
     const confirmRef = this.dialog.open(ConfirmPopupComponent, {
       width: '30rem',
-      data: `Delete '${this.categoryName}' ?`
+      data: `Delete '${ this.categoryName }' ?`
     });
     confirmRef.componentInstance.onAnswer.subscribe((ok: boolean) => {
       if (ok) {
@@ -86,37 +81,37 @@ export class CategoryCardComponent implements OnInit, OnDestroy {
     });
   }
 
-  public showMoreForTransaction(transaction: Transaction): void {
+  public showMoreForTransaction(transaction: ITransaction): void {
     this.dialog.open(AboutTransactionComponent, {
       width: '20rem',
       data: transaction
     });
   }
 
-  public edit_enable(): void {
+  public editEnable(): void {
     this.edit = true;
     this.changeDetector.detectChanges();
   }
 
-  public edit_save(): void {
+  public editSave(): void {
     if (!this.editInput.nativeElement.value) {
       return;
     }
-    this.categoriesStore.updateCategory( {
+    this.categoriesStore.updateCategory({
       categoryId: this.categoryId,
       data: {
         name: this.editInput.nativeElement.value
       }
     });
-    this.edit_disable();
+    this.editDisable();
   }
 
-  public edit_disable(): void {
+  public editDisable(): void {
     this.edit = false;
   }
 
   public ngOnDestroy(): void {
-    this.subs.next();
-    this.subs.unsubscribe();
+    this.subs$.next();
+    this.subs$.unsubscribe();
   }
 }

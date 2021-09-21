@@ -1,10 +1,10 @@
-import {RouterModule, Routes} from '@angular/router'
-import {NgModule} from '@angular/core'
-import {WalletPageComponent} from './wallet-page.component'
-import {CardsContainerComponent} from '../cards-container/cards-container.component'
-import {EarningsPageComponent} from '../transactions/earnings-page/earnings-page.component'
-import {AllTransactionsPageComponent} from '../transactions/all-transactions-page/all-transactions-page.component'
-import {CategoryTransactionsComponent} from '../transactions/category-transactions/category-transactions.component'
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { CardsContainerComponent } from '../cards-container/cards-container.component';
+import { AllTransactionsPageComponent } from '../transactions/all-transactions-page/all-transactions-page.component';
+import { CategoryTransactionsComponent } from '../transactions/category-transactions/category-transactions.component';
+import { EarningsPageComponent } from '../transactions/earnings-page/earnings-page.component';
+import { WalletPageComponent } from './wallet-page.component';
 
 const routes: Routes = [
   {
@@ -24,7 +24,7 @@ const routes: Routes = [
         component: AllTransactionsPageComponent
       },
       {
-        path: 'transactions/:cname',
+        path: 'transactions/:categoryName',
         component: CategoryTransactionsComponent
       }
     ]
@@ -35,5 +35,6 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class WalletPageRoutingModule {}
+export class WalletPageRoutingModule {
+}
 

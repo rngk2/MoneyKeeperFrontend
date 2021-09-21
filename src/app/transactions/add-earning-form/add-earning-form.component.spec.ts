@@ -8,9 +8,9 @@ describe('AddEarningFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AddEarningFormComponent ]
+      declarations: [AddEarningFormComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

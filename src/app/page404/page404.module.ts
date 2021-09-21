@@ -1,8 +1,9 @@
-import {NgModule} from "@angular/core";
-import {Page404Component} from "./page404.component";
-import {RouterModule} from "@angular/router";
-import {CommonModule} from "@angular/common";
-import {Page404RoutingModule} from "./page404-routing.module";
+import { CommonModule } from "@angular/common";
+import { NgModule } from "@angular/core";
+import { RouterModule } from "@angular/router";
+
+import { Page404RoutingModule } from "./page404-routing.module";
+import { Page404Component } from "./page404.component";
 
 @NgModule({
   declarations: [
@@ -17,4 +18,5 @@ import {Page404RoutingModule} from "./page404-routing.module";
     Page404Component
   ]
 })
-export class Page404Module {}
+export class Page404Module {
+}

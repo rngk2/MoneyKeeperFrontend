@@ -1,7 +1,7 @@
-import {Component, Input} from '@angular/core';
-import {ChartOptions, ChartType} from 'chart.js';
-import {Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip, SingleDataSet} from 'ng2-charts';
-import {Observable} from 'rxjs';
+import { Component, Input } from '@angular/core';
+import { ChartOptions, ChartType } from 'chart.js';
+import { Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip, SingleDataSet } from 'ng2-charts';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'wallet-chart',

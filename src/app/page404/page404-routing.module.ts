@@ -1,6 +1,7 @@
-import {RouterModule, Routes} from "@angular/router";
-import {NgModule} from "@angular/core";
-import {Page404Component} from "./page404.component";
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+
+import { Page404Component } from "./page404.component";
 
 const routes: Routes = [
   {
@@ -13,4 +14,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class Page404RoutingModule { }
+export class Page404RoutingModule {
+}

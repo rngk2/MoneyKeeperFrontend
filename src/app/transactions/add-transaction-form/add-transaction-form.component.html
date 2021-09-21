@@ -1,19 +1,22 @@
 <form>
   <mat-form-field>
-    <input matInput [ngxMatDatetimePicker]="picker" placeholder="Choose a date" [formControl]="timestampControl"
-           [min]="minDate" [max]="maxDate">
-    <mat-datepicker-toggle matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
-    <ngx-mat-datetime-picker #picker [showSpinners]="true" [showSeconds]="false"
-                             [stepHour]="1" [stepMinute]="1"
-                             [touchUi]="false" [enableMeridian]="true"
-                             [disableMinute]="false" [hideTime]="false">
+    <input [formControl]="timestampControl" [max]="maxDate" [min]="minDate" [ngxMatDatetimePicker]="picker"
+           matInput placeholder="Choose a date">
+    <mat-datepicker-toggle [for]="$any(picker)" matSuffix></mat-datepicker-toggle>
+    <ngx-mat-datetime-picker #picker [disableMinute]="false" [enableMeridian]="true"
+                             [hideTime]="false" [showSeconds]="false"
+                             [showSpinners]="true" [stepHour]="1"
+                             [stepMinute]="1" [touchUi]="false">
     </ngx-mat-datetime-picker>
   </mat-form-field>
   <mat-form-field>
-    <input type="number" min="1" matInput [(ngModel)]="amount" [ngModelOptions]="{standalone: true}" placeholder="Amount" class="amount-input" required>
+    <input [(ngModel)]="amount" [ngModelOptions]="{standalone: true}" class="amount-input" matInput min="1"
+           placeholder="Amount" required type="number">
   </mat-form-field>
   <mat-form-field>
-    <input type="text" matInput [(ngModel)]="comment" [ngModelOptions]="{standalone: true}" placeholder="Comment" class="comment-input" required>
+    <input [(ngModel)]="comment" [ngModelOptions]="{standalone: true}" class="comment-input" matInput
+           placeholder="Comment"
+           required type="text">
   </mat-form-field>
-  <button class="submit" mat-button color="primary" (click)="addTransaction()">Add</button>
+  <button (click)="addTransaction()" class="submit" color="primary" mat-button>Add</button>
 </form>

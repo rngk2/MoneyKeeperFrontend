@@ -1,12 +1,13 @@
+import { Injectable } from "@angular/core";
+import { createFeatureSelector, createSelector, Store } from "@ngrx/store";
+import { Observable } from "rxjs";
+
+import { CreateTransactionDto, OrderType, TransactionField } from "../../../api/api.generated";
+import ITransaction from "../../entities/transaction.entity";
+import { AppFeatures } from "../app.features";
 import AppState from "../app.state";
-import {createFeatureSelector, createSelector, Store} from "@ngrx/store";
+import { TransactionsActions } from "./transactions.actions";
 import TransactionsState from "./transactions.state";
-import {AppFeatures} from "../app.features";
-import {TransactionsActions} from "./transactions.actions";
-import {Observable} from "rxjs";
-import Transaction from "../../entities/transaction.entity";
-import {Injectable} from "@angular/core";
-import {CreateTransactionDto, OrderType, TransactionDto, TransactionField} from "../../../api/api.generated";
 
 const selectTransactionsFeature = createFeatureSelector<AppState, TransactionsState>(AppFeatures.Transactions);
 const transactionsSelector = createSelector(
@@ -17,13 +18,16 @@ const transactionsSelector = createSelector(
 @Injectable()
 export default class TransactionsStore {
 
-  constructor(private readonly store: Store<AppState>) { }
+  constructor(
+    private readonly store: Store<AppState>
+  ) {
+  }
 
-  public get transactions(): Observable<Transaction[] | TransactionDto[] | undefined> {
+  public get transactions(): Observable<ITransaction[] | undefined> {
     return this.store.select(transactionsSelector);
   }
 
-  public transactionsForCategory(): Observable<Record<number, Transaction[] | TransactionDto[]> | undefined> {
+  public transactionsForCategory(): Observable<Record<number, ITransaction[]> | undefined> {
     const selectCategoryTransactions = createSelector(
       selectTransactionsFeature,
       (state) => state.categoriesTransactions
@@ -44,7 +48,7 @@ export default class TransactionsStore {
   }
 
   public removeTransaction(transactionId: number): void {
-    this.store.dispatch(TransactionsActions.DeleteTransaction({id: transactionId}));
+    this.store.dispatch(TransactionsActions.DeleteTransaction({ id: transactionId }));
   }
 
   public fetchTransactions(params: {
@@ -54,7 +58,7 @@ export default class TransactionsStore {
     order: OrderType
     searchPattern?: string,
   }): void {
-    if (params.searchPattern || /*fixme*/ params.from === 0) {
+    if (params.searchPattern || /* fixme */ params.from === 0) {
       this.store.dispatch(TransactionsActions.InitSearch());
     }
     this.store.dispatch(TransactionsActions.GetTransactions(params));

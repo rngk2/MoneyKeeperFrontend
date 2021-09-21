@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {Router} from '@angular/router'
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'wallet-page',
@@ -8,6 +8,6 @@ import {Router} from '@angular/router'
 })
 export class WalletPageComponent {
   constructor(router: Router) {
-    router.navigate(['/wallet/categories'])
+    router.navigate(['/wallet/categories']);
   }
 }

@@ -1,5 +1,5 @@
-export default class Category {
-  public id?: number;
-  public name!: string;
-  public userId?: number;
+export default interface ICategory {
+  readonly id?: number;
+  readonly name: string;
+  readonly userId?: number;
 }

@@ -1,19 +1,19 @@
+import { Action, createReducer, on } from "@ngrx/store";
+import { ChartActions } from "./chart.actions";
 import ChartState from "./chart.state";
-import {Action, createReducer, on} from "@ngrx/store";
-import {ChartActions} from "./chart.actions";
 
-const initialState: ChartState = { }
+const initialState: ChartState = {};
 const _chartReducer = createReducer(
   initialState,
-  on(ChartActions.GetSuccessful, (state, updatedValue) => {
+  on(ChartActions.GetTotalSuccess, (state, updatedValue) => {
     return {
       total: updatedValue.total
-    }
+    };
   }),
-  on(ChartActions.GetSuccessfulMonth, (state, updatedValue) => ({
+  on(ChartActions.GetTotalForMonthSuccess, (state, updatedValue) => ({
     totalMonth: updatedValue.total
   })),
-  on(ChartActions.GetSuccessfulYear, (state, updatedValue) => ({
+  on(ChartActions.GetTotalForYearSuccess, (state, updatedValue) => ({
     totalYear: updatedValue.total
   }))
 );

@@ -1,12 +1,12 @@
-import {createFeatureSelector, createSelector, Store} from "@ngrx/store";
+import { Injectable } from "@angular/core";
+import { createFeatureSelector, createSelector, Store } from "@ngrx/store";
+import { Observable } from "rxjs";
+
+import { AppFeatures } from "../app.features";
 import AppState from "../app.state";
+import { ChartActions } from "./chart.actions";
 import ChartState from "./chart.state";
-import {AppFeatures} from "../app.features";
-import {Injectable} from "@angular/core";
-import {ChartActions} from "./chart.actions";
-import {Observable} from "rxjs";
-import {Total} from "./types";
-import {skip} from "rxjs/operators";
+import { Total } from "./types";
 
 const selectChartFeature = createFeatureSelector<AppState, ChartState>(AppFeatures.Chart);
 
@@ -25,18 +25,19 @@ const chartSelectTotalYear = createSelector(
 
 @Injectable()
 export default class ChartStore {
-  constructor(private readonly store: Store<AppState>) { }
+  constructor(private readonly store: Store<AppState>) {
+  }
 
   public get total(): Observable<Total | undefined> {
     return this.store.select(chartSelectTotal);
   }
 
   public get totalMonth(): Observable<Total | undefined> {
-    return this.store.select(chartSelectTotalMonth).pipe(skip(0));
+    return this.store.select(chartSelectTotalMonth);
   }
 
   public get totalYear(): Observable<Total | undefined> {
-    return this.store.select(chartSelectTotalYear).pipe(skip(0));
+    return this.store.select(chartSelectTotalYear);
   }
 
   public fetchTotal(): void {

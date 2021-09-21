@@ -1,16 +1,16 @@
 import {
   animate,
+  animateChild,
+  AnimationMetadata,
   group,
   query,
   style,
   transition,
-  trigger,
-  animateChild,
-  AnimationMetadata
+  trigger
 } from '@angular/animations';
 
 const slideTo = (direction: 'right' | 'left'): AnimationMetadata[] => [
-  style({position: 'relative'}),
+  style({ position: 'relative' }),
   query(':enter, :leave', [
     style({
       position: 'absolute',
@@ -20,15 +20,15 @@ const slideTo = (direction: 'right' | 'left'): AnimationMetadata[] => [
     })
   ]),
   query(':enter', [
-    style({[direction]: '-100%'})
+    style({ [direction]: '-100%' })
   ]),
   query(':leave', animateChild()),
   group([
     query(':leave', [
-      animate('540ms ease-out', style({[direction]: '100%'}))
+      animate('540ms ease-out', style({ [direction]: '100%' }))
     ]),
     query(':enter', [
-      animate('540ms ease-out', style({[direction]: '0%'}))
+      animate('540ms ease-out', style({ [direction]: '0%' }))
     ])
   ]),
   query(':enter', animateChild()),

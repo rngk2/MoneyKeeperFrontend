@@ -1,12 +1,12 @@
-import {createFeatureSelector, createSelector, Store} from "@ngrx/store";
+import { Injectable } from "@angular/core";
+import { createFeatureSelector, createSelector, Store } from "@ngrx/store";
+import { Observable } from "rxjs";
+
+import { CategoryOverview, CreateCategoryDto, UpdateCategoryDto } from "../../../api/api.generated";
+import { AppFeatures } from "../app.features";
 import AppState from "../app.state";
+import { CategoryActions } from "./categories.actions";
 import CategoriesState from "./categories.state";
-import {AppFeatures} from "../app.features";
-import {CategoryActions} from "./categories.actions";
-import {Observable} from "rxjs";
-import {CategoryOverview, CreateCategoryDto, UpdateCategoryDto} from "../../../api/api.generated";
-import {Injectable} from "@angular/core";
-import CategoryService from "../../services/category.service";
 
 const categoryFeatureSelector = createFeatureSelector<AppState, CategoriesState>(AppFeatures.Categories);
 const categorySelector = createSelector(
@@ -16,34 +16,22 @@ const categorySelector = createSelector(
 
 @Injectable()
 export default class CategoriesStore {
-  constructor(private readonly store: Store<AppState>,
-              private readonly categoryService: CategoryService) { }
+
+  constructor(
+    private readonly store: Store<AppState>
+  ) {
+  }
 
   public get overview(): Observable<CategoryOverview[]> {
     return this.store.select(categorySelector);
   }
 
-  public normalizeNameString(name: string): string {
-    const sym0 = name.charAt(0);
-    if (sym0 == sym0.toUpperCase())
-      return name;
-    return (sym0.toUpperCase() + name.substr(1, name.length - 1)).trim();
-  }
-
-  public fetchOverview(range: {from: number, to: number}): void {
+  public fetchOverview(range: { from: number, to: number }): void {
     // fixme
     if (range.from === 0) {
       this.store.dispatch(CategoryActions.DropState());
     }
-    this.store.dispatch(CategoryActions.GetOverview(range))
-  }
-
-  public getCategoriesNames(total: Record<string, number>): string[] {
-    return this.categoryService.utils.getCategoriesNames(total);
-  }
-
-  public getAmountForCategories(total: Record<string, number>): number[] {
-    return this.categoryService.utils.getAmountForCategories(total);
+    this.store.dispatch(CategoryActions.GetOverview(range));
   }
 
   public createCategory(category: CreateCategoryDto): void {
