@@ -85,9 +85,6 @@ export class ProfilePageComponent implements OnInit {
   }
 
   private summarizeYear(totalYear: Total): void {
-    // totalYear.hasOwnProperty(Transaction.inputTransactionName) &&
-    // // @ts-ignore
-    // delete totalYear[Transaction.inputTransactionName];
     this.names_year$.next(this.getCategoriesNames(totalYear));
     this.amount_year$.next(this.getAmountForCategories(totalYear));
     this.spent_year = this.reduce(this.amount_year$.value);
