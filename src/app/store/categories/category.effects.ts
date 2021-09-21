@@ -38,9 +38,7 @@ export class CategoryEffects {
   public readonly updateCategory = createEffect(() =>
     this.actions$.pipe(
       ofType(CategoryActions.UpdateCategory),
-      switchMap(payload => this.categoryService.api.categoriesUpdate(payload.data, {
-        categoryId: payload.categoryId
-      }).pipe(map(res => !res.data.error
+      switchMap(payload => this.categoryService.api.categoriesUpdate(payload.categoryId, payload.data).pipe(map(res => !res.data.error
           ? CategoryActions.UpdateCategorySuccess({ updated: res.data.value })
           : CategoryActions.OperationFailed(res.data.error)
         ))

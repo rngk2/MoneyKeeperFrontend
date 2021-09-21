@@ -512,13 +512,12 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      *
      * @tags Categories
      * @name CategoriesUpdate
-     * @request PUT:/Categories
+     * @request PUT:/Categories/{categoryId}
      */
-    categoriesUpdate: (data: UpdateCategoryDto, query?: { categoryId?: number }, params: RequestParams = {}) =>
+    categoriesUpdate: (categoryId: number, data: UpdateCategoryDto, params: RequestParams = {}) =>
       this.request<CategoryDtoApiResult, any>({
-        path: `/Categories`,
+        path: `/Categories/${categoryId}`,
         method: "PUT",
-        query: query,
         body: data,
         type: ContentType.Json,
         format: "json",

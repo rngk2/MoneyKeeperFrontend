@@ -1,8 +1,8 @@
+import { Action, createReducer, on } from "@ngrx/store";
+import { CategoryActions } from "./categories.actions";
 import CategoriesState from "./categories.state";
-import {Action, createReducer, on} from "@ngrx/store";
-import {CategoryActions} from "./categories.actions";
 
-const initialState: CategoriesState = {overview: []};
+const initialState: CategoriesState = { overview: [] };
 const _categoryReducer = createReducer(
   initialState,
   on(CategoryActions.DropState, () => ({
@@ -11,25 +11,28 @@ const _categoryReducer = createReducer(
   on(CategoryActions.GetOverviewSuccess, (state, updatedValue) => ({
     overview: state ? [...state.overview, ...updatedValue.data] : updatedValue.data
   })),
-  on(CategoryActions.CreateCategorySuccess, (state, {created}) => {
+  on(CategoryActions.CreateCategorySuccess, (state, { created }) => {
     return {
       overview: [...(state ? state.overview : []), {
         categoryName: created.name,
         categoryId: created.id,
         spentThisMonth: 0
       }]
-    }
+    };
   }),
-  on(CategoryActions.UpdateCategorySuccess, (state, {updated}) => {
-    const updatedState = state.overview;
-    updatedState[
-      state.overview.findIndex(value => value.categoryId === updated.id)
-      ].categoryName = updated.name;
+  on(CategoryActions.UpdateCategorySuccess, (state, { updated }) => {
+    const updatedState = Object.assign({}, state.overview);
+    const updatedIndex = state.overview.findIndex(value => value.categoryId === updated.id);
+    updatedState[updatedIndex] = {
+      categoryName: updated.name,
+      categoryId: updated.id,
+      spentThisMonth: state.overview[updatedIndex].spentThisMonth
+    };
     return ({
-      overview: updatedState
-    })
+      overview: Object.values(updatedState)
+    });
   }),
-  on(CategoryActions.DeleteCategorySuccess, (state, {deleted}) => ({
+  on(CategoryActions.DeleteCategorySuccess, (state, { deleted }) => ({
     overview: state.overview.filter(value => value.categoryId !== deleted.id)
   }))
 );
