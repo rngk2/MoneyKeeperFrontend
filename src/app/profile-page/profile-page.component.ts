@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { takeUntil } from "rxjs/operators";
+import { Component, OnInit } from '@angular/core';
+import { UntilDestroy } from "@ngneat/until-destroy";
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { INPUT_TRANSACTION_NAME } from "../entities/transaction.entity";
 import IUser from '../entities/user.entity';
@@ -8,12 +8,14 @@ import ChartStore from "../store/chart/chart.store";
 import { Total } from "../store/chart/types";
 import UserStore from "../store/user/user.store";
 
+@UntilDestroy()
+@UntilDestroy()
 @Component({
   selector: 'profile-page',
   templateUrl: './profile-page.component.html',
   styleUrls: ['./profile-page.component.scss']
 })
-export class ProfilePageComponent implements OnInit, OnDestroy {
+export class ProfilePageComponent implements OnInit {
 
   public user$: Observable<IUser | undefined>;
 
@@ -28,8 +30,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
   public spent_month = 0;
   public spent_year = 0;
 
-  private readonly subs$ = new Subject<void>();
-
   constructor(
     private readonly userStore: UserStore,
     private readonly chartStore: ChartStore
@@ -39,11 +39,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.chartStore.totalMonth
-      .pipe(takeUntil(this.subs$))
       .subscribe(value => value && this.summarizeMonth(value!));
 
     this.chartStore.totalYear
-      .pipe(takeUntil(this.subs$))
       .subscribe(value => value && this.summarizeYear(value!));
 
     this.chartStore.fetchTotalForMonth();
@@ -75,11 +73,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
       return 0;
     }
     return a.reduce((acc, curr) => acc + curr);
-  }
-
-  public ngOnDestroy(): void {
-    this.subs$.next();
-    this.subs$.unsubscribe();
   }
 
   private summarizeMonth(totalMonth: Total): void {

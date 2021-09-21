@@ -1,21 +1,17 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Subject } from "rxjs";
 
 import { CreateUserDto } from '../../../api/api.generated';
 import UserStore from "../../store/user/user.store";
-
 
 @Component({
   selector: 'sign-up-form',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss']
 })
-export class SignUpComponent implements OnDestroy {
+export class SignUpComponent {
 
   public signUpForm: FormGroup;
-
-  private readonly subs$ = new Subject<void>();
 
   constructor(
     private readonly fb: FormBuilder,
@@ -64,10 +60,5 @@ export class SignUpComponent implements OnDestroy {
     };
 
     this.userStore.signUp(user);
-  }
-
-  public ngOnDestroy(): void {
-    this.subs$.next();
-    this.subs$.unsubscribe();
   }
 }

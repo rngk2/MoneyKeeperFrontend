@@ -1,9 +1,11 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { UntilDestroy } from "@ngneat/until-destroy";
 
 import ITransaction from '../../entities/transaction.entity';
 import TransactionsStore from "../../store/transactions/transactions.store";
 
+@UntilDestroy()
 @Component({
   selector: 'app-about-transaction',
   templateUrl: './about-transaction.component.html',

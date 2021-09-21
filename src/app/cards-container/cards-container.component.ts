@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { takeUntil } from "rxjs/operators";
+import { UntilDestroy } from "@ngneat/until-destroy";
+import { BehaviorSubject } from 'rxjs';
 
 import { CategoryOverview } from '../../api/api.generated';
 import { AddCategoryFormComponent } from '../add-category-form/add-category-form.component';
@@ -13,12 +13,13 @@ import { AddEarningFormComponent } from '../transactions/add-earning-form/add-ea
 import { Range, RangeOffsetController } from "../utils";
 import { CARDS_LAZY_LOADING_OPTIONS } from "./cards.container.constants";
 
+@UntilDestroy()
 @Component({
   selector: 'cards-container',
   templateUrl: './cards-container.component.html',
   styleUrls: ['./cards-container.component.scss']
 })
-export class CardsContainerComponent implements OnInit, OnDestroy {
+export class CardsContainerComponent implements OnInit {
 
   public categoriesNames$ = new BehaviorSubject<string[]>([]);
   public amountForCategories$ = new BehaviorSubject<number[]>([]);
@@ -26,7 +27,7 @@ export class CardsContainerComponent implements OnInit, OnDestroy {
   public isFetched = false;
 
   private readonly categoryUtils = new CategoryService.CategoryServiceUtils();
-  private readonly subs$ = new Subject<void>();
+
 
   private range = new RangeOffsetController(CARDS_LAZY_LOADING_OPTIONS.BEGIN_OFFSET, CARDS_LAZY_LOADING_OPTIONS.STEP);
 
@@ -36,7 +37,6 @@ export class CardsContainerComponent implements OnInit, OnDestroy {
     private readonly chartStore: ChartStore,
   ) {
     this.categoriesStore.overview
-      .pipe(takeUntil(this.subs$))
       .subscribe(value => {
         this.overview$.next(
           value.filter(o => o.categoryName !== INPUT_TRANSACTION_NAME)
@@ -59,7 +59,6 @@ export class CardsContainerComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.chartStore.total
-      .pipe(takeUntil(this.subs$))
       .subscribe(value => {
         if (value) {
           this.categoriesNames$.next(this.categoryUtils.getCategoriesNames(value));
@@ -68,7 +67,6 @@ export class CardsContainerComponent implements OnInit, OnDestroy {
       });
 
     this.overview$
-      .pipe(takeUntil(this.subs$))
       .subscribe(() => this.buildChart());
 
     this.fetchSummary(this.range.getNextRange());
@@ -89,7 +87,6 @@ export class CardsContainerComponent implements OnInit, OnDestroy {
     this.dialog.open(AddCategoryFormComponent, {
       width: '40rem'
     }).afterClosed()
-      .pipe(takeUntil(this.subs$))
       .subscribe(() => {
         document.getElementById('add-btn')!.blur();
       });
@@ -99,7 +96,6 @@ export class CardsContainerComponent implements OnInit, OnDestroy {
     this.dialog.open(AddEarningFormComponent, {
       width: '40rem'
     }).afterClosed()
-      .pipe(takeUntil(this.subs$))
       .subscribe(() => {
         document.getElementById('add-btn')!.blur();
       });
@@ -107,10 +103,5 @@ export class CardsContainerComponent implements OnInit, OnDestroy {
 
   public onScroll(): void {
     this.fetchSummary(this.range.getNextRange());
-  }
-
-  public ngOnDestroy(): void {
-    this.subs$.next();
-    this.subs$.unsubscribe();
   }
 }

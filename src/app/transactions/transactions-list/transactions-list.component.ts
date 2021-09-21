@@ -1,7 +1,7 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Subject } from "rxjs";
-import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { UntilDestroy } from "@ngneat/until-destroy";
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { OrderType, TransactionField } from '../../../api/api.generated';
 import ITransaction, { INPUT_TRANSACTION_NAME } from '../../entities/transaction.entity';
@@ -9,19 +9,18 @@ import TransactionsStore from "../../store/transactions/transactions.store";
 import { Range, RangeOffsetController } from '../../utils';
 import { SEARCH_OPTIONS, TRANSACTIONS_LAZY_LOADING_OPTIONS } from "./transactions-list.constants";
 
+@UntilDestroy()
 @Component({
   selector: 'transactions-list',
   templateUrl: './transactions-list.component.html',
   styleUrls: ['./transactions-list.component.scss']
 })
-export class TransactionsListComponent implements OnInit, OnDestroy {
+export class TransactionsListComponent implements OnInit {
 
   public transactions?: ITransaction[];
   public searchControl = new FormControl('');
 
   @Input() public filter?: (value: any, index: number, array: any[]) => unknown;
-
-  private readonly subs$ = new Subject<void>();
 
   private rangeForAll
     = new RangeOffsetController(TRANSACTIONS_LAZY_LOADING_OPTIONS.BEGIN_OFFSET, TRANSACTIONS_LAZY_LOADING_OPTIONS.STEP);
@@ -32,7 +31,6 @@ export class TransactionsListComponent implements OnInit, OnDestroy {
     private readonly transactionsStore: TransactionsStore
   ) {
     transactionsStore.transactions
-      .pipe(takeUntil(this.subs$))
       .subscribe(value => {
         if (value) {
           this.transactions = this.filter ? value.filter(this.filter) : value;
@@ -60,11 +58,6 @@ export class TransactionsListComponent implements OnInit, OnDestroy {
 
   public getInputTransactionName(): string {
     return INPUT_TRANSACTION_NAME;
-  }
-
-  public ngOnDestroy(): void {
-    this.subs$.next();
-    this.subs$.unsubscribe();
   }
 
   private fetchTransactions(range: Range): void {

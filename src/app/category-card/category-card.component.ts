@@ -1,7 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { ChangeDetectorRef, Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Subject } from 'rxjs';
+import { UntilDestroy } from "@ngneat/until-destroy";
 
 import { TransactionDto } from "../../api/api.generated";
 import { ConfirmPopupComponent } from '../confirm-popup/confirm-popup.component';
@@ -10,6 +10,7 @@ import CategoriesStore from "../store/categories/categories.store";
 import TransactionsStore from "../store/transactions/transactions.store";
 import { AboutTransactionComponent } from '../transactions/about-transaction/about-transaction.component';
 
+@UntilDestroy()
 @Component({
   selector: 'category-card',
   templateUrl: './category-card.component.html',
@@ -23,7 +24,7 @@ import { AboutTransactionComponent } from '../transactions/about-transaction/abo
     ])
   ]
 })
-export class CategoryCardComponent implements OnInit, OnDestroy {
+export class CategoryCardComponent implements OnInit {
 
   private static readonly lastTransactionsMaxLength = 5;
   public state: 'collapsed' | 'expanded' = 'collapsed';
@@ -37,7 +38,6 @@ export class CategoryCardComponent implements OnInit, OnDestroy {
 
   @ViewChild('editInput') public editInput!: ElementRef;
 
-  private readonly subs$ = new Subject<void>();
 
   constructor(
     private readonly dialog: MatDialog,
@@ -112,10 +112,5 @@ export class CategoryCardComponent implements OnInit, OnDestroy {
 
   public editDisable(): void {
     this.edit = false;
-  }
-
-  public ngOnDestroy(): void {
-    this.subs$.next();
-    this.subs$.unsubscribe();
   }
 }

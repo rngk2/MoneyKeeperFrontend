@@ -1,14 +1,15 @@
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Subject } from "rxjs";
+import { UntilDestroy } from "@ngneat/until-destroy";
 import TransactionsStore from "../../store/transactions/transactions.store";
 
+@UntilDestroy()
 @Component({
   selector: 'add-transaction-form',
   templateUrl: './add-transaction-form.component.html',
   styleUrls: ['./add-transaction-form.component.scss']
 })
-export class AddTransactionFormComponent implements OnDestroy {
+export class AddTransactionFormComponent {
 
   public amount!: number;
   public comment!: string;
@@ -19,8 +20,6 @@ export class AddTransactionFormComponent implements OnDestroy {
   @Input() public categoryId!: number;
 
   @Output() public onSubmit = new EventEmitter();
-
-  private readonly subs$ = new Subject<void>();
 
   constructor(
     private readonly transactionsStore: TransactionsStore
@@ -35,10 +34,5 @@ export class AddTransactionFormComponent implements OnDestroy {
       comment: this.comment
     });
     this.onSubmit.emit();
-  }
-
-  public ngOnDestroy(): void {
-    this.subs$.next();
-    this.subs$.unsubscribe();
   }
 }

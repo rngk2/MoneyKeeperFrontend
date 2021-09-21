@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Inject, Output } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { UntilDestroy } from "@ngneat/until-destroy";
 
+@UntilDestroy()
 @Component({
   selector: 'confirm-popup',
   templateUrl: './confirm-popup.component.html',
