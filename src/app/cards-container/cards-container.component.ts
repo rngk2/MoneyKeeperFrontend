@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit} from '@angular/core';
 import Transaction from '../entities/transaction.entity';
 import UserService from '../services/user.service';
 import {MatDialog} from '@angular/material/dialog';
@@ -6,13 +6,11 @@ import {AddCategoryFormComponent} from '../add-category-form/add-category-form.c
 import {BASE_SERVER_URL} from '../app.config';
 import CardsStore from '../store/cards/cards.store';
 import {AddEarningFormComponent} from '../transactions/add-earning-form/add-earning-form.component';
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
+import {BehaviorSubject, Subject} from 'rxjs';
 import TransactionService from '../services/transaction.service';
-import CategoryService from '../services/category.service';
-import {CategoryOverview, OrderType, TransactionDto, TransactionField} from '../../api/api.generated';
-import {take, takeUntil} from "rxjs/operators";
+import {CategoryOverview} from '../../api/api.generated';
+import {takeUntil} from "rxjs/operators";
 import CacheService from "../services/cache.service";
-import {CACHE_TRANSACTIONS_PATH} from "../constants";
 import {RangeOffsetController} from "../transactions/transactions-list/transactions-list.component";
 import {Range} from "../utils/Utils";
 import TransactionsStore from "../store/transactions/transactions.store";
@@ -40,13 +38,11 @@ export class CardsContainerComponent implements OnInit, OnDestroy {
   public names = new BehaviorSubject<string[]>([]);
   public amount = new BehaviorSubject<number[]>([]);
 
-
   constructor(private readonly dialog: MatDialog,
               private readonly userService: UserService,
               @Inject(BASE_SERVER_URL) private readonly serverUrl: string,
               private readonly cardsStore: CardsStore,
               private readonly transactionsService: TransactionService,
-              private readonly categoryService: CategoryService,
               private readonly cache: CacheService,
               private readonly transactionsStore: TransactionsStore,
               private readonly categoriesStore: CategoriesStore,
@@ -55,7 +51,15 @@ export class CardsContainerComponent implements OnInit, OnDestroy {
     this.categoriesStore.overview
       .pipe(takeUntil(this.subs))
       .subscribe(value => {
-        this.overview = new BehaviorSubject(value.filter(o => o.categoryName !== Transaction.inputTransactionName))
+        this.overview.next(
+          value.filter(o => o.categoryName !== Transaction.inputTransactionName)
+            .sort((a, b) => {
+              if (!a.categoryName || !b.categoryName)   return 0;
+              else if (a.categoryName < b.categoryName) return -1;
+              else if (a.categoryName > b.categoryName) return +1;
+              else return 0;
+            })
+        );
         this.isFetched = true;
       });
   }

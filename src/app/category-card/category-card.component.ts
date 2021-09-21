@@ -10,6 +10,7 @@ import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import TransactionsStore from "../store/transactions/transactions.store";
 import {TransactionDto} from "../../api/api.generated";
+import CategoriesStore from "../store/categories/categories.store";
 
 @Component({
   selector: 'category-card',
@@ -44,9 +45,9 @@ export class CategoryCardComponent implements OnInit, OnDestroy {
   constructor(private readonly dialog: MatDialog,
               private readonly confirm: MatDialog,
               private readonly cardsStore: CardsStore,
-              private readonly categoryService: CategoryService,
               private readonly changeDetector: ChangeDetectorRef,
-              private readonly transactionsStore: TransactionsStore) {
+              private readonly transactionsStore: TransactionsStore,
+              private readonly categoriesStore: CategoriesStore) {
   }
 
   public ngOnInit(): void {
@@ -79,9 +80,7 @@ export class CategoryCardComponent implements OnInit, OnDestroy {
     });
     confirmRef.componentInstance.onAnswer.subscribe((ok: boolean) => {
       if (ok) {
-        this.categoryService.api.categoriesDelete(this.categoryId)
-          .pipe(takeUntil(this.subs))
-          .subscribe(() => this.cardsStore.updateState());
+        this.categoriesStore.deleteCategory(this.categoryId);
       }
       confirmRef.close();
     });
@@ -97,25 +96,24 @@ export class CategoryCardComponent implements OnInit, OnDestroy {
   public edit_enable(): void {
     this.edit = true;
     this.changeDetector.detectChanges();
-    // this.editInput.nativeElement.focus();
   }
 
   public edit_save(): void {
-    this.categoryService.api.categoriesUpdate(this.categoryId.toString(), {
-      name:  this.editInput.nativeElement.value
-    }, {
-      categoryId: this.categoryId
-    })
-      .pipe(takeUntil(this.subs))
-      .subscribe(
-        () => this.cardsStore.updateState(),
-        () => this.cardsStore.updateState());
+    if (!this.editInput.nativeElement.value) {
+      return;
+    }
+    this.categoriesStore.updateCategory( {
+      categoryId: this.categoryId,
+      data: {
+        name: this.editInput.nativeElement.value
+      }
+    });
+    this.edit_disable();
   }
 
   public edit_disable(): void {
     this.edit = false;
   }
-
 
   public ngOnDestroy(): void {
     this.subs.next();

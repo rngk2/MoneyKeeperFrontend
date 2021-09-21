@@ -14,7 +14,7 @@
       <mat-spinner *ngIf="!isFetched" [diameter]="80" [strokeWidth]="4" class="spinner"></mat-spinner>
 
       <ng-template #ok>
-        <category-card *ngFor="let o of (overview | async)"
+        <category-card *ngFor="let o of (overview.asObservable() | async)"
                        [categoryName]="o.categoryName"
                        [spendThisMonth]="o.spentThisMonth"
                        [categoryId]="o.categoryId"

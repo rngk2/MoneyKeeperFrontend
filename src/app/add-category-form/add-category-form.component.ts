@@ -2,11 +2,9 @@ import {Component, OnDestroy} from '@angular/core';
 import {MatDialogRef} from '@angular/material/dialog';
 import UserService from '../services/user.service';
 import CardsStore from '../store/cards/cards.store';
-import CategoryService from '../services/category.service';
 import CacheService from '../services/cache.service';
-import {CACHE_TRANSACTIONS_PATH} from "../constants";
 import {Subject} from "rxjs";
-import {takeUntil} from "rxjs/operators";
+import CategoriesStore from "../store/categories/categories.store";
 
 interface DialogData {
   categoryName: string
@@ -27,9 +25,9 @@ export class AddCategoryFormComponent implements OnDestroy {
 
   constructor(private readonly dialogRef: MatDialogRef<AddCategoryFormComponent>,
               private readonly cardsStore: CardsStore,
-              private readonly categoryService: CategoryService,
               private readonly userService: UserService,
-              private readonly cache: CacheService) {
+              private readonly cache: CacheService,
+              private readonly categoriesStore: CategoriesStore) {
   }
 
   public addCategory(): void {
@@ -37,16 +35,9 @@ export class AddCategoryFormComponent implements OnDestroy {
       return;
     }
 
-    this.categoryService.api.categoriesCreate({
-        name: this.categoryService.utils.normalizeNameString(this.data.categoryName),
-      }).pipe(takeUntil(this.subs))
-        .subscribe(res => {
-          if (!res.data.error) {
-            this.cache.remove(CACHE_TRANSACTIONS_PATH);
-            this.cardsStore.updateState();
-          }
-        });
-
+    this.categoriesStore.createCategory({
+        name: this.categoriesStore.normalizeNameString(this.data.categoryName),
+    });
     this.dialogRef.close();
   }
 

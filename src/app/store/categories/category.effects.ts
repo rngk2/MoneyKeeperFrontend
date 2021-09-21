@@ -3,13 +3,11 @@ import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {CategoryActions} from './categories.actions';
 import {map, switchMap, tap} from "rxjs/operators";
 import CategoryService from "../../services/category.service";
-import CardsStore from "../cards/cards.store";
 
 @Injectable()
 export class CategoryEffects {
   constructor(private readonly actions$: Actions,
-              private readonly categoryService: CategoryService,
-              private readonly cardsStore: CardsStore) {
+              private readonly categoryService: CategoryService) {
   }
 
   public readonly getOverview = createEffect(() =>
@@ -17,32 +15,54 @@ export class CategoryEffects {
       ofType(CategoryActions.GetOverview),
       switchMap(payload => this.categoryService.api.overviewList(payload)
         .pipe(map(res => !res.data.error
-          ? CategoryActions.GetOverview_Success({data: res.data.value})
-          :  null as any
+          ? CategoryActions.GetOverviewSuccess({data: res.data.value})
+          : CategoryActions.OperationFailed(res.data.error)
           )
         )
       )
     )
   );
 
-  public readonly categoryOperation = createEffect(() =>
+  public readonly createCategory = createEffect(() =>
     this.actions$.pipe(
-      ofType(
-        CategoryActions.CreateCategory
-      ),
+      ofType(CategoryActions.CreateCategory),
       switchMap(payload => this.categoryService.api.categoriesCreate(payload)
         .pipe(map(res => !res.data.error
-          ? CategoryActions.OperationSuccessful(res.data.value)
+          ? CategoryActions.CreateCategorySuccess({ created: res.data.value })
           : CategoryActions.OperationFailed(res.data.error)
         ))
       )
     )
   );
 
-  public readonly operationSuccessful = createEffect(() =>
+  public readonly updateCategory = createEffect(() =>
     this.actions$.pipe(
-      ofType(CategoryActions.OperationSuccessful),
-      tap(() => this.cardsStore.updateState())
+      ofType(CategoryActions.UpdateCategory),
+      switchMap(payload => this.categoryService.api.categoriesUpdate(payload.data, {
+        categoryId: payload.categoryId
+      }).pipe(map(res => !res.data.error
+          ? CategoryActions.UpdateCategorySuccess({ updated: res.data.value })
+          : CategoryActions.OperationFailed(res.data.error)
+        ))
+      )
+    )
+  )
+
+  public readonly deleteCategory = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CategoryActions.DeleteCategory),
+      switchMap(payload => {
+        if (typeof payload.idOrName === 'number') {
+          return this.categoryService.api.categoriesDelete(payload.idOrName)
+            .pipe(map(res => !res.data.error
+              ? CategoryActions.DeleteCategorySuccess({ deleted: res.data.value })
+              : CategoryActions.OperationFailed(res.data.error)));
+        }
+        return this.categoryService.api.byNameDelete(payload.idOrName)
+            .pipe(map(res => !res.data.error
+              ? CategoryActions.DeleteCategorySuccess({ deleted: res.data.value })
+              : CategoryActions.OperationFailed(res.data.error)));
+      })
     )
   );
 
@@ -50,6 +70,6 @@ export class CategoryEffects {
     this.actions$.pipe(
       ofType(CategoryActions.OperationFailed),
       tap(error => console.error(error))
-    )
+    ), {dispatch: true}
   );
 }

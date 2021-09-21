@@ -20,7 +20,7 @@ export interface UsersApi {
 
 export interface CategoriesApi {
   categoriesDetail: (id: number, params?: RequestParams) => any;
-  categoriesUpdate: (id: string, data: UpdateCategoryDto, query?: { categoryId?: number }, params?: RequestParams) => any;
+  categoriesUpdate: (data: UpdateCategoryDto, query?: { categoryId?: number }, params?: RequestParams) => any
   categoriesDelete: (id: number, params?: RequestParams) => any;
   categoriesList: (params?: RequestParams) => any;
   categoriesCreate: (data: CreateCategoryDto, params?: RequestParams) => any;

@@ -448,29 +448,6 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Categories
-     * @name CategoriesUpdate
-     * @request PUT:/Categories/{id}
-     */
-    categoriesUpdate: (
-      id: string,
-      data: UpdateCategoryDto,
-      query?: { categoryId?: number },
-      params: RequestParams = {},
-    ) =>
-      this.request<CategoryDtoApiResult, any>({
-        path: `/Categories/${id}`,
-        method: "PUT",
-        query: query,
-        body: data,
-        type: ContentType.Json,
-        format: "json",
-        ...params,
-      }),
-
-    /**
-     * No description
-     *
-     * @tags Categories
      * @name CategoriesDelete
      * @request DELETE:/Categories/{id}
      */
@@ -524,6 +501,24 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
       this.request<CategoryDtoApiResult, any>({
         path: `/Categories`,
         method: "POST",
+        body: data,
+        type: ContentType.Json,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Categories
+     * @name CategoriesUpdate
+     * @request PUT:/Categories
+     */
+    categoriesUpdate: (data: UpdateCategoryDto, query?: { categoryId?: number }, params: RequestParams = {}) =>
+      this.request<CategoryDtoApiResult, any>({
+        path: `/Categories`,
+        method: "PUT",
+        query: query,
         body: data,
         type: ContentType.Json,
         format: "json",
