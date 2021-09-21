@@ -82,9 +82,10 @@ export class AuthEffects {
     ), { dispatch: false }
   );
 
-  constructor(private actions$: Actions,
-              private readonly authService: AuthService,
-              private readonly userService: UserService,
-              private readonly router: Router) {
+  constructor(
+    private actions$: Actions,
+    private readonly authService: AuthService,
+    private readonly userService: UserService,
+    private readonly router: Router) {
   }
 }
