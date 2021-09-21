@@ -9,7 +9,7 @@ import { AuthActions } from "./auth.actions";
 import AuthState from "./auth.state";
 
 const selectAuthFeature = createFeatureSelector<AppState, AuthState>(AppFeatures.Auth);
-const authSelector = createSelector(
+const userSelector = createSelector(
   selectAuthFeature,
   state => state.user
 );
@@ -23,7 +23,7 @@ export default class UserStore {
   }
 
   public getUser(): Observable<IUser | undefined> {
-    return this.store.select(authSelector);
+    return this.store.select(userSelector);
   }
 
   public logIn(credentials: { email: string, password: string }): void {
