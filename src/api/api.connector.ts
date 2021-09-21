@@ -16,14 +16,11 @@ export default class ApiConnector {
     private readonly userStore: UserStore
   ) {
     userStore.getUser().subscribe(value => {
-      console.log('1');
-      console.log(value);
       const currentUser = value;
       const authToken = currentUser && currentUser.jwtToken;
       let authHeader = {};
 
       if (authToken) {
-        console.log(authToken, typeof authToken);
         authHeader = {
           'Authorization': 'Bearer ' + authToken
         };

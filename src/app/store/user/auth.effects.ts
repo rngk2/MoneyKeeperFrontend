@@ -53,10 +53,8 @@ export class AuthEffects {
     this.actions$.pipe(
       ofType(AuthActions.SignUp),
       switchMap(payload => {
-          console.log('inSwitch');
           return this.userService.api.usersCreate(payload)
             .pipe(map((res) => {
-                  console.log('inMap');
                   return res.data.value
                     ? AuthActions.SignUpSuccess(res.data.value as IUser)
                     : AuthActions.SignUpFailure(res.data.error as IError);
