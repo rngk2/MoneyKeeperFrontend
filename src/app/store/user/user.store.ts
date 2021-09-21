@@ -4,7 +4,6 @@ import AuthState from "./auth.state";
 import {Injectable} from "@angular/core";
 import User from "../../entities/user.entity";
 import {Observable} from "rxjs";
-import {TypedAction} from "@ngrx/store/src/models";
 import {AuthActions} from "./auth.actions";
 import {CreateUserDto} from "../../../api/api.generated";
 import {AppFeatures} from "../app.features";
@@ -25,18 +24,14 @@ export default class UserStore {
   }
 
   public logIn(credentials: {email: string, password: string}): void {
-    this.dispatch(AuthActions.LogIn(credentials));
+    this.store.dispatch(AuthActions.LogIn(credentials));
   }
 
   public signUp(user: CreateUserDto): void {
-    this.dispatch(AuthActions.SignUp(user));
+    this.store.dispatch(AuthActions.SignUp(user));
   }
 
   public logOut(): void {
-    this.dispatch(AuthActions.LogOut);
-  }
-
-  private dispatch(action: TypedAction<any>): void {
-    this.store.dispatch(action)
+    this.store.dispatch(AuthActions.LogOut());
   }
 }
