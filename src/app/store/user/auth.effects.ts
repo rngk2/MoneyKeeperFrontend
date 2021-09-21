@@ -36,8 +36,8 @@ export class AuthEffects {
   public readonly logInFailure = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.LogInFailure),
-      tap((payload) => {
-        console.error(payload);
+      tap(error => {
+        console.error(error);
       })
     ), { dispatch: false }
   );
@@ -76,8 +76,8 @@ export class AuthEffects {
   public readonly signUpFailure = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.SignUpFailure),
-      tap((payload) => {
-        console.error(payload);
+      tap(error => {
+        console.error(error);
       })
     ), { dispatch: false }
   );
