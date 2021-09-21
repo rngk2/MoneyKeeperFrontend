@@ -18,7 +18,7 @@ class CategoryServiceUtils {
 
   /**
    * @param total - is total spent for each category
-   * @returns {string[]} - Categories names with {Transaction.inputTransactionName} excluded
+   * @returns {string[]} - Categories names with {Transaction:INPUT_TRANSACTION_NAME} excluded
    */
   public getCategoriesNames(total: Total): string[] {
     return Object.keys(total).filter(value =>
@@ -28,7 +28,7 @@ class CategoryServiceUtils {
 
   /**
    * @param total - is total spent for each category
-   * @returns {number[]} - Spent for each category with {Transaction.inputTransactionName} excluded
+   * @returns {number[]} - Spent for each category with {Transaction:INPUT_TRANSACTION_NAME} excluded
    */
   public getAmountForCategories(total: Total): number[] {
     return Object.values(total).filter((value, index) =>
