@@ -17,9 +17,20 @@ export namespace CategoryActions {
     }>()
   );
   export const GetOverviewSuccess = createAction(
-    '[Category] Get Overview : Success',
+    '[Category] Get Overview: Success',
     props<{
       data: CategoryOverview[]
+    }>());
+  export const GetOverviewForCategory = createAction(
+    '[Category] Get Overview For Category',
+    props<{
+      categoryId: number
+    }>()
+  );
+  export const GetOverviewForCategorySuccess = createAction(
+    '[Category] Get Overview For Category: Success',
+    props<{
+      data: CategoryOverview
     }>());
   export const CreateCategory = createAction(
     '[Category] Create',

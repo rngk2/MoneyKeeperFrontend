@@ -7,7 +7,7 @@ import TransactionsStore from "../../store/transactions/transactions.store";
 
 @UntilDestroy()
 @Component({
-  selector: 'app-about-transaction',
+  selector: 'about-transaction',
   templateUrl: './about-transaction.component.html',
   styleUrls: ['./about-transaction.component.scss']
 })

@@ -18,6 +18,18 @@ export class CategoryEffects {
       )
     )
   );
+  public readonly getOverviewForCategory = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CategoryActions.GetOverviewForCategory),
+      switchMap(payload => this.categoryService.api.overviewDetail(payload.categoryId)
+        .pipe(map(res => !res.data.error
+            ? CategoryActions.GetOverviewForCategorySuccess({ data: res.data.value })
+            : CategoryActions.OperationFailed(res.data.error)
+          )
+        )
+      )
+    )
+  );
   public readonly createCategory = createEffect(() =>
     this.actions$.pipe(
       ofType(CategoryActions.CreateCategory),
@@ -65,7 +77,7 @@ export class CategoryEffects {
 
   constructor(
     private readonly actions$: Actions,
-    private readonly categoryService: CategoryService
+    private readonly categoryService: CategoryService,
   ) {
   }
 }

@@ -10,8 +10,25 @@ const _categoryReducer = createReducer(
     overview: []
   })),
   on(CategoryActions.GetOverviewSuccess, (state, updatedValue) => ({
-    overview: state ? [...state.overview, ...updatedValue.data] : updatedValue.data
+    overview: Object.values(state ? [...state.overview, ...updatedValue.data] : updatedValue.data)
   })),
+  on(CategoryActions.GetOverviewForCategorySuccess, (state, updatedValue) => {
+    const elementInOverviewIndex = state.overview.findIndex(value =>
+      updatedValue.data.categoryId === value.categoryId
+    );
+    if (elementInOverviewIndex === -1) {
+      return {
+        overview: [...(state ? state.overview : []), updatedValue.data]
+      };
+    }
+
+    const updatedState = Object.assign({}, state.overview);
+    updatedState[elementInOverviewIndex] = updatedValue.data;
+
+    return {
+      overview: Object.values(updatedState)
+    };
+  }),
   on(CategoryActions.CreateCategorySuccess, (state, { created }) => {
     return {
       overview: [...(state ? state.overview : []), {

@@ -34,6 +34,10 @@ export default class CategoriesStore {
     this.store.dispatch(CategoryActions.GetOverview(range));
   }
 
+  public fetchOverviewForCategory(categoryId: number): void {
+    this.store.dispatch(CategoryActions.GetOverviewForCategory({ categoryId }));
+  }
+
   public createCategory(category: CreateCategoryDto): void {
     this.store.dispatch(CategoryActions.CreateCategory(category));
   }

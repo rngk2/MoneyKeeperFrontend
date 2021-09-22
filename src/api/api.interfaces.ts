@@ -30,6 +30,7 @@ export interface CategoriesApi {
   categoriesCreate: (data: CreateCategoryDto, params?: RequestParams) => any;
   byNameDelete: (categoryName: string, params?: RequestParams) => any;
   overviewList: (query?: { from?: number; to?: number }, params?: RequestParams) => any;
+  overviewDetail: (categoryId: number, params?: RequestParams) => any;
 }
 
 export interface TransactionsApi {

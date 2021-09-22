@@ -34,6 +34,7 @@ export class AddCategoryFormComponent {
     this.categoriesStore.createCategory({
       name: this.categoryUtils.normalizeNameString(this.createCategoryDialogData.categoryName),
     });
+
     this.dialogRef.close();
   }
 }

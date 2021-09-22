@@ -56,6 +56,11 @@ export interface CategoryOverview {
   spentThisMonth?: number;
 }
 
+export interface CategoryOverviewApiResult {
+  value?: CategoryOverview;
+  error?: IError;
+}
+
 export interface CategoryOverviewIEnumerableApiResult {
   value?: CategoryOverview[] | null;
   error?: IError;
@@ -471,6 +476,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
         path: `/Categories/overview`,
         method: "GET",
         query: query,
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Categories
+     * @name OverviewDetail
+     * @request GET:/Categories/overview/{categoryId}
+     */
+    overviewDetail: (categoryId: number, params: RequestParams = {}) =>
+      this.request<CategoryOverviewApiResult, any>({
+        path: `/Categories/overview/${categoryId}`,
+        method: "GET",
         format: "json",
         ...params,
       }),

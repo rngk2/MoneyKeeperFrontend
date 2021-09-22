@@ -9,6 +9,7 @@ import { INPUT_TRANSACTION_NAME } from "../entities/transaction.entity";
 import CategoryService from "../services/category.service";
 import CategoriesStore from "../store/categories/categories.store";
 import ChartStore from "../store/chart/chart.store";
+import TransactionsStore from "../store/transactions/transactions.store";
 import { AddEarningFormComponent } from '../transactions/add-earning-form/add-earning-form.component';
 import { Range, RangeOffsetController } from "../utils";
 import { CARDS_LAZY_LOADING_OPTIONS } from "./cards.container.constants";
@@ -25,7 +26,7 @@ export class CardsContainerComponent implements OnInit {
   public amountForCategories$ = new BehaviorSubject<number[]>([]);
   public overview$ = new BehaviorSubject<CategoryOverview[]>([]);
   public isFetched = false;
-
+  
   private readonly categoryUtils = new CategoryService.CategoryServiceUtils();
 
   private range = new RangeOffsetController(CARDS_LAZY_LOADING_OPTIONS.BEGIN_OFFSET, CARDS_LAZY_LOADING_OPTIONS.STEP);
@@ -33,10 +34,14 @@ export class CardsContainerComponent implements OnInit {
   constructor(
     private readonly dialog: MatDialog,
     private readonly categoriesStore: CategoriesStore,
+    private readonly transactionsStore: TransactionsStore,
     private readonly chartStore: ChartStore,
   ) {
     this.categoriesStore.overview
       .subscribe(value => {
+        if (!value || value.length < 1) {
+          return;
+        }
         this.overview$.next(
           this.categoryUtils.sortOverviewAlphabetically(
             value.filter(o => o.categoryName !== INPUT_TRANSACTION_NAME)

@@ -27,10 +27,15 @@ export default class TransactionsStore {
     return this.store.select(transactionsSelector);
   }
 
-  public transactionsForCategory(): Observable<Record<number, ITransaction[]> | undefined> {
+  public transactionsForCategory(categoryId: number): Observable<ITransaction[]> {
     const selectCategoryTransactions = createSelector(
       selectTransactionsFeature,
-      (state) => state.categoriesTransactions
+      (state) => {
+        if (state.categoriesTransactions && state.categoriesTransactions[categoryId]) {
+          return state.categoriesTransactions[categoryId];
+        }
+        return [];
+      }
     );
     return this.store.select(selectCategoryTransactions);
   }

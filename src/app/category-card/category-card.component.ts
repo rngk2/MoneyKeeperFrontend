@@ -2,13 +2,13 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UntilDestroy } from "@ngneat/until-destroy";
-
-import { TransactionDto } from "../../api/api.generated";
+import { Observable } from "rxjs";
 import { ConfirmPopupComponent } from '../confirm-popup/confirm-popup.component';
 import ITransaction from '../entities/transaction.entity';
 import CategoriesStore from "../store/categories/categories.store";
 import TransactionsStore from "../store/transactions/transactions.store";
 import { AboutTransactionComponent } from '../transactions/about-transaction/about-transaction.component';
+import { TRANSACTIONS_PREVIEW_MAX_LENGTH } from "./category-card.constants";
 
 @UntilDestroy()
 @Component({
@@ -26,9 +26,8 @@ import { AboutTransactionComponent } from '../transactions/about-transaction/abo
 })
 export class CategoryCardComponent implements OnInit {
 
-  private static readonly lastTransactionsMaxLength = 5;
   public state: 'collapsed' | 'expanded' = 'collapsed';
-  public lastTransactions!: ITransaction[] | TransactionDto[];
+  public lastTransactions?: Observable<ITransaction[]>;
   public addTransaction = false;
   public edit: boolean = false;
 
@@ -37,7 +36,6 @@ export class CategoryCardComponent implements OnInit {
   @Input() public spendThisMonth!: number;
 
   @ViewChild('editInput') public editInput!: ElementRef;
-
 
   constructor(
     private readonly dialog: MatDialog,
@@ -48,19 +46,15 @@ export class CategoryCardComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.transactionsStore.transactionsForCategory().subscribe(value => {
-      if (value && value[this.categoryId]) {
-        this.lastTransactions = value[this.categoryId];
-      }
-    });
+    this.lastTransactions = this.transactionsStore.transactionsForCategory(this.categoryId);
   }
 
   public toggle(): void {
-    if (!this.lastTransactions && this.state === 'collapsed') {
+    if (this.state === 'collapsed') {
       this.transactionsStore.fetchTransactionsForCategory({
         categoryId: this.categoryId,
         from: 0,
-        to: CategoryCardComponent.lastTransactionsMaxLength
+        to: TRANSACTIONS_PREVIEW_MAX_LENGTH
       });
     }
 
@@ -88,6 +82,8 @@ export class CategoryCardComponent implements OnInit {
     this.dialog.open(AboutTransactionComponent, {
       width: '20rem',
       data: transaction
+    }).afterClosed().subscribe(() => {
+      this.categoriesStore.fetchOverviewForCategory(this.categoryId);
     });
   }
 
@@ -112,5 +108,10 @@ export class CategoryCardComponent implements OnInit {
 
   public editDisable(): void {
     this.edit = false;
+  }
+
+  public onAddTransactionSubmit(): void {
+    this.addTransaction = false;
+    this.categoriesStore.fetchOverviewForCategory(this.categoryId);
   }
 }

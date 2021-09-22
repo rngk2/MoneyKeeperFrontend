@@ -207,6 +207,46 @@
         }
       }
     },
+    "/Categories/overview/{categoryId}": {
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryOverviewApiResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryOverviewApiResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryOverviewApiResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/Categories": {
       "get": {
         "tags": [
@@ -1018,6 +1058,18 @@
           "spentThisMonth": {
             "type": "number",
             "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CategoryOverviewApiResult": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/CategoryOverview"
+          },
+          "error": {
+            "$ref": "#/components/schemas/IError"
           }
         },
         "additionalProperties": false

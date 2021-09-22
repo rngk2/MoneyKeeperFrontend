@@ -17,7 +17,7 @@
     </p>
 
     <div [@bodyExpansion]="state" class="expandable-content">
-      <div (click)="showMoreForTransaction(transaction)" *ngFor="let transaction of lastTransactions"
+      <div (click)="showMoreForTransaction(transaction)" *ngFor="let transaction of (lastTransactions | async)"
            style="cursor: pointer">
         <p *ngIf="transaction.amount !== 0">
           {{transaction.timestamp | date: "mediumDate"}}: {{transaction.amount}}$
@@ -30,7 +30,7 @@
       </section>
 
       <section *ngIf="addTransaction">
-        <add-transaction-form (onSubmit)="addTransaction = false" [categoryId]="categoryId"></add-transaction-form>
+        <add-transaction-form (onSubmit)="onAddTransactionSubmit()" [categoryId]="categoryId"></add-transaction-form>
       </section>
     </div>
 
