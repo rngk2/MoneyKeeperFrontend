@@ -1,9 +1,11 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { map, switchMap, tap } from "rxjs/operators";
+import { of } from "rxjs";
+import { map, mergeMap, switchMap, tap, withLatestFrom } from "rxjs/operators";
 
 import TransactionService from "../../services/transaction.service";
 import { TransactionsActions } from "./transactions.actions";
+import TransactionsStore from "./transactions.store";
 
 @Injectable()
 export class TransactionsEffects {
@@ -38,12 +40,19 @@ export class TransactionsEffects {
   public readonly getTransactionsForCategory = createEffect(() =>
     this.actions$.pipe(
       ofType(TransactionsActions.GetTransactionsForCategory),
-      switchMap(payload => {
-          return this.transactionService.api.categoryTransactionsDetail(
-            payload.categoryId, {
-              from: payload.from,
-              to: payload.to
-            }).pipe(map(res => !res.data.error
+      mergeMap(payload =>
+          of(payload)
+            .pipe(withLatestFrom(this.transactionsStore.transactionsForCategory(payload.categoryId))),
+        (payload, latestFromStore) => latestFromStore
+      ),
+      switchMap(([payload, latestFromStore]) => {
+          if (latestFromStore.length > 0) {
+            return of(latestFromStore).pipe(map(() => TransactionsActions.GetTransactionsForCategorySuccess({ data: latestFromStore })));
+          }
+          return this.transactionService.api.categoryTransactionsDetail(payload.categoryId, {
+            from: payload.from,
+            to: payload.to
+          }).pipe(map(res => !res.data.error
             ? TransactionsActions.GetTransactionsForCategorySuccess({
               data: res.data.value,
             })
@@ -74,7 +83,8 @@ export class TransactionsEffects {
 
   constructor(
     private readonly actions$: Actions,
-    private readonly transactionService: TransactionService
+    private readonly transactionService: TransactionService,
+    private readonly transactionsStore: TransactionsStore
   ) {
   }
 }
