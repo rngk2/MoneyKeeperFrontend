@@ -46,6 +46,7 @@ export class AuthEffects {
       ofType(AuthActions.LogOut),
       tap(() => {
         localStorage.clear();
+        this.router.navigate(['/sign-in']);
       })
     ), { dispatch: false }
   );
