@@ -23,7 +23,7 @@ export default class TransactionsStore {
   ) {
   }
 
-  public get transactions(): Observable<ITransaction[] | undefined> {
+  public get transactions(): Observable<ITransaction[]> {
     return this.store.select(transactionsSelector);
   }
 

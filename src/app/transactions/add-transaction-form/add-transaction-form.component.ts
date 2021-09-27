@@ -1,9 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { UntilDestroy } from "@ngneat/until-destroy";
 import TransactionsStore from "../../store/transactions/transactions.store";
 
-@UntilDestroy()
 @Component({
   selector: 'add-transaction-form',
   templateUrl: './add-transaction-form.component.html',

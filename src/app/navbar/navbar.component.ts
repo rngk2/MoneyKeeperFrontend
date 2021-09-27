@@ -1,29 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { UntilDestroy } from "@ngneat/until-destroy";
+import { Component } from '@angular/core';
+import { Observable } from "rxjs";
+import IUser from "../entities/user.entity";
 
 import UserStore from "../store/user/user.store";
 
-@UntilDestroy()
 @Component({
   selector: 'navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
 
-  public loggedIn: boolean = false;
-
+  public user$: Observable<IUser | undefined>;
 
   constructor(
     private readonly userStore: UserStore
   ) {
-  }
-
-  public ngOnInit(): void {
-    this.userStore.getUser()
-      .subscribe((user) => {
-        this.loggedIn = !!user;
-      });
+    this.user$ = userStore.user;
   }
 
   public logOut(): void {

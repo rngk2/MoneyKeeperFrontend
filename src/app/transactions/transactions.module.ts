@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { RouterModule } from '@angular/router';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { PipesModule } from "../commons/pipes/pipes.module";
 
 import { AboutTransactionComponent } from './about-transaction/about-transaction.component';
 import { AddEarningFormComponent } from './add-earning-form/add-earning-form.component';
@@ -31,6 +32,8 @@ import { TransactionsListComponent } from './transactions-list/transactions-list
     CategoryTransactionsComponent
   ],
   imports: [
+    PipesModule,
+
     CommonModule,
     MatDialogModule,
     MatButtonModule,

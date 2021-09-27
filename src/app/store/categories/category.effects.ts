@@ -1,20 +1,40 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { map, switchMap, tap } from "rxjs/operators";
+import { of } from "rxjs";
+import { map, switchMap, tap, withLatestFrom } from "rxjs/operators";
 import CategoryService from "../../services/category.service";
 import { CategoryActions } from './categories.actions';
+import CategoriesStore from "./categories.store";
 
 @Injectable()
 export class CategoryEffects {
+  public readonly getCategories = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CategoryActions.GetCategories),
+      withLatestFrom(this.categoriesStore.categories),
+      switchMap(([, categories]) => {
+        if (categories && categories.length > 0) {
+          return of(categories).pipe(map(value => CategoryActions.GetCategoriesSuccess({ categories: value })));
+        }
+        return this.categoryService.api.categoriesList()
+          .pipe(map(res => !res.data.error
+            ? CategoryActions.GetCategoriesSuccess({ categories: res.data.value })
+            : CategoryActions.OperationFailed(res.data.error)
+          ));
+      })
+    )
+  );
   public readonly getOverview = createEffect(() =>
     this.actions$.pipe(
       ofType(CategoryActions.GetOverview),
-      switchMap(payload => this.categoryService.api.overviewList(payload)
-        .pipe(map(res => !res.data.error
-            ? CategoryActions.GetOverviewSuccess({ data: res.data.value })
-            : CategoryActions.OperationFailed(res.data.error)
-          )
-        )
+      switchMap(payload => {
+          return this.categoryService.api.overviewList(payload)
+            .pipe(map(res => !res.data.error
+                ? CategoryActions.GetOverviewSuccess({ data: res.data.value })
+                : CategoryActions.OperationFailed(res.data.error)
+              )
+            );
+        }
       )
     )
   );
@@ -24,6 +44,18 @@ export class CategoryEffects {
       switchMap(payload => this.categoryService.api.overviewDetail(payload.categoryId)
         .pipe(map(res => !res.data.error
             ? CategoryActions.GetOverviewForCategorySuccess({ data: res.data.value })
+            : CategoryActions.OperationFailed(res.data.error)
+          )
+        )
+      )
+    )
+  );
+  public readonly getOverviewForEarnings = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CategoryActions.GetOverviewForEarnings),
+      switchMap(() => this.categoryService.api.earningsOverviewList()
+        .pipe(map(res => !res.data.error
+            ? CategoryActions.GetOverviewForEarningsSuccess({ earningsOverview: res.data.value })
             : CategoryActions.OperationFailed(res.data.error)
           )
         )
@@ -78,6 +110,7 @@ export class CategoryEffects {
   constructor(
     private readonly actions$: Actions,
     private readonly categoryService: CategoryService,
+    private readonly categoriesStore: CategoriesStore
   ) {
   }
 }

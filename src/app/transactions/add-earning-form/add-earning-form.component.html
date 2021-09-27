@@ -1,4 +1,4 @@
 <add-transaction-form
   (onSubmit)="onSubmit()"
-  [categoryId]="earningsId">
+  [categoryId]="(categoriesStore.earnings | async)?.id">
 </add-transaction-form>

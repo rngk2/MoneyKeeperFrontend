@@ -1,7 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { UntilDestroy } from "@ngneat/until-destroy";
 import { Observable } from "rxjs";
 import { ConfirmPopupComponent } from '../confirm-popup/confirm-popup.component';
 import ITransaction from '../entities/transaction.entity';
@@ -10,7 +9,6 @@ import TransactionsStore from "../store/transactions/transactions.store";
 import { AboutTransactionComponent } from '../transactions/about-transaction/about-transaction.component';
 import { TRANSACTIONS_PREVIEW_MAX_LENGTH } from "./category-card.constants";
 
-@UntilDestroy()
 @Component({
   selector: 'category-card',
   templateUrl: './category-card.component.html',
@@ -68,13 +66,15 @@ export class CategoryCardComponent implements OnInit {
   public deleteCategory(): void {
     const confirmRef = this.dialog.open(ConfirmPopupComponent, {
       width: '30rem',
-      data: `Delete '${ this.categoryName }' ?`
-    });
-    confirmRef.componentInstance.onAnswer.subscribe((ok: boolean) => {
-      if (ok) {
-        this.categoriesStore.deleteCategory(this.categoryId);
+      data: {
+        message: `Delete '${ this.categoryName }' ?`,
+        onAnswer: (ok: 'yes' | 'no') => {
+          if (ok === 'yes') {
+            this.categoriesStore.deleteCategory(this.categoryId);
+          }
+          confirmRef.close();
+        }
       }
-      confirmRef.close();
     });
   }
 
@@ -82,8 +82,6 @@ export class CategoryCardComponent implements OnInit {
     this.dialog.open(AboutTransactionComponent, {
       width: '20rem',
       data: transaction
-    }).afterClosed().subscribe(() => {
-      this.categoriesStore.fetchOverviewForCategory(this.categoryId);
     });
   }
 
@@ -112,6 +110,5 @@ export class CategoryCardComponent implements OnInit {
 
   public onAddTransactionSubmit(): void {
     this.addTransaction = false;
-    this.categoriesStore.fetchOverviewForCategory(this.categoryId);
   }
 }

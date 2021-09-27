@@ -15,7 +15,7 @@ export default class ApiConnector {
     @Inject(BASE_SERVER_URL) private readonly baseUrl: string,
     private readonly userStore: UserStore
   ) {
-    userStore.getUser().subscribe(value => {
+    userStore.user.subscribe(value => {
       const currentUser = value;
       const authToken = currentUser && currentUser.jwtToken;
       let authHeader = {};

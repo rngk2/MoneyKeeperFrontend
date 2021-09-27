@@ -1,11 +1,13 @@
 import { Action, createReducer, on } from "@ngrx/store";
-import ITransaction from "../../entities/transaction.entity";
+import ITransaction, { INPUT_TRANSACTION_NAME } from "../../entities/transaction.entity";
 import { TransactionsActions } from "./transactions.actions";
 import TransactionsState from "./transactions.state";
 
 const isIterable = (o: any) => o && typeof o[Symbol.iterator] === 'function';
 
-const initialState: TransactionsState = {};
+const initialState: TransactionsState = {
+  transactions: [],
+};
 const _transactionsReducer = createReducer(
   initialState,
   on(TransactionsActions.InitSearch, () => ({
@@ -19,18 +21,20 @@ const _transactionsReducer = createReducer(
   on(TransactionsActions.CreateTransactionSuccess, (state, { created }) => {
     return ({
       transactions: (isIterable(state.transactions) ? [...state.transactions!, created] : [created]) as ITransaction[],
-      categoriesTransactions: (state.categoriesTransactions
-        ? {
-          ...state.categoriesTransactions,
-          [created.categoryId!]: state.categoriesTransactions[created.categoryId!]
-            ? [
-              ...state.categoriesTransactions[created.categoryId!], created
-            ]
-            : [created]
-        }
-        : {
-          [created.categoryId!]: [created]
-        }) as (Record<string, ITransaction[]> | undefined)
+      categoriesTransactions: created.categoryName !== INPUT_TRANSACTION_NAME
+        ? (state.categoriesTransactions
+          ? {
+            ...state.categoriesTransactions,
+            [created.categoryId!]: state.categoriesTransactions[created.categoryId!]
+              ? [
+                ...state.categoriesTransactions[created.categoryId!], created
+              ]
+              : [created]
+          }
+          : {
+            [created.categoryId!]: [created]
+          }) as (Record<string, ITransaction[]> | undefined)
+        : state.categoriesTransactions
     });
   }),
   on(TransactionsActions.DeleteTransactionSuccess, (state, { deleted }) => {
@@ -53,6 +57,7 @@ const _transactionsReducer = createReducer(
     } as Record<number, ITransaction[]>;
 
     return {
+      ...state,
       categoriesTransactions: state.categoriesTransactions
         ? { ...state.categoriesTransactions, ...item }
         : item

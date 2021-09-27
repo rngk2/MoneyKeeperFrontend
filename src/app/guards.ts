@@ -11,7 +11,7 @@ export class Permissions {
   }
 
   canActivate(): Observable<boolean> {
-    return this.userStore.getUser()
+    return this.userStore.user
       .pipe(map(user => !!user));
   }
 }

@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { UntilDestroy } from "@ngneat/until-destroy";
+import { Observable } from "rxjs";
+import ICategory from "../../entities/category.entity";
+import CategoriesStore from "../../store/categories/categories.store";
 
-import { INPUT_TRANSACTION_NAME } from "../../entities/transaction.entity";
-import CategoryService from '../../services/category.service';
-
-@UntilDestroy()
 @Component({
   selector: 'add-earning-form',
   templateUrl: './add-earning-form.component.html',
@@ -13,18 +11,14 @@ import CategoryService from '../../services/category.service';
 })
 export class AddEarningFormComponent {
 
-  public earningsId!: number;
+  public earningsId: Observable<ICategory | undefined>;
 
   constructor(
     private readonly dialogRef: MatDialogRef<AddEarningFormComponent>,
-    private readonly categoryService: CategoryService
+    public readonly categoriesStore: CategoriesStore,
   ) {
-    this.categoryService.api.categoriesList()
-      .subscribe(res => {
-        const categories = res.data.value;
-        const e_index = categories.findIndex((value: { name: string }) => value.name === INPUT_TRANSACTION_NAME);
-        this.earningsId = categories[e_index].id;
-      });
+    this.earningsId = categoriesStore.earnings;
+    this.categoriesStore.fetchCategories();
   }
 
   public onSubmit(): void {

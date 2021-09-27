@@ -1,7 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { ChartOptions, ChartType } from 'chart.js';
-import { Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip, SingleDataSet } from 'ng2-charts';
+import { monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip } from 'ng2-charts';
 import { Observable } from 'rxjs';
+import { Total } from "../store/chart/types";
+import { extractAmounts, extractNames } from "./wallet-chart.transform-funcs";
 
 @Component({
   selector: 'wallet-chart',
@@ -28,11 +30,14 @@ export class WalletChartComponent {
     },
   };
 
-  @Input() public chartLabels$!: Observable<Label[]>;
-  @Input() public chartData$!: Observable<SingleDataSet>;
+  @Input() public chartTotal$!: Observable<Total>;
 
   constructor() {
     monkeyPatchChartJsTooltip();
     monkeyPatchChartJsLegend();
+  }
+
+  public get transformFuncs() {
+    return { extractNames, extractAmounts };
   }
 }

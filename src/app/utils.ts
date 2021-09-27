@@ -39,3 +39,26 @@ export const convertToObserved = <T>(value: T): Observed<T> => {
   }
   return result as Observed<T>;
 };
+
+export const compareFn = <T>(compareBy: keyof T) => (a: T, b: T) => {
+  if (!a[compareBy] || !b[compareBy]) {
+    return 0;
+  }
+  else if (a[compareBy] < b[compareBy]) {
+    return -1;
+  }
+  else if (a[compareBy] > b[compareBy]) {
+    return 1;
+  }
+  return 0;
+};
+
+export const sum = (array: number[]): number => {
+  if (array.length < 1) {
+    return 0;
+  }
+  else if (array.length === 1) {
+    return array[0];
+  }
+  return array.reduce((acc, curr) => acc + curr);
+};

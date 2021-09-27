@@ -21,7 +21,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { EffectsModule } from "@ngrx/effects";
-import { StoreModule } from '@ngrx/store';
+import { StoreModule } from '@ngrx/store'; import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { ChartsModule } from 'ng2-charts';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import ApiConnector from '../api/api.connector';
@@ -35,7 +35,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BASE_SERVER_URL } from './app.config';
 import { CardsContainerComponent } from './cards-container/cards-container.component';
-import { CategoryCardModule } from './category-card/category-card.module';
+import { CategoryCardModule } from './category-card/category-card.module'; import { PipesModule } from "./commons/pipes/pipes.module";
 import { ConfirmPopupComponent } from './confirm-popup/confirm-popup.component';
 import { NavbarModule } from './navbar/navbar.module';
 import AuthService from './services/auth.service';
@@ -64,14 +64,14 @@ import { WalletChartModule } from './wallet-chart/wallet-chart.module';
     AppComponent,
     CardsContainerComponent,
     AddCategoryFormComponent,
-    ConfirmPopupComponent
+    ConfirmPopupComponent,
   ],
   imports: [
     // app modules
     AppRoutingModule,
     NavbarModule,
     WalletChartModule,
-    CategoryCardModule,
+    PipesModule,
 
     // lib modules
     CommonModule,
@@ -97,6 +97,10 @@ import { WalletChartModule } from './wallet-chart/wallet-chart.module';
     NgxMatNativeDateModule,
     InfiniteScrollModule,
     StoreModule.forRoot(appReducers, { metaReducers: appMetaReducers }),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production,
+    }),
     EffectsModule.forRoot([
       AuthEffects,
       HydrationEffects,
@@ -105,7 +109,8 @@ import { WalletChartModule } from './wallet-chart/wallet-chart.module';
       ChartEffects
     ]),
     MatMenuModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule ,
+    CategoryCardModule
   ],
   providers: [
     ApiConnector,
@@ -119,9 +124,11 @@ import { WalletChartModule } from './wallet-chart/wallet-chart.module';
     CategoriesStore,
     ChartStore
   ],
-  bootstrap: [
+exports: [
+],
+bootstrap: [
     AppComponent
-  ]
+]
 })
 export class AppModule {
 }

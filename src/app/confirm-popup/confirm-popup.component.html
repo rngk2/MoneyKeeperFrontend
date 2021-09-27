@@ -1,7 +1,7 @@
 <div mat-dialog-content>
-  <p>{{message}}</p>
+  <p>{{data.message}}</p>
   <div class="actions">
-    <button (click)=" response('yes')" class="ok" color="primary" mat-button>Yes</button>
-    <button (click)="response('no')" class="cancel" color="warn" mat-button>No</button>
+    <button (click)=" submit('yes')" class="ok" color="primary" mat-button>Yes</button>
+    <button (click)="submit('no')" class="cancel" color="warn" mat-button>No</button>
   </div>
 </div>

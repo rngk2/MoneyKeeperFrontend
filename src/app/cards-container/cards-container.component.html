@@ -6,7 +6,7 @@
   <div class="column">
     <div class="page-container">
       <div class="cards-container">
-        <div *ngIf="isFetched && !overview$.value.length else ok" class="nothing-in-history__hint">
+        <div *ngIf="isFetched && (overview$ | async)?.length < 1 else ok" class="nothing-in-history__hint">
           <p>Nothing in your history for now...</p>
           <div class="not-found"></div>
         </div>
@@ -14,7 +14,7 @@
         <mat-spinner *ngIf="!isFetched" [diameter]="80" [strokeWidth]="4" class="spinner"></mat-spinner>
 
         <ng-template #ok>
-          <category-card *ngFor="let o of (overview$.asObservable() | async)"
+          <category-card *ngFor="let o of overview$ | async | sort: getSortFunc()"
                          [categoryId]="o.categoryId"
                          [categoryName]="o.categoryName"
                          [spendThisMonth]="o.spentThisMonth"
@@ -44,11 +44,8 @@
       </mat-menu>
 
     </div>
-    <div *ngIf="isFetched && overview$.value.length > 1" class="chart">
-      <wallet-chart
-        [chartData$]="amountForCategories$.asObservable()"
-        [chartLabels$]="categoriesNames$.asObservable()"
-      >
+    <div *ngIf="(overview$ | async)?.length > 1" class="chart">
+      <wallet-chart [chartTotal$]="chart$">
       </wallet-chart>
     </div>
   </div>

@@ -9,6 +9,15 @@ import {
 } from "../../../api/api.generated";
 
 export namespace CategoryActions {
+  export const GetCategories = createAction(
+    '[Category] Get All',
+  );
+  export const GetCategoriesSuccess = createAction(
+    '[Category] Get All: Success',
+    props<{
+      categories: CategoryDto[]
+    }>()
+  );
   export const GetOverview = createAction(
     '[Category] Get Overview',
     props<{
@@ -32,6 +41,15 @@ export namespace CategoryActions {
     props<{
       data: CategoryOverview
     }>());
+  export const GetOverviewForEarnings = createAction(
+    '[Category] Get Overview For Earnings'
+  );
+  export const GetOverviewForEarningsSuccess = createAction(
+    '[Category] Get Overview For Earnings: Success',
+    props<{
+      earningsOverview: CategoryOverview
+    }>()
+  );
   export const CreateCategory = createAction(
     '[Category] Create',
     props<CreateCategoryDto>()
@@ -71,8 +89,8 @@ export namespace CategoryActions {
     '[Category] Operation Failed',
     props<IError>()
   );
-  export const DropState = createAction(
-    '[Category] Drop State',
+  export const DropOverviewState = createAction(
+    '[Category] Drop Overview State',
   );
 }
 

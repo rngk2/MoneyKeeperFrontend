@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { UntilDestroy } from "@ngneat/until-destroy";
 
 import CategoryService from "../services/category.service";
 import CategoriesStore from "../store/categories/categories.store";
 
-@UntilDestroy()
 @Component({
   selector: 'add-category-form',
   templateUrl: './add-category-form.component.html',

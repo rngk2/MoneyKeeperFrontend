@@ -22,7 +22,7 @@ export default class UserStore {
   ) {
   }
 
-  public getUser(): Observable<IUser | undefined> {
+  public get user(): Observable<IUser | undefined> {
     return this.store.select(userSelector);
   }
 

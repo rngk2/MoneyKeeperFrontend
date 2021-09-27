@@ -18,7 +18,6 @@ export class CategoryTransactionsComponent {
   constructor(
     route: ActivatedRoute
   ) {
-    route.params
-      .subscribe(params => this.categoryName = params["categoryName"]);
+    route.params.subscribe(params => this.categoryName = params["categoryName"]);
   }
 }

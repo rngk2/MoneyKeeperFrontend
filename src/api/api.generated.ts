@@ -499,6 +499,21 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * No description
      *
      * @tags Categories
+     * @name EarningsOverviewList
+     * @request GET:/Categories/earnings/overview
+     */
+    earningsOverviewList: (params: RequestParams = {}) =>
+      this.request<CategoryOverviewApiResult, any>({
+        path: `/Categories/earnings/overview`,
+        method: "GET",
+        format: "json",
+        ...params,
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Categories
      * @name CategoriesList
      * @request GET:/Categories
      */

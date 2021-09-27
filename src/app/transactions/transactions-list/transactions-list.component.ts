@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { UntilDestroy } from "@ngneat/until-destroy";
+import { Observable } from "rxjs";
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { OrderType, TransactionField } from '../../../api/api.generated';
@@ -17,10 +18,10 @@ import { SEARCH_OPTIONS, TRANSACTIONS_LAZY_LOADING_OPTIONS } from "./transaction
 })
 export class TransactionsListComponent implements OnInit {
 
-  public transactions?: ITransaction[];
+  public transactions$: Observable<ITransaction[]>;
   public searchControl = new FormControl('');
 
-  @Input() public filter?: (value: any, index: number, array: any[]) => unknown;
+  @Input() public filter: (value: any) => boolean = () => true;
 
   private rangeForAll
     = new RangeOffsetController(TRANSACTIONS_LAZY_LOADING_OPTIONS.BEGIN_OFFSET, TRANSACTIONS_LAZY_LOADING_OPTIONS.STEP);
@@ -30,12 +31,7 @@ export class TransactionsListComponent implements OnInit {
   constructor(
     private readonly transactionsStore: TransactionsStore
   ) {
-    transactionsStore.transactions
-      .subscribe(value => {
-        if (value) {
-          this.transactions = this.filter ? value.filter(this.filter) : value;
-        }
-      });
+    this.transactions$ = transactionsStore.transactions;
   }
 
   public ngOnInit(): void {

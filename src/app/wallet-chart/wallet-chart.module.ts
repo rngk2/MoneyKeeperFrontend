@@ -1,6 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { ChartsModule } from "ng2-charts";
+import { PipesModule } from "../commons/pipes/pipes.module";
 
 import { WalletChartComponent } from "./wallet-chart.component";
 
@@ -10,7 +11,8 @@ import { WalletChartComponent } from "./wallet-chart.component";
   ],
   imports: [
     ChartsModule,
-    CommonModule
+    CommonModule,
+    PipesModule
   ],
   exports: [
     WalletChartComponent

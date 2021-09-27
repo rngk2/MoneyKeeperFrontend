@@ -1,5 +1,5 @@
 <header>
-  <nav *ngIf="loggedIn; else not_auth_navbar_content">
+  <nav *ngIf="user$ | async; else not_auth_navbar_content">
     <ul class="navbar__part-left">
       <li routerLink="/profile">Profile</li>
       <li routerLink="/wallet">My Wallet</li>

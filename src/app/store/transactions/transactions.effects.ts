@@ -1,9 +1,12 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { of } from "rxjs";
-import { map, mergeMap, switchMap, tap, withLatestFrom } from "rxjs/operators";
+import { map, switchMap, tap, withLatestFrom } from "rxjs/operators";
+import { INPUT_TRANSACTION_NAME } from "../../entities/transaction.entity";
 
 import TransactionService from "../../services/transaction.service";
+import CategoriesStore from "../categories/categories.store";
+import ChartStore from "../chart/chart.store";
 import { TransactionsActions } from "./transactions.actions";
 import TransactionsStore from "./transactions.store";
 
@@ -12,39 +15,50 @@ export class TransactionsEffects {
   public readonly createTransaction = createEffect(() =>
     this.actions$.pipe(
       ofType(TransactionsActions.CreateTransaction),
-      switchMap(payload => this.transactionService.api.transactionsCreate(payload)
-        .pipe(map(res => !res.data.error
-          ? TransactionsActions.CreateTransactionSuccess({
-            created: res.data.value
-          })
-          : TransactionsActions.OperationFailed(res.data.error)
+      withLatestFrom(this.categoriesStore.categories),
+      switchMap(([payload, categories]) => this.transactionService.api.transactionsCreate(payload)
+        .pipe(map(res => {
+            let created = res.data.value;
+            if (categories.find(value => value.id === payload.categoryId)?.name === INPUT_TRANSACTION_NAME) {
+              created = Object.assign(res.data.value, { categoryName: INPUT_TRANSACTION_NAME });
+            }
+            return !res.data.error
+              ? TransactionsActions.CreateTransactionSuccess({ created })
+              : TransactionsActions.OperationFailed(res.data.error);
+          }
         ))
       )
     )
   );
-  public readonly getTransactions = createEffect(() =>
+  public readonly createTransactionSuccess = createEffect(() =>
     this.actions$.pipe(
-      ofType(TransactionsActions.GetTransactions),
-      switchMap(payload => {
-          return this.transactionService.api.userTransactionsList(payload)
-            .pipe(map(res => !res.data.error
-              ? TransactionsActions.GetTransactionsSuccess({
-                data: res.data.value
-              })
-              : TransactionsActions.OperationFailed(res.data.error)
-            ));
+      ofType(TransactionsActions.CreateTransactionSuccess),
+      tap(({ created }) => {
+        this.chartStore.fetchAll();
+        if (created.categoryName !== INPUT_TRANSACTION_NAME) {
+          this.categoriesStore.fetchOverviewForCategory(created.categoryId!);
         }
-      )
-    )
+      })
+    ), { dispatch: false }
+  );
+  public readonly getTransactions = createEffect(() => {
+      return this.actions$.pipe(
+        ofType(TransactionsActions.GetTransactions),
+        switchMap(payload => this.transactionService.api.userTransactionsList(payload)
+          .pipe(map(res => !res.data.error
+            ? TransactionsActions.GetTransactionsSuccess({
+              data: res.data.value
+            })
+            : TransactionsActions.OperationFailed(res.data.error)
+          ))
+        )
+      );
+    }
   );
   public readonly getTransactionsForCategory = createEffect(() =>
     this.actions$.pipe(
       ofType(TransactionsActions.GetTransactionsForCategory),
-      mergeMap(payload =>
-          of(payload)
-            .pipe(withLatestFrom(this.transactionsStore.transactionsForCategory(payload.categoryId))),
-        (payload, latestFromStore) => latestFromStore
-      ),
+      switchMap(payload => of(payload).pipe(withLatestFrom(this.transactionsStore.transactionsForCategory(payload.categoryId)))),
       switchMap(([payload, latestFromStore]) => {
           if (latestFromStore.length > 0) {
             return of(latestFromStore).pipe(map(() => TransactionsActions.GetTransactionsForCategorySuccess({ data: latestFromStore })));
@@ -62,17 +76,30 @@ export class TransactionsEffects {
       )
     )
   );
-  public readonly deleteTransactions = createEffect(() =>
+  public readonly deleteTransaction = createEffect(() =>
     this.actions$.pipe(
       ofType(TransactionsActions.DeleteTransaction),
       switchMap(payload => this.transactionService.api.transactionsDelete(payload.id)
-        .pipe(map(res => !res.data.error
-          ? TransactionsActions.DeleteTransactionSuccess({
-            deleted: res.data.value
+        .pipe(map(res => {
+            return !res.data.error
+              ? TransactionsActions.DeleteTransactionSuccess({
+                deleted: res.data.value
+              })
+              : TransactionsActions.OperationFailed(res.data.error);
           })
-          : TransactionsActions.OperationFailed(res.data.error))
         ))
     )
+  );
+  public readonly deleteTransactionSuccess = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TransactionsActions.DeleteTransactionSuccess),
+      tap(({ deleted }) => {
+        this.chartStore.fetchAll();
+        if (deleted.categoryName !== INPUT_TRANSACTION_NAME) {
+          this.categoriesStore.fetchOverviewForCategory(deleted.categoryId!);
+        }
+      })
+    ), { dispatch: false }
   );
   public readonly operationFailed = createEffect(() =>
     this.actions$.pipe(
@@ -84,7 +111,9 @@ export class TransactionsEffects {
   constructor(
     private readonly actions$: Actions,
     private readonly transactionService: TransactionService,
-    private readonly transactionsStore: TransactionsStore
+    private readonly transactionsStore: TransactionsStore,
+    private readonly chartStore: ChartStore,
+    private readonly categoriesStore: CategoriesStore
   ) {
   }
 }
