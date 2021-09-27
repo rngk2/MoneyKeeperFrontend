@@ -20,7 +20,10 @@ const appActions: readonly Action[] = [
 
 export const hydrationMetaReducer = (reducer: ActionReducer<AppState>): ActionReducer<AppState> =>
   (state, action) => {
-    if (appActions.find(a => a.type === action.type)) {
+    if (action.type === AuthActions.LogOut.type) {
+      state = undefined;
+    }
+    else if (appActions.find(a => a.type === action.type)) {
       // fixme
       localStorage.setItem(LOCALSTORAGE_STATE_PATH, JSON.stringify(state));
     }
@@ -28,4 +31,5 @@ export const hydrationMetaReducer = (reducer: ActionReducer<AppState>): ActionRe
       ? action.state
       : reducer(state, action);
   };
+
 
