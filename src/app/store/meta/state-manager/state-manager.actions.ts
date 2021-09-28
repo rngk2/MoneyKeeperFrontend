@@ -2,16 +2,15 @@ import { createAction, props } from "@ngrx/store";
 
 import AppState from "../../app.state";
 
-export namespace HydrationActions {
+export namespace StateManagerActions {
   export const Hydrate = createAction(
-    '[Hydration] Hydrate'
+    '[StateManager] Hydrate'
   );
   export const HydrationSuccess = createAction(
-    '[Hydration] Success',
+    '[StateManager] Hydrate Success',
     props<{ state: AppState }>()
   );
   export const HydrationFailure = createAction(
-    '[Hydration] Failure'
+    '[StateManager] Hydrate Failure'
   );
 }
-

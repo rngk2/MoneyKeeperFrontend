@@ -1,5 +1,5 @@
 import { MetaReducer } from "@ngrx/store";
 
-import { hydrationMetaReducer } from "./rehydration/hydration.reducer";
+import { stateManagerMetaReducer } from "./state-manager/state-manager.reducer";
 
-export const appMetaReducers: MetaReducer[] = [hydrationMetaReducer];
+export const appMetaReducers: MetaReducer[] = [stateManagerMetaReducer];

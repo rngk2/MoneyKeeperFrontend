@@ -52,7 +52,7 @@ import { CategoryEffects } from "./store/categories/category.effects";
 import { ChartEffects } from "./store/chart/chart.effects";
 import ChartStore from "./store/chart/chart.store";
 import { appMetaReducers } from "./store/meta/meta";
-import { HydrationEffects } from "./store/meta/rehydration/hydration.effects";
+import { StateManagerEffects } from "./store/meta/state-manager/state-manager.effects";
 import { TransactionsEffects } from "./store/transactions/transactions.effects";
 import TransactionsStore from "./store/transactions/transactions.store";
 import { AuthEffects } from "./store/user/auth.effects";
@@ -103,7 +103,7 @@ import { WalletChartModule } from './wallet-chart/wallet-chart.module';
     }),
     EffectsModule.forRoot([
       AuthEffects,
-      HydrationEffects,
+      StateManagerEffects,
       TransactionsEffects,
       CategoryEffects,
       ChartEffects

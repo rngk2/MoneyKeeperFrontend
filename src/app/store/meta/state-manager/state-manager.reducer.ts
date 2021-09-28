@@ -5,10 +5,10 @@ import { CategoryActions } from "../../categories/categories.actions";
 import { ChartActions } from "../../chart/chart.actions";
 import { TransactionsActions } from "../../transactions/transactions.actions";
 import { AuthActions } from "../../user/auth.actions";
-import { HydrationActions } from "./hydration.actions";
+import { StateManagerActions } from "./state-manager.actions";
 
-const isHydrateSuccess = (action: Action): action is ReturnType<typeof HydrationActions.HydrationSuccess> => {
-  return action.type === HydrationActions.HydrationSuccess.type;
+const isHydrateSuccess = (action: Action): action is ReturnType<typeof StateManagerActions.HydrationSuccess> => {
+  return action.type === StateManagerActions.HydrationSuccess.type;
 };
 
 const appActions: readonly Action[] = [
@@ -18,7 +18,7 @@ const appActions: readonly Action[] = [
   ...Object.values(TransactionsActions)
 ];
 
-export const hydrationMetaReducer = (reducer: ActionReducer<AppState>): ActionReducer<AppState> =>
+export const stateManagerMetaReducer = (reducer: ActionReducer<AppState>): ActionReducer<AppState> =>
   (state, action) => {
     if (action.type === AuthActions.LogOut.type) {
       state = undefined;
@@ -31,5 +31,3 @@ export const hydrationMetaReducer = (reducer: ActionReducer<AppState>): ActionRe
       ? action.state
       : reducer(state, action);
   };
-
-
