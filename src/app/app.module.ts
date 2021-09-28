@@ -32,10 +32,12 @@ import { AddCategoryFormComponent } from './add-category-form/add-category-form.
 
 // app components & modules
 import { AppRoutingModule } from './app-routing.module';
+import { WalletChartModule } from './wallet-chart/wallet-chart.module';
 import { AppComponent } from './app.component';
 import { BASE_SERVER_URL } from './app.config';
 import { CardsContainerComponent } from './cards-container/cards-container.component';
-import { CategoryCardModule } from './category-card/category-card.module'; import { PipesModule } from "./commons/pipes/pipes.module";
+import { CategoryCardModule } from './category-card/category-card.module';
+import { PipesModule } from "./commons/pipes/pipes.module";
 import { ConfirmPopupComponent } from './confirm-popup/confirm-popup.component';
 import { NavbarModule } from './navbar/navbar.module';
 import AuthService from './services/auth.service';
@@ -57,7 +59,6 @@ import { TransactionsEffects } from "./store/transactions/transactions.effects";
 import TransactionsStore from "./store/transactions/transactions.store";
 import { AuthEffects } from "./store/user/auth.effects";
 import UserStore from "./store/user/user.store";
-import { WalletChartModule } from './wallet-chart/wallet-chart.module';
 
 @NgModule({
   declarations: [
