@@ -34,7 +34,7 @@ export class ProfilePageComponent implements OnInit {
     this.earnedMonth$ = categoriesStore.earningsOverview.pipe(map(value => value?.spentThisMonth || 0));
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.chartStore.fetchTotalForMonth();
     this.chartStore.fetchTotalForYear();
     this.categoriesStore.fetchOverviewForEarnings();
