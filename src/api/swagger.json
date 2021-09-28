@@ -104,17 +104,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoryDtoApiResult"
+                  "$ref": "#/components/schemas/CategoryApiResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoryDtoApiResult"
+                  "$ref": "#/components/schemas/CategoryApiResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoryDtoApiResult"
+                  "$ref": "#/components/schemas/CategoryApiResult"
                 }
               }
             }
@@ -142,17 +142,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoryDtoApiResult"
+                  "$ref": "#/components/schemas/CategoryApiResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoryDtoApiResult"
+                  "$ref": "#/components/schemas/CategoryApiResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoryDtoApiResult"
+                  "$ref": "#/components/schemas/CategoryApiResult"
                 }
               }
             }
@@ -287,17 +287,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoryDtoIEnumerableApiResult"
+                  "$ref": "#/components/schemas/CategoryIEnumerableApiResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoryDtoIEnumerableApiResult"
+                  "$ref": "#/components/schemas/CategoryIEnumerableApiResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoryDtoIEnumerableApiResult"
+                  "$ref": "#/components/schemas/CategoryIEnumerableApiResult"
                 }
               }
             }
@@ -312,17 +312,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateCategoryDto"
+                "$ref": "#/components/schemas/CreateCategory"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateCategoryDto"
+                "$ref": "#/components/schemas/CreateCategory"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateCategoryDto"
+                "$ref": "#/components/schemas/CreateCategory"
               }
             }
           }
@@ -333,17 +333,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoryDtoApiResult"
+                  "$ref": "#/components/schemas/CategoryApiResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoryDtoApiResult"
+                  "$ref": "#/components/schemas/CategoryApiResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoryDtoApiResult"
+                  "$ref": "#/components/schemas/CategoryApiResult"
                 }
               }
             }
@@ -369,17 +369,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoryDtoApiResult"
+                  "$ref": "#/components/schemas/CategoryApiResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoryDtoApiResult"
+                  "$ref": "#/components/schemas/CategoryApiResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoryDtoApiResult"
+                  "$ref": "#/components/schemas/CategoryApiResult"
                 }
               }
             }
@@ -407,17 +407,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateCategoryDto"
+                "$ref": "#/components/schemas/UpdateCategory"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateCategoryDto"
+                "$ref": "#/components/schemas/UpdateCategory"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateCategoryDto"
+                "$ref": "#/components/schemas/UpdateCategory"
               }
             }
           }
@@ -428,17 +428,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoryDtoApiResult"
+                  "$ref": "#/components/schemas/CategoryApiResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoryDtoApiResult"
+                  "$ref": "#/components/schemas/CategoryApiResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoryDtoApiResult"
+                  "$ref": "#/components/schemas/CategoryApiResult"
                 }
               }
             }
@@ -468,17 +468,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionDtoApiResult"
+                  "$ref": "#/components/schemas/TransactionApiResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionDtoApiResult"
+                  "$ref": "#/components/schemas/TransactionApiResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionDtoApiResult"
+                  "$ref": "#/components/schemas/TransactionApiResult"
                 }
               }
             }
@@ -506,17 +506,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionDtoApiResult"
+                  "$ref": "#/components/schemas/TransactionApiResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionDtoApiResult"
+                  "$ref": "#/components/schemas/TransactionApiResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionDtoApiResult"
+                  "$ref": "#/components/schemas/TransactionApiResult"
                 }
               }
             }
@@ -564,17 +564,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionDtoIEnumerableApiResult"
+                  "$ref": "#/components/schemas/TransactionIEnumerableApiResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionDtoIEnumerableApiResult"
+                  "$ref": "#/components/schemas/TransactionIEnumerableApiResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionDtoIEnumerableApiResult"
+                  "$ref": "#/components/schemas/TransactionIEnumerableApiResult"
                 }
               }
             }
@@ -636,17 +636,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionDtoIEnumerableApiResult"
+                  "$ref": "#/components/schemas/TransactionIEnumerableApiResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionDtoIEnumerableApiResult"
+                  "$ref": "#/components/schemas/TransactionIEnumerableApiResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionDtoIEnumerableApiResult"
+                  "$ref": "#/components/schemas/TransactionIEnumerableApiResult"
                 }
               }
             }
@@ -665,17 +665,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionDtoIEnumerableApiResult"
+                  "$ref": "#/components/schemas/TransactionIEnumerableApiResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionDtoIEnumerableApiResult"
+                  "$ref": "#/components/schemas/TransactionIEnumerableApiResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionDtoIEnumerableApiResult"
+                  "$ref": "#/components/schemas/TransactionIEnumerableApiResult"
                 }
               }
             }
@@ -779,17 +779,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateTransactionDto"
+                "$ref": "#/components/schemas/CreateTransaction"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateTransactionDto"
+                "$ref": "#/components/schemas/CreateTransaction"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateTransactionDto"
+                "$ref": "#/components/schemas/CreateTransaction"
               }
             }
           }
@@ -800,17 +800,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionDtoApiResult"
+                  "$ref": "#/components/schemas/TransactionApiResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionDtoApiResult"
+                  "$ref": "#/components/schemas/TransactionApiResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionDtoApiResult"
+                  "$ref": "#/components/schemas/TransactionApiResult"
                 }
               }
             }
@@ -829,17 +829,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserDtoApiResult"
+                  "$ref": "#/components/schemas/UserApiResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserDtoApiResult"
+                  "$ref": "#/components/schemas/UserApiResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserDtoApiResult"
+                  "$ref": "#/components/schemas/UserApiResult"
                 }
               }
             }
@@ -854,17 +854,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateUserDto"
+                "$ref": "#/components/schemas/CreateUser"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateUserDto"
+                "$ref": "#/components/schemas/CreateUser"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateUserDto"
+                "$ref": "#/components/schemas/CreateUser"
               }
             }
           }
@@ -875,17 +875,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserDtoApiResult"
+                  "$ref": "#/components/schemas/UserApiResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserDtoApiResult"
+                  "$ref": "#/components/schemas/UserApiResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserDtoApiResult"
+                  "$ref": "#/components/schemas/UserApiResult"
                 }
               }
             }
@@ -900,17 +900,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateUserDto"
+                "$ref": "#/components/schemas/UpdateUser"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateUserDto"
+                "$ref": "#/components/schemas/UpdateUser"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateUserDto"
+                "$ref": "#/components/schemas/UpdateUser"
               }
             }
           }
@@ -921,17 +921,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserDtoApiResult"
+                  "$ref": "#/components/schemas/UserApiResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserDtoApiResult"
+                  "$ref": "#/components/schemas/UserApiResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserDtoApiResult"
+                  "$ref": "#/components/schemas/UserApiResult"
                 }
               }
             }
@@ -948,17 +948,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserDtoApiResult"
+                  "$ref": "#/components/schemas/UserApiResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserDtoApiResult"
+                  "$ref": "#/components/schemas/UserApiResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserDtoApiResult"
+                  "$ref": "#/components/schemas/UserApiResult"
                 }
               }
             }
@@ -1023,7 +1023,7 @@
         },
         "additionalProperties": false
       },
-      "CategoryDto": {
+      "Category": {
         "type": "object",
         "properties": {
           "id": {
@@ -1041,11 +1041,11 @@
         },
         "additionalProperties": false
       },
-      "CategoryDtoApiResult": {
+      "CategoryApiResult": {
         "type": "object",
         "properties": {
           "value": {
-            "$ref": "#/components/schemas/CategoryDto"
+            "$ref": "#/components/schemas/Category"
           },
           "error": {
             "$ref": "#/components/schemas/IError"
@@ -1053,13 +1053,13 @@
         },
         "additionalProperties": false
       },
-      "CategoryDtoIEnumerableApiResult": {
+      "CategoryIEnumerableApiResult": {
         "type": "object",
         "properties": {
           "value": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CategoryDto"
+              "$ref": "#/components/schemas/Category"
             },
             "nullable": true,
             "readOnly": true
@@ -1117,7 +1117,7 @@
         },
         "additionalProperties": false
       },
-      "CreateCategoryDto": {
+      "CreateCategory": {
         "required": [
           "name"
         ],
@@ -1129,7 +1129,7 @@
         },
         "additionalProperties": false
       },
-      "CreateTransactionDto": {
+      "CreateTransaction": {
         "required": [
           "amount",
           "categoryId",
@@ -1156,7 +1156,7 @@
         },
         "additionalProperties": false
       },
-      "CreateUserDto": {
+      "CreateUser": {
         "required": [
           "email",
           "firstName",
@@ -1246,7 +1246,7 @@
         },
         "additionalProperties": false
       },
-      "TransactionDto": {
+      "Transaction": {
         "type": "object",
         "properties": {
           "id": {
@@ -1280,28 +1280,11 @@
         },
         "additionalProperties": false
       },
-      "TransactionDtoApiResult": {
+      "TransactionApiResult": {
         "type": "object",
         "properties": {
           "value": {
-            "$ref": "#/components/schemas/TransactionDto"
-          },
-          "error": {
-            "$ref": "#/components/schemas/IError"
-          }
-        },
-        "additionalProperties": false
-      },
-      "TransactionDtoIEnumerableApiResult": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/TransactionDto"
-            },
-            "nullable": true,
-            "readOnly": true
+            "$ref": "#/components/schemas/Transaction"
           },
           "error": {
             "$ref": "#/components/schemas/IError"
@@ -1318,7 +1301,24 @@
         ],
         "type": "string"
       },
-      "UpdateCategoryDto": {
+      "TransactionIEnumerableApiResult": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Transaction"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "error": {
+            "$ref": "#/components/schemas/IError"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateCategory": {
         "type": "object",
         "properties": {
           "name": {
@@ -1328,7 +1328,7 @@
         },
         "additionalProperties": false
       },
-      "UpdateUserDto": {
+      "UpdateUser": {
         "type": "object",
         "properties": {
           "firstName": {
@@ -1353,7 +1353,7 @@
         },
         "additionalProperties": false
       },
-      "UserDto": {
+      "User": {
         "type": "object",
         "properties": {
           "id": {
@@ -1371,15 +1371,19 @@
           "email": {
             "type": "string",
             "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "UserDtoApiResult": {
+      "UserApiResult": {
         "type": "object",
         "properties": {
           "value": {
-            "$ref": "#/components/schemas/UserDto"
+            "$ref": "#/components/schemas/User"
           },
           "error": {
             "$ref": "#/components/schemas/IError"

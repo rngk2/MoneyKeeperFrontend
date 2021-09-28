@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
 import ApiConnector from "../../api/api.connector";
-import { IError } from "../../api/api.generated";
+import { ApiContractIError } from "../../api/api.generated";
 import { AuthApi } from "../../api/api.interfaces";
 import IUser from '../entities/user.entity';
 import { convertToObserved, Observed } from "../utils";
@@ -27,7 +27,7 @@ export default class AuthService {
     return this._api.value!;
   }
 
-  public logIn(credentials: { email: string, password: string }): Observable<IUser | IError> {
+  public logIn(credentials: { email: string, password: string }): Observable<IUser | ApiContractIError> {
     return this.api.authenticateCreate({
       ...(credentials),
     }).pipe(map(res => {

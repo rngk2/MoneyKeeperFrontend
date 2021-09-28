@@ -9,12 +9,12 @@
  * ---------------------------------------------------------------
  */
 
-export interface AuthenticateRequest {
+export interface ApiContractAuthenticateRequest {
   email: string;
   password: string;
 }
 
-export interface AuthenticateResponse {
+export interface ApiContractAuthenticateResponse {
   /** @format int32 */
   id?: number;
   firstName?: string | null;
@@ -23,12 +23,12 @@ export interface AuthenticateResponse {
   jwtToken?: string | null;
 }
 
-export interface AuthenticateResponseApiResult {
-  value?: AuthenticateResponse;
-  error?: IError;
+export interface ApiContractAuthenticateResponseApiResult {
+  value?: ApiContractAuthenticateResponse;
+  error?: ApiContractIError;
 }
 
-export interface CategoryDto {
+export interface ApiContractCategory {
   /** @format int32 */
   id?: number;
   name?: string | null;
@@ -37,17 +37,17 @@ export interface CategoryDto {
   userId?: number;
 }
 
-export interface CategoryDtoApiResult {
-  value?: CategoryDto;
-  error?: IError;
+export interface ApiContractCategoryApiResult {
+  value?: ApiContractCategory;
+  error?: ApiContractIError;
 }
 
-export interface CategoryDtoIEnumerableApiResult {
-  value?: CategoryDto[] | null;
-  error?: IError;
+export interface ApiContractCategoryIEnumerableApiResult {
+  value?: ApiContractCategory[] | null;
+  error?: ApiContractIError;
 }
 
-export interface CategoryOverview {
+export interface ApiContractCategoryOverview {
   /** @format int32 */
   categoryId?: number;
   categoryName?: string | null;
@@ -56,21 +56,21 @@ export interface CategoryOverview {
   spentThisMonth?: number;
 }
 
-export interface CategoryOverviewApiResult {
-  value?: CategoryOverview;
-  error?: IError;
+export interface ApiContractCategoryOverviewApiResult {
+  value?: ApiContractCategoryOverview;
+  error?: ApiContractIError;
 }
 
-export interface CategoryOverviewIEnumerableApiResult {
-  value?: CategoryOverview[] | null;
-  error?: IError;
+export interface ApiContractCategoryOverviewIEnumerableApiResult {
+  value?: ApiContractCategoryOverview[] | null;
+  error?: ApiContractIError;
 }
 
-export interface CreateCategoryDto {
+export interface ApiContractCreateCategory {
   name: string;
 }
 
-export interface CreateTransactionDto {
+export interface ApiContractCreateTransaction {
   /** @format int32 */
   categoryId: number;
 
@@ -82,7 +82,7 @@ export interface CreateTransactionDto {
   comment: string;
 }
 
-export interface CreateUserDto {
+export interface ApiContractCreateUser {
   firstName: string;
   lastName: string;
 
@@ -96,31 +96,31 @@ export interface CreateUserDto {
   password: string;
 }
 
-export interface IError {
+export interface ApiContractIError {
   code?: string | null;
   message?: string | null;
 }
 
-export enum OrderType {
+export enum ApiContractOrderType {
   ASC = "ASC",
   DESC = "DESC",
 }
 
-export interface RefreshTokenResponse {
+export interface ApiContractRefreshTokenResponse {
   token?: string | null;
 }
 
-export interface RefreshTokenResponseApiResult {
-  value?: RefreshTokenResponse;
-  error?: IError;
+export interface ApiContractRefreshTokenResponseApiResult {
+  value?: ApiContractRefreshTokenResponse;
+  error?: ApiContractIError;
 }
 
-export interface StringDecimalDictionaryApiResult {
+export interface ApiContractStringDecimalDictionaryApiResult {
   value?: Record<string, number>;
-  error?: IError;
+  error?: ApiContractIError;
 }
 
-export interface TransactionDto {
+export interface ApiContractTransaction {
   /** @format int32 */
   id?: number;
 
@@ -139,28 +139,28 @@ export interface TransactionDto {
   comment?: string | null;
 }
 
-export interface TransactionDtoApiResult {
-  value?: TransactionDto;
-  error?: IError;
+export interface ApiContractTransactionApiResult {
+  value?: ApiContractTransaction;
+  error?: ApiContractIError;
 }
 
-export interface TransactionDtoIEnumerableApiResult {
-  value?: TransactionDto[] | null;
-  error?: IError;
-}
-
-export enum TransactionField {
+export enum ApiContractTransactionField {
   CategoryName = "CategoryName",
   Amount = "Amount",
   Timestamp = "Timestamp",
   Comment = "Comment",
 }
 
-export interface UpdateCategoryDto {
+export interface ApiContractTransactionIEnumerableApiResult {
+  value?: ApiContractTransaction[] | null;
+  error?: ApiContractIError;
+}
+
+export interface ApiContractUpdateCategory {
   name?: string | null;
 }
 
-export interface UpdateUserDto {
+export interface ApiContractUpdateUser {
   firstName?: string | null;
   lastName?: string | null;
 
@@ -174,17 +174,18 @@ export interface UpdateUserDto {
   password?: string | null;
 }
 
-export interface UserDto {
+export interface ApiContractUser {
   /** @format int32 */
   id?: number;
   firstName?: string | null;
   lastName?: string | null;
   email?: string | null;
+  password?: string | null;
 }
 
-export interface UserDtoApiResult {
-  value?: UserDto;
-  error?: IError;
+export interface ApiContractUserApiResult {
+  value?: ApiContractUser;
+  error?: ApiContractIError;
 }
 
 export type QueryParamsType = Record<string | number, any>;
@@ -408,8 +409,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name AuthenticateCreate
      * @request POST:/Auth/authenticate
      */
-    authenticateCreate: (data: AuthenticateRequest, params: RequestParams = {}) =>
-      this.request<AuthenticateResponseApiResult, any>({
+    authenticateCreate: (data: ApiContractAuthenticateRequest, params: RequestParams = {}) =>
+      this.request<ApiContractAuthenticateResponseApiResult, any>({
         path: `/Auth/authenticate`,
         method: "POST",
         body: data,
@@ -426,7 +427,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request POST:/Auth/refresh-token
      */
     refreshTokenCreate: (params: RequestParams = {}) =>
-      this.request<RefreshTokenResponseApiResult, any>({
+      this.request<ApiContractRefreshTokenResponseApiResult, any>({
         path: `/Auth/refresh-token`,
         method: "POST",
         format: "json",
@@ -442,7 +443,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/Categories/{id}
      */
     categoriesDetail: (id: number, params: RequestParams = {}) =>
-      this.request<CategoryDtoApiResult, any>({
+      this.request<ApiContractCategoryApiResult, any>({
         path: `/Categories/${id}`,
         method: "GET",
         format: "json",
@@ -457,7 +458,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request DELETE:/Categories/{id}
      */
     categoriesDelete: (id: number, params: RequestParams = {}) =>
-      this.request<CategoryDtoApiResult, any>({
+      this.request<ApiContractCategoryApiResult, any>({
         path: `/Categories/${id}`,
         method: "DELETE",
         format: "json",
@@ -472,7 +473,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/Categories/overview
      */
     overviewList: (query?: { from?: number; to?: number }, params: RequestParams = {}) =>
-      this.request<CategoryOverviewIEnumerableApiResult, any>({
+      this.request<ApiContractCategoryOverviewIEnumerableApiResult, any>({
         path: `/Categories/overview`,
         method: "GET",
         query: query,
@@ -488,7 +489,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/Categories/overview/{categoryId}
      */
     overviewDetail: (categoryId: number, params: RequestParams = {}) =>
-      this.request<CategoryOverviewApiResult, any>({
+      this.request<ApiContractCategoryOverviewApiResult, any>({
         path: `/Categories/overview/${categoryId}`,
         method: "GET",
         format: "json",
@@ -503,7 +504,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/Categories/earnings/overview
      */
     earningsOverviewList: (params: RequestParams = {}) =>
-      this.request<CategoryOverviewApiResult, any>({
+      this.request<ApiContractCategoryOverviewApiResult, any>({
         path: `/Categories/earnings/overview`,
         method: "GET",
         format: "json",
@@ -518,7 +519,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/Categories
      */
     categoriesList: (params: RequestParams = {}) =>
-      this.request<CategoryDtoIEnumerableApiResult, any>({
+      this.request<ApiContractCategoryIEnumerableApiResult, any>({
         path: `/Categories`,
         method: "GET",
         format: "json",
@@ -532,8 +533,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name CategoriesCreate
      * @request POST:/Categories
      */
-    categoriesCreate: (data: CreateCategoryDto, params: RequestParams = {}) =>
-      this.request<CategoryDtoApiResult, any>({
+    categoriesCreate: (data: ApiContractCreateCategory, params: RequestParams = {}) =>
+      this.request<ApiContractCategoryApiResult, any>({
         path: `/Categories`,
         method: "POST",
         body: data,
@@ -552,7 +553,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @duplicate
      */
     categoriesDelete2: (query?: { categoryName?: string }, params: RequestParams = {}) =>
-      this.request<CategoryDtoApiResult, any>({
+      this.request<ApiContractCategoryApiResult, any>({
         path: `/Categories`,
         method: "DELETE",
         query: query,
@@ -567,8 +568,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name CategoriesUpdate
      * @request PUT:/Categories/{categoryId}
      */
-    categoriesUpdate: (categoryId: number, data: UpdateCategoryDto, params: RequestParams = {}) =>
-      this.request<CategoryDtoApiResult, any>({
+    categoriesUpdate: (categoryId: number, data: ApiContractUpdateCategory, params: RequestParams = {}) =>
+      this.request<ApiContractCategoryApiResult, any>({
         path: `/Categories/${categoryId}`,
         method: "PUT",
         body: data,
@@ -586,7 +587,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/Transactions/{id}
      */
     transactionsDetail: (id: number, params: RequestParams = {}) =>
-      this.request<TransactionDtoApiResult, any>({
+      this.request<ApiContractTransactionApiResult, any>({
         path: `/Transactions/${id}`,
         method: "GET",
         format: "json",
@@ -601,7 +602,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request DELETE:/Transactions/{id}
      */
     transactionsDelete: (id: number, params: RequestParams = {}) =>
-      this.request<TransactionDtoApiResult, any>({
+      this.request<ApiContractTransactionApiResult, any>({
         path: `/Transactions/${id}`,
         method: "DELETE",
         format: "json",
@@ -616,7 +617,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/Transactions/category/{categoryId}/transactions
      */
     categoryTransactionsDetail: (categoryId: number, query: { from: number; to: number }, params: RequestParams = {}) =>
-      this.request<TransactionDtoIEnumerableApiResult, any>({
+      this.request<ApiContractTransactionIEnumerableApiResult, any>({
         path: `/Transactions/category/${categoryId}/transactions`,
         method: "GET",
         query: query,
@@ -632,10 +633,16 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/Transactions/user/transactions
      */
     userTransactionsList: (
-      query: { from: number; to: number; orderByField: TransactionField; order: OrderType; searchPattern?: string },
+      query: {
+        from: number;
+        to: number;
+        orderByField: ApiContractTransactionField;
+        order: ApiContractOrderType;
+        searchPattern?: string;
+      },
       params: RequestParams = {},
     ) =>
-      this.request<TransactionDtoIEnumerableApiResult, any>({
+      this.request<ApiContractTransactionIEnumerableApiResult, any>({
         path: `/Transactions/user/transactions`,
         method: "GET",
         query: query,
@@ -651,7 +658,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/Transactions/summary
      */
     summaryList: (params: RequestParams = {}) =>
-      this.request<TransactionDtoIEnumerableApiResult, any>({
+      this.request<ApiContractTransactionIEnumerableApiResult, any>({
         path: `/Transactions/summary`,
         method: "GET",
         format: "json",
@@ -666,7 +673,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/Transactions/total
      */
     totalList: (params: RequestParams = {}) =>
-      this.request<StringDecimalDictionaryApiResult, any>({
+      this.request<ApiContractStringDecimalDictionaryApiResult, any>({
         path: `/Transactions/total`,
         method: "GET",
         format: "json",
@@ -681,7 +688,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/Transactions/total/month
      */
     totalMonthList: (params: RequestParams = {}) =>
-      this.request<StringDecimalDictionaryApiResult, any>({
+      this.request<ApiContractStringDecimalDictionaryApiResult, any>({
         path: `/Transactions/total/month`,
         method: "GET",
         format: "json",
@@ -696,7 +703,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/Transactions/total/year
      */
     totalYearList: (params: RequestParams = {}) =>
-      this.request<StringDecimalDictionaryApiResult, any>({
+      this.request<ApiContractStringDecimalDictionaryApiResult, any>({
         path: `/Transactions/total/year`,
         method: "GET",
         format: "json",
@@ -710,8 +717,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name TransactionsCreate
      * @request POST:/Transactions
      */
-    transactionsCreate: (data: CreateTransactionDto, params: RequestParams = {}) =>
-      this.request<TransactionDtoApiResult, any>({
+    transactionsCreate: (data: ApiContractCreateTransaction, params: RequestParams = {}) =>
+      this.request<ApiContractTransactionApiResult, any>({
         path: `/Transactions`,
         method: "POST",
         body: data,
@@ -729,7 +736,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request GET:/Users
      */
     usersList: (params: RequestParams = {}) =>
-      this.request<UserDtoApiResult, any>({
+      this.request<ApiContractUserApiResult, any>({
         path: `/Users`,
         method: "GET",
         format: "json",
@@ -743,8 +750,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name UsersCreate
      * @request POST:/Users
      */
-    usersCreate: (data: CreateUserDto, params: RequestParams = {}) =>
-      this.request<UserDtoApiResult, any>({
+    usersCreate: (data: ApiContractCreateUser, params: RequestParams = {}) =>
+      this.request<ApiContractUserApiResult, any>({
         path: `/Users`,
         method: "POST",
         body: data,
@@ -760,8 +767,8 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @name UsersUpdate
      * @request PUT:/Users
      */
-    usersUpdate: (data: UpdateUserDto, params: RequestParams = {}) =>
-      this.request<UserDtoApiResult, any>({
+    usersUpdate: (data: ApiContractUpdateUser, params: RequestParams = {}) =>
+      this.request<ApiContractUserApiResult, any>({
         path: `/Users`,
         method: "PUT",
         body: data,
@@ -778,7 +785,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
      * @request DELETE:/Users
      */
     usersDelete: (params: RequestParams = {}) =>
-      this.request<UserDtoApiResult, any>({
+      this.request<ApiContractUserApiResult, any>({
         path: `/Users`,
         method: "DELETE",
         format: "json",

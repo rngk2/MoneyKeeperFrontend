@@ -1,6 +1,6 @@
 import { createAction, props } from "@ngrx/store";
 
-import { CreateUserDto, IError } from "../../../api/api.generated";
+import { ApiContractCreateUser, ApiContractIError } from "../../../api/api.generated";
 import IUser from "../../entities/user.entity";
 
 export namespace AuthActions {
@@ -14,14 +14,14 @@ export namespace AuthActions {
   );
   export const LogInFailure = createAction(
     '[Auth] Login Failure',
-    props<IError>()
+    props<ApiContractIError>()
   );
   export const LogOut = createAction(
     '[Auth] Logout'
   );
   export const SignUp = createAction(
     '[Auth] Signup',
-    props<CreateUserDto>()
+    props<ApiContractCreateUser>()
   );
   export const SignUpSuccess = createAction(
     '[Auth] Signup Success',
@@ -29,7 +29,7 @@ export namespace AuthActions {
   );
   export const SignUpFailure = createAction(
     '[Auth] Signup Failure',
-    props<IError>()
+    props<ApiContractIError>()
   );
 }
 

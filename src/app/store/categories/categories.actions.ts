@@ -1,11 +1,11 @@
 import { createAction, props } from "@ngrx/store";
 
 import {
-  CategoryDto,
-  CategoryOverview,
-  CreateCategoryDto,
-  IError,
-  UpdateCategoryDto
+  ApiContractCategory,
+  ApiContractCategoryOverview,
+  ApiContractCreateCategory,
+  ApiContractIError,
+  ApiContractUpdateCategory
 } from "../../../api/api.generated";
 
 export namespace CategoryActions {
@@ -15,7 +15,7 @@ export namespace CategoryActions {
   export const GetCategoriesSuccess = createAction(
     '[Category] Get All: Success',
     props<{
-      categories: CategoryDto[]
+      categories: ApiContractCategory[]
     }>()
   );
   export const GetOverview = createAction(
@@ -28,7 +28,7 @@ export namespace CategoryActions {
   export const GetOverviewSuccess = createAction(
     '[Category] Get Overview: Success',
     props<{
-      data: CategoryOverview[]
+      data: ApiContractCategoryOverview[]
     }>());
   export const GetOverviewForCategory = createAction(
     '[Category] Get Overview For Category',
@@ -39,7 +39,7 @@ export namespace CategoryActions {
   export const GetOverviewForCategorySuccess = createAction(
     '[Category] Get Overview For Category: Success',
     props<{
-      data: CategoryOverview
+      data: ApiContractCategoryOverview
     }>());
   export const GetOverviewForEarnings = createAction(
     '[Category] Get Overview For Earnings'
@@ -47,30 +47,30 @@ export namespace CategoryActions {
   export const GetOverviewForEarningsSuccess = createAction(
     '[Category] Get Overview For Earnings: Success',
     props<{
-      earningsOverview: CategoryOverview
+      earningsOverview: ApiContractCategoryOverview
     }>()
   );
   export const CreateCategory = createAction(
     '[Category] Create',
-    props<CreateCategoryDto>()
+    props<ApiContractCreateCategory>()
   );
   export const CreateCategorySuccess = createAction(
     '[Category] Create: Success',
     props<{
-      created: CategoryDto
+      created: ApiContractCategory
     }>()
   );
   export const UpdateCategory = createAction(
     '[Category] Update',
     props<{
       categoryId: number,
-      data: UpdateCategoryDto
+      data: ApiContractUpdateCategory
     }>()
   );
   export const UpdateCategorySuccess = createAction(
     '[Category] Update: Success',
     props<{
-      updated: CategoryDto
+      updated: ApiContractCategory
     }>()
   );
   export const DeleteCategory = createAction(
@@ -82,12 +82,12 @@ export namespace CategoryActions {
   export const DeleteCategorySuccess = createAction(
     '[Category] Delete: Success',
     props<{
-      deleted: CategoryDto
+      deleted: ApiContractCategory
     }>()
   );
   export const OperationFailed = createAction(
     '[Category] Operation Failed',
-    props<IError>()
+    props<ApiContractIError>()
   );
   export const DropOverviewState = createAction(
     '[Category] Drop Overview State',

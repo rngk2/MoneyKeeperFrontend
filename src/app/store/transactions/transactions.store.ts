@@ -1,8 +1,12 @@
 import { Injectable } from "@angular/core";
 import { createFeatureSelector, createSelector, Store } from "@ngrx/store";
 import { Observable } from "rxjs";
+import {
+  ApiContractCreateTransaction,
+  ApiContractOrderType,
+  ApiContractTransactionField
+} from "../../../api/api.generated";
 
-import { CreateTransactionDto, OrderType, TransactionField } from "../../../api/api.generated";
 import ITransaction from "../../entities/transaction.entity";
 import { AppFeatures } from "../app.features";
 import AppState from "../app.state";
@@ -48,7 +52,7 @@ export default class TransactionsStore {
     this.store.dispatch(TransactionsActions.GetTransactionsForCategory(data));
   }
 
-  public createTransaction(transaction: CreateTransactionDto): void {
+  public createTransaction(transaction: ApiContractCreateTransaction): void {
     this.store.dispatch(TransactionsActions.CreateTransaction(transaction));
   }
 
@@ -59,8 +63,8 @@ export default class TransactionsStore {
   public fetchTransactions(params: {
     from: number,
     to: number,
-    orderByField: TransactionField,
-    order: OrderType
+    orderByField: ApiContractTransactionField,
+    order: ApiContractOrderType
     searchPattern?: string,
   }): void {
     if (params.searchPattern || /* fixme */ params.from === 0) {

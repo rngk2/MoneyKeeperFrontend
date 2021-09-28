@@ -1,6 +1,6 @@
 import { createAction, props } from "@ngrx/store";
 
-import { IError } from "../../../api/api.generated";
+import { ApiContractIError } from "../../../api/api.generated";
 import { Total } from "./types";
 
 export namespace ChartActions {
@@ -38,6 +38,6 @@ export namespace ChartActions {
     }>());
   export const OperationFailed = createAction(
     '[Chart] Operation Failed',
-    props<IError>()
+    props<ApiContractIError>()
   );
 }

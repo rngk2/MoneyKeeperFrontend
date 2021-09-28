@@ -1,16 +1,22 @@
 import { createAction, props } from "@ngrx/store";
 
-import { CreateTransactionDto, IError, OrderType, TransactionDto, TransactionField } from "../../../api/api.generated";
+import {
+  ApiContractCreateTransaction,
+  ApiContractIError,
+  ApiContractOrderType,
+  ApiContractTransaction,
+  ApiContractTransactionField
+} from "../../../api/api.generated";
 
 export namespace TransactionsActions {
   export const CreateTransaction = createAction(
     '[Transactions] Create one',
-    props<CreateTransactionDto>()
+    props<ApiContractCreateTransaction>()
   );
   export const CreateTransactionSuccess = createAction(
     '[Transactions] Create one: Success',
     props<{
-      created: TransactionDto
+      created: ApiContractTransaction
     }>()
   );
   export const GetTransactions = createAction(
@@ -18,15 +24,15 @@ export namespace TransactionsActions {
     props<{
       from: number,
       to: number,
-      orderByField: TransactionField,
-      order: OrderType
+      orderByField: ApiContractTransactionField,
+      order: ApiContractOrderType
       searchPattern?: string,
     }>()
   );
   export const GetTransactionsSuccess = createAction(
     '[Transactions] Get: Success',
     props<{
-      data: TransactionDto[]
+      data: ApiContractTransaction[]
     }>()
   );
   export const GetTransactionsForCategory = createAction(
@@ -40,7 +46,7 @@ export namespace TransactionsActions {
   export const GetTransactionsForCategorySuccess = createAction(
     '[Transactions] GetForCategory: Success',
     props<{
-      data: TransactionDto[],
+      data: ApiContractTransaction[],
     }>()
   );
   export const DeleteTransaction = createAction(
@@ -52,13 +58,13 @@ export namespace TransactionsActions {
   export const DeleteTransactionSuccess = createAction(
     '[Transactions] Delete one: Success',
     props<{
-      deleted: TransactionDto
+      deleted: ApiContractTransaction
     }>()
   );
   export const InitSearch = createAction('[Transactions] Init Search');
   export const OperationFailed = createAction(
     '[Transactions] Operation Failed',
-    props<IError>()
+    props<ApiContractIError>()
   );
 }
 

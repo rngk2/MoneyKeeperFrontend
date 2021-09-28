@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { createFeatureSelector, createSelector, Store } from "@ngrx/store";
 import { Observable } from "rxjs";
-import { CreateUserDto } from "../../../api/api.generated";
+import { ApiContractCreateUser } from "../../../api/api.generated";
 import IUser from "../../entities/user.entity";
 import { AppFeatures } from "../app.features";
 import AppState from "../app.state";
@@ -30,7 +30,7 @@ export default class UserStore {
     this.store.dispatch(AuthActions.LogIn(credentials));
   }
 
-  public signUp(user: CreateUserDto): void {
+  public signUp(user: ApiContractCreateUser): void {
     this.store.dispatch(AuthActions.SignUp(user));
   }
 

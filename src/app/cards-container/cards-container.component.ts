@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged } from "rxjs/operators";
 
-import { CategoryOverview } from '../../api/api.generated';
+import { ApiContractCategoryOverview } from '../../api/api.generated';
 import { AddCategoryFormComponent } from '../add-category-form/add-category-form.component';
 import CategoriesStore from "../store/categories/categories.store";
 import ChartStore from "../store/chart/chart.store";
@@ -20,10 +20,10 @@ import { CARDS_LAZY_LOADING_OPTIONS } from "./cards.container.constants";
 })
 export class CardsContainerComponent implements OnInit {
 
-  public overview$: Observable<CategoryOverview[]>;
+  public overview$: Observable<ApiContractCategoryOverview[]>;
   public chart$: Observable<Total | undefined>;
   public isFetched = false;
-  public sortComparator = compareFn<CategoryOverview>('categoryName');
+  public sortComparator = compareFn<ApiContractCategoryOverview>('categoryName');
 
   private range = new RangeOffsetController(CARDS_LAZY_LOADING_OPTIONS.BEGIN_OFFSET, CARDS_LAZY_LOADING_OPTIONS.STEP);
 

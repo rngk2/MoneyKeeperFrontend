@@ -2,7 +2,11 @@ import { Injectable } from "@angular/core";
 import { createFeatureSelector, createSelector, Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 
-import { CategoryOverview, CreateCategoryDto, UpdateCategoryDto } from "../../../api/api.generated";
+import {
+  ApiContractCategoryOverview,
+  ApiContractCreateCategory,
+  ApiContractUpdateCategory
+} from "../../../api/api.generated";
 import ICategory from "../../entities/category.entity";
 import { INPUT_TRANSACTION_NAME } from "../../entities/transaction.entity";
 import { AppFeatures } from "../app.features";
@@ -50,11 +54,11 @@ export default class CategoriesStore {
     return this.store.select(selectEarnings);
   }
 
-  public get overview(): Observable<CategoryOverview[]> {
+  public get overview(): Observable<ApiContractCategoryOverview[]> {
     return this.store.select(overviewSelector);
   }
 
-  public get earningsOverview(): Observable<CategoryOverview | undefined> {
+  public get earningsOverview(): Observable<ApiContractCategoryOverview | undefined> {
     return this.store.select(earningsOverviewSelector);
   }
 
@@ -78,13 +82,13 @@ export default class CategoriesStore {
     this.store.dispatch(CategoryActions.GetOverviewForEarnings());
   }
 
-  public createCategory(category: CreateCategoryDto): void {
+  public createCategory(category: ApiContractCreateCategory): void {
     this.store.dispatch(CategoryActions.CreateCategory(category));
   }
 
   public updateCategory(data: {
     categoryId: number,
-    data: UpdateCategoryDto
+    data: ApiContractUpdateCategory
   }): void {
     this.store.dispatch(CategoryActions.UpdateCategory(data));
   }

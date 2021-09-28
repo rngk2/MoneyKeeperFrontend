@@ -3,7 +3,7 @@ import { Router } from "@angular/router";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { map, switchMap, tap } from "rxjs/operators";
 
-import { IError } from "../../../api/api.generated";
+import { ApiContractIError } from "../../../api/api.generated";
 import { LOCALSTORAGE_USER_PATH } from "../../constants";
 import IUser from "../../entities/user.entity";
 import AuthService from "../../services/auth.service";
@@ -18,7 +18,7 @@ export class AuthEffects {
       switchMap(payload => this.authService.logIn(payload)
         .pipe(map((res) => res.hasOwnProperty('jwtToken')
             ? AuthActions.LogInSuccess(res as IUser)
-            : AuthActions.LogInFailure(res as IError)
+            : AuthActions.LogInFailure(res as ApiContractIError)
           )
         )
       )
@@ -58,7 +58,7 @@ export class AuthEffects {
             .pipe(map((res) => {
                   return res.data.value
                     ? AuthActions.SignUpSuccess(res.data.value as IUser)
-                    : AuthActions.SignUpFailure(res.data.error as IError);
+                    : AuthActions.SignUpFailure(res.data.error as ApiContractIError);
                 }
               )
             );

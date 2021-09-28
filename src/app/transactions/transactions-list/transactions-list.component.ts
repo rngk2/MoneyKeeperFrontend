@@ -4,7 +4,7 @@ import { UntilDestroy } from "@ngneat/until-destroy";
 import { Observable } from "rxjs";
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
-import { OrderType, TransactionField } from '../../../api/api.generated';
+import { ApiContractOrderType, ApiContractTransactionField } from '../../../api/api.generated';
 import ITransaction, { INPUT_TRANSACTION_NAME } from '../../entities/transaction.entity';
 import TransactionsStore from "../../store/transactions/transactions.store";
 import { Range, RangeOffsetController } from '../../utils';
@@ -60,8 +60,8 @@ export class TransactionsListComponent implements OnInit {
     this.transactionsStore.fetchTransactions({
       from: range.begin,
       to: range.end,
-      orderByField: TransactionField.Timestamp,
-      order: OrderType.DESC
+      orderByField: ApiContractTransactionField.Timestamp,
+      order: ApiContractOrderType.DESC
     });
   }
 
@@ -70,8 +70,8 @@ export class TransactionsListComponent implements OnInit {
     this.transactionsStore.fetchTransactions({
       from: range.begin,
       to: range.end,
-      order: OrderType.DESC,
-      orderByField: TransactionField.Timestamp,
+      order: ApiContractOrderType.DESC,
+      orderByField: ApiContractTransactionField.Timestamp,
       searchPattern
     });
   }

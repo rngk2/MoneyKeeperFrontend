@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
-import { CreateUserDto } from '../../../api/api.generated';
+import { ApiContractCreateUser } from '../../../api/api.generated';
 import UserStore from "../../store/user/user.store";
 
 @Component({
@@ -52,7 +52,7 @@ export class SignUpComponent {
   }
 
   public signUp(): void {
-    const user: CreateUserDto = {
+    const user: ApiContractCreateUser = {
       firstName: this.firstName?.value,
       lastName: this.lastName?.value,
       email: this.email?.value,
