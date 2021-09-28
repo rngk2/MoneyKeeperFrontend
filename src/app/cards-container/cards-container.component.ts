@@ -42,18 +42,6 @@ export class CardsContainerComponent implements OnInit {
     this.fetchOverview(this.range.getNextRange());
   }
 
-  public fetchOverview(range: Range): void {
-    this.categoriesStore.fetchOverview({
-      from: range.begin,
-      to: range.end,
-    });
-    this.isFetched = true;
-  }
-
-  public drawChart(): void {
-    this.chartStore.fetchTotal();
-  }
-
   public addCategory(): void {
     this.dialog.open(AddCategoryFormComponent, {
       width: '40rem'
@@ -68,5 +56,17 @@ export class CardsContainerComponent implements OnInit {
 
   public onScroll(): void {
     this.fetchOverview(this.range.getNextRange());
+  }
+
+  private fetchOverview(range: Range): void {
+    this.categoriesStore.fetchOverview({
+      from: range.begin,
+      to: range.end,
+    });
+    this.isFetched = true;
+  }
+
+  private drawChart(): void {
+    this.chartStore.fetchTotal();
   }
 }
