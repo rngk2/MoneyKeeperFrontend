@@ -93,7 +93,7 @@ export class CategoryEffects {
               ? CategoryActions.DeleteCategorySuccess({ deleted: res.data.value })
               : CategoryActions.OperationFailed(res.data.error)));
         }
-        return this.categoryService.api.byNameDelete(payload.idOrName)
+        return this.categoryService.api.categoriesDelete2({ categoryName: payload.idOrName })
           .pipe(map(res => !res.data.error
             ? CategoryActions.DeleteCategorySuccess({ deleted: res.data.value })
             : CategoryActions.OperationFailed(res.data.error)));

@@ -28,7 +28,7 @@ export interface CategoriesApi {
   categoriesDelete: (id: number, params?: RequestParams) => any;
   categoriesList: (params?: RequestParams) => any;
   categoriesCreate: (data: CreateCategoryDto, params?: RequestParams) => any;
-  byNameDelete: (categoryName: string, params?: RequestParams) => any;
+  categoriesDelete2: (query?: { categoryName?: string }, params?: RequestParams) => any;
   overviewList: (query?: { from?: number; to?: number }, params?: RequestParams) => any;
   earningsOverviewList: (params?: RequestParams) => any;
   overviewDetail: (categoryId: number, params?: RequestParams) => any;
