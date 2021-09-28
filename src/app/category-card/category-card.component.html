@@ -10,12 +10,10 @@
            matInput
     >
   </mat-card-header>
-
   <mat-card-content>
     <p class="spend">
       Spent this month: <br> {{spendThisMonth}}$
     </p>
-
     <div [@bodyExpansion]="state" class="expandable-content">
       <div (click)="showMoreForTransaction(transaction)" *ngFor="let transaction of (lastTransactions | async)"
            style="cursor: pointer">
@@ -23,25 +21,20 @@
           {{transaction.timestamp | date: "mediumDate"}}: {{transaction.amount}}$
         </p>
       </div>
-
       <section (click)="addTransaction = true" class="card__when-expanded__bottom">
         <mat-icon *ngIf="!addTransaction" class="material-icons-outlined">add</mat-icon>
         <span class="card__when-expanded__see-all" routerLink="/wallet/transactions/{{categoryName}}">See all</span>
       </section>
-
       <section *ngIf="addTransaction">
         <add-transaction-form (onSubmit)="onAddTransactionSubmit()" [categoryId]="categoryId"></add-transaction-form>
       </section>
     </div>
-
     <mat-divider></mat-divider>
   </mat-card-content>
-
   <mat-card-actions *ngIf="!edit">
     <button (click)="toggle()" color="primary" mat-button>{{state === "collapsed" ? "More" : "Less"}}</button>
     <button (click)="deleteCategory()" color="warn" mat-button>Delete</button>
   </mat-card-actions>
-
   <mat-card-actions *ngIf="edit">
     <button (click)="editSave()" color="primary" mat-button>Save</button>
     <button (click)="editDisable()" color="warn" mat-button>Cancel</button>
