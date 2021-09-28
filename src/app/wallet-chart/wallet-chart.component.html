@@ -1,7 +1,7 @@
 <div *ngIf="(chartTotal$ | async) as total" style="display: block;">
   <canvas [chartType]="chartType"
-          [data]="total | transform: transformFuncs.extractAmounts"
-          [labels]="total | transform: transformFuncs.extractNames"
+          [data]="total | transform: extractAmountsFunc"
+          [labels]="total | transform: extractNamesFunc"
           [legend]="chartLegend"
           [options]="chartOptions"
           [plugins]="chartPlugins"

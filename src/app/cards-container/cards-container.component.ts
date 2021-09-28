@@ -23,6 +23,7 @@ export class CardsContainerComponent implements OnInit {
   public overview$: Observable<CategoryOverview[]>;
   public chart$: Observable<Total | undefined>;
   public isFetched = false;
+  public sortComparator = compareFn<CategoryOverview>('categoryName');
 
   private range = new RangeOffsetController(CARDS_LAZY_LOADING_OPTIONS.BEGIN_OFFSET, CARDS_LAZY_LOADING_OPTIONS.STEP);
 
@@ -39,10 +40,6 @@ export class CardsContainerComponent implements OnInit {
   public ngOnInit(): void {
     this.drawChart();
     this.fetchOverview(this.range.getNextRange());
-  }
-
-  public getSortFunc(): (a: CategoryOverview, b: CategoryOverview) => (0 | -1 | 1) {
-    return compareFn<CategoryOverview>('categoryName');
   }
 
   public fetchOverview(range: Range): void {

@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ChartOptions, ChartType } from 'chart.js';
 import { monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip } from 'ng2-charts';
 import { Observable } from 'rxjs';
+
 import { Total } from "../store/chart/types";
 import { extractAmounts, extractNames } from "./wallet-chart.transform-funcs";
 
@@ -29,15 +30,13 @@ export class WalletChartComponent {
       }
     },
   };
+  public extractAmountsFunc = extractAmounts;
+  public extractNamesFunc = extractNames;
 
   @Input() public chartTotal$!: Observable<Total>;
 
   constructor() {
     monkeyPatchChartJsTooltip();
     monkeyPatchChartJsLegend();
-  }
-
-  public get transformFuncs() {
-    return { extractNames, extractAmounts };
   }
 }
