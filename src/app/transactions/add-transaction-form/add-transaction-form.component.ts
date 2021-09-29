@@ -1,11 +1,12 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import TransactionsStore from "../../store/transactions/transactions.store";
 
 @Component({
   selector: 'add-transaction-form',
   templateUrl: './add-transaction-form.component.html',
-  styleUrls: ['./add-transaction-form.component.scss']
+  styleUrls: ['./add-transaction-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddTransactionFormComponent {
 

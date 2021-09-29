@@ -10,10 +10,10 @@ import UserStore from "../store/user/user.store";
 @Component({
   selector: 'profile-page',
   templateUrl: './profile-page.component.html',
-  styleUrls: ['./profile-page.component.scss']
+  styleUrls: ['./profile-page.component.scss'],
 })
 export class ProfilePageComponent implements OnInit {
-
+// TODO: fix chart when category name changes
   public user$: Observable<IUser | undefined>;
   public earnedMonth$: Observable<number>;
   public spentMonth$: Observable<number>;

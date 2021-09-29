@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Observable } from "rxjs";
 import ICategory from "../../entities/category.entity";
@@ -7,7 +7,8 @@ import CategoriesStore from "../../store/categories/categories.store";
 @Component({
   selector: 'add-earning-form',
   templateUrl: './add-earning-form.component.html',
-  styleUrls: ['./add-earning-form.component.scss']
+  styleUrls: ['./add-earning-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddEarningFormComponent {
 
