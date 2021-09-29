@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
 import CategoryService from "../services/category.service";
@@ -7,7 +7,8 @@ import CategoriesStore from "../store/categories/categories.store";
 @Component({
   selector: 'add-category-form',
   templateUrl: './add-category-form.component.html',
-  styleUrls: ['./add-category-form.component.scss']
+  styleUrls: ['./add-category-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddCategoryFormComponent {
 

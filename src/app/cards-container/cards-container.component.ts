@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { distinctUntilChanged } from "rxjs/operators";
@@ -16,12 +16,15 @@ import { CARDS_LAZY_LOADING_OPTIONS } from "./cards.container.constants";
 @Component({
   selector: 'cards-container',
   templateUrl: './cards-container.component.html',
-  styleUrls: ['./cards-container.component.scss']
+  styleUrls: ['./cards-container.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardsContainerComponent implements OnInit {
 
   public overview$: Observable<ApiContractCategoryOverview[]>;
+  // TODO: fix chart when category name changes
   public chart$: Observable<Total | undefined>;
+  // TODO: fix isFetched logic
   public isFetched = false;
   public sortComparator = compareFn<ApiContractCategoryOverview>('categoryName');
 

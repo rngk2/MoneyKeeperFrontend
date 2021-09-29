@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TRANSACTIONS_PREVIEW_MAX_LENGTH } from "../../category-card/category-card.constants";
 
@@ -8,7 +8,8 @@ import TransactionsStore from "../../store/transactions/transactions.store";
 @Component({
   selector: 'about-transaction',
   templateUrl: './about-transaction.component.html',
-  styleUrls: ['./about-transaction.component.scss']
+  styleUrls: ['./about-transaction.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AboutTransactionComponent {
 

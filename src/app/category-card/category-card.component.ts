@@ -1,5 +1,13 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from "rxjs";
 import { ConfirmPopupComponent } from '../confirm-popup/confirm-popup.component';
@@ -20,7 +28,8 @@ import { TRANSACTIONS_PREVIEW_MAX_LENGTH } from "./category-card.constants";
       transition('expanded <=> collapsed, void => collapsed',
         animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ])
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CategoryCardComponent implements OnInit {
 

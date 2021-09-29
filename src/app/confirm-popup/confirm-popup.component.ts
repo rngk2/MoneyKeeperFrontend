@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 interface ConfirmDialogData {
@@ -9,7 +9,8 @@ interface ConfirmDialogData {
 @Component({
   selector: 'confirm-popup',
   templateUrl: './confirm-popup.component.html',
-  styleUrls: ['./confirm-popup.component.scss']
+  styleUrls: ['./confirm-popup.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ConfirmPopupComponent {
   constructor(

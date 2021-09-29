@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { UntilDestroy } from "@ngneat/until-destroy";
 
@@ -8,7 +8,8 @@ import ITransaction from '../../entities/transaction.entity';
 @Component({
   selector: 'app-category-transactions',
   templateUrl: './category-transactions.component.html',
-  styleUrls: ['./category-transactions.component.scss']
+  styleUrls: ['./category-transactions.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CategoryTransactionsComponent {
 

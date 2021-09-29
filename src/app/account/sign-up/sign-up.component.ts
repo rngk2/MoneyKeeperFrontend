@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ApiContractCreateUser } from '../../../api/api.generated';
@@ -7,7 +7,8 @@ import UserStore from "../../store/user/user.store";
 @Component({
   selector: 'sign-up-form',
   templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.scss']
+  styleUrls: ['./sign-up.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SignUpComponent {
 

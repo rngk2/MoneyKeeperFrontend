@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { UntilDestroy } from "@ngneat/until-destroy";
 import { Observable } from "rxjs";
@@ -14,7 +14,8 @@ import { SEARCH_OPTIONS, TRANSACTIONS_LAZY_LOADING_OPTIONS } from "./transaction
 @Component({
   selector: 'transactions-list',
   templateUrl: './transactions-list.component.html',
-  styleUrls: ['./transactions-list.component.scss']
+  styleUrls: ['./transactions-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TransactionsListComponent implements OnInit {
 
