@@ -23,7 +23,7 @@ export class AboutTransactionComponent {
   public deleteTransaction(): void {
     this.transactionsStore.removeTransaction(this.data.id!);
     this.transactionsStore.fetchTransactionsForCategory({
-      categoryId: this.data.id!,
+      categoryId: this.data.categoryId!,
       from: 0,
       to: TRANSACTIONS_PREVIEW_MAX_LENGTH
     });
