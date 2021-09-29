@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ChartOptions, ChartType } from 'chart.js';
 import { monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip } from 'ng2-charts';
 import { Observable } from 'rxjs';
@@ -10,7 +10,6 @@ import { extractAmounts, extractNames } from "./wallet-chart.transform-funcs";
   selector: 'wallet-chart',
   templateUrl: './wallet-chart.component.html',
   styleUrls: ['./wallet-chart.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WalletChartComponent {
 

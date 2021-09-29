@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UntilDestroy } from "@ngneat/until-destroy";
 import { Observable } from 'rxjs';
@@ -19,6 +19,7 @@ import { CARDS_LAZY_LOADING_OPTIONS } from "./cards.container.constants";
   selector: 'cards-container',
   templateUrl: './cards-container.component.html',
   styleUrls: ['./cards-container.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardsContainerComponent implements OnInit, OnDestroy {
 
