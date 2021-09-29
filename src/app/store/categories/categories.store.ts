@@ -27,6 +27,10 @@ const earningsOverviewSelector = createSelector(
   categoryFeatureSelector,
   (state) => state.earningsOverview
 );
+const isOverviewFetchedSelector = createSelector(
+  categoryFeatureSelector,
+  (state) => state.overviewFetched
+);
 
 @Injectable()
 export default class CategoriesStore {
@@ -58,6 +62,10 @@ export default class CategoriesStore {
     return this.store.select(overviewSelector);
   }
 
+  public get isOverviewFetched(): Observable<boolean> {
+    return this.store.select(isOverviewFetchedSelector);
+  }
+
   public get earningsOverview(): Observable<ApiContractCategoryOverview | undefined> {
     return this.store.select(earningsOverviewSelector);
   }
@@ -80,6 +88,10 @@ export default class CategoriesStore {
 
   public fetchOverviewForEarnings(): void {
     this.store.dispatch(CategoryActions.GetOverviewForEarnings());
+  }
+
+  public resetIsFetched(): void {
+    this.store.dispatch(CategoryActions.ResetIsFetched());
   }
 
   public createCategory(category: ApiContractCreateCategory): void {

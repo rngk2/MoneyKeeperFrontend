@@ -7,6 +7,7 @@ import CategoriesState from "./categories.state";
 const initialState: CategoriesState = {
   categories: [],
   overview: [],
+  overviewFetched: false
 };
 const _categoryReducer = createReducer(
   initialState,
@@ -20,7 +21,8 @@ const _categoryReducer = createReducer(
   })),
   on(CategoryActions.GetOverviewSuccess, (state, updatedValue) => ({
     ...state,
-    overview: Object.values(state ? [...state.overview, ...updatedValue.data] : updatedValue.data)
+    overview: Object.values(state ? [...state.overview, ...updatedValue.data] : updatedValue.data),
+    overviewFetched: true
   })),
   on(CategoryActions.GetOverviewForCategorySuccess, (state, updatedValue) => {
     const elementInOverviewIndex = state.overview.findIndex(value =>
@@ -44,6 +46,10 @@ const _categoryReducer = createReducer(
   on(CategoryActions.GetOverviewForEarningsSuccess, (state, { earningsOverview }) => ({
     ...state,
     earningsOverview
+  })),
+  on(CategoryActions.ResetIsFetched, (state) => ({
+    ...state,
+    overviewFetched: false
   })),
   on(CategoryActions.CreateCategorySuccess, (state, { created }) => {
     return {

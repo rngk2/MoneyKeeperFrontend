@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { UntilDestroy } from "@ngneat/until-destroy";
 import { Observable } from 'rxjs';
 import { distinctUntilChanged } from "rxjs/operators";
 
@@ -13,21 +14,19 @@ import { AddEarningFormComponent } from '../transactions/add-earning-form/add-ea
 import { compareFn, Range, RangeOffsetController } from "../utils";
 import { CARDS_LAZY_LOADING_OPTIONS } from "./cards.container.constants";
 
+@UntilDestroy()
 @Component({
   selector: 'cards-container',
   templateUrl: './cards-container.component.html',
   styleUrls: ['./cards-container.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CardsContainerComponent implements OnInit {
+export class CardsContainerComponent implements OnInit, OnDestroy {
 
   public overview$: Observable<ApiContractCategoryOverview[]>;
   // TODO: fix chart when category name changes
   public chart$: Observable<Total | undefined>;
-  // TODO: fix isFetched logic
-  public isFetched = false;
+  public isFetched: Observable<boolean>;
   public sortComparator = compareFn<ApiContractCategoryOverview>('categoryName');
-
   private range = new RangeOffsetController(CARDS_LAZY_LOADING_OPTIONS.BEGIN_OFFSET, CARDS_LAZY_LOADING_OPTIONS.STEP);
 
   constructor(
@@ -37,6 +36,7 @@ export class CardsContainerComponent implements OnInit {
     private readonly chartStore: ChartStore,
   ) {
     this.overview$ = categoriesStore.overview.pipe(distinctUntilChanged());
+    this.isFetched = categoriesStore.isOverviewFetched.pipe(distinctUntilChanged());
     this.chart$ = chartStore.total.pipe(distinctUntilChanged());
   }
 
@@ -61,12 +61,15 @@ export class CardsContainerComponent implements OnInit {
     this.fetchOverview(this.range.getNextRange());
   }
 
+  public ngOnDestroy(): void {
+    this.categoriesStore.resetIsFetched();
+  }
+
   private fetchOverview(range: Range): void {
     this.categoriesStore.fetchOverview({
       from: range.begin,
       to: range.end,
     });
-    this.isFetched = true;
   }
 
   private drawChart(): void {

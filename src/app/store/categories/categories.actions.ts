@@ -22,7 +22,7 @@ export namespace CategoryActions {
     '[Category] Get Overview',
     props<{
       from: number,
-      to: number
+      to: number,
     }>()
   );
   export const GetOverviewSuccess = createAction(
@@ -49,6 +49,9 @@ export namespace CategoryActions {
     props<{
       earningsOverview: ApiContractCategoryOverview
     }>()
+  );
+  export const ResetIsFetched = createAction(
+    '[Category] Reset isFetched'
   );
   export const CreateCategory = createAction(
     '[Category] Create',

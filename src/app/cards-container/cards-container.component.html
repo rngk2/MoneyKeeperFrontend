@@ -6,11 +6,12 @@
   <div class="column">
     <div class="page-container">
       <div class="cards-container">
-        <div *ngIf="isFetched && (overview$ | async)?.length < 1 else ok" class="nothing-in-history__hint">
+        <div *ngIf="(isFetched | async) && (overview$ | async)?.length < 1 else ok" class="nothing-in-history__hint">
           <p>Nothing in your history for now...</p>
           <div class="not-found"></div>
         </div>
-        <mat-spinner *ngIf="!isFetched" [diameter]="80" [strokeWidth]="4" class="spinner"></mat-spinner>
+        <mat-spinner *ngIf="!(isFetched | async)" [diameter]="80" [strokeWidth]="4"
+                     class="spinner"></mat-spinner>
         <ng-template #ok>
           <category-card *ngFor="let o of overview$ | async | sort: sortComparator"
                          [categoryId]="o.categoryId"
@@ -20,7 +21,7 @@
           </category-card>
         </ng-template>
       </div>
-      <div *ngIf="isFetched" [matMenuTriggerFor]="menu" class="add-button">
+      <div *ngIf="isFetched | async" [matMenuTriggerFor]="menu" class="add-button">
         <div class="mdc-touch-target-wrapper">
           <button class="mdc-fab mdc-fab--mini mdc-fab--touch" id="add-btn">
             <span class="material-icons mdc-fab__icon icon">add</span>
