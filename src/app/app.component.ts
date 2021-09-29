@@ -1,18 +1,11 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from "@angular/router";
-import { authFormsSlider } from "./account/route-animations";
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  animations: [authFormsSlider]
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
   title = 'MoneyKeeperFrontend';
-
-  prepareRoute(outlet: RouterOutlet) {
-    return outlet && outlet.activatedRoute
-      && outlet.activatedRouteData.animation;
-  }
 }

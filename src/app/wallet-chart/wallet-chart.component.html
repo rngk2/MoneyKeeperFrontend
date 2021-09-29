@@ -2,8 +2,7 @@
   <canvas [chartType]="chartType"
           [data]="total | transform: extractAmountsFunc"
           [labels]="total | transform: extractNamesFunc"
-          [legend]="chartLegend"
-          [options]="chartOptions"
+          [legend]="chartLegend" [options]="chartOptions"
           [plugins]="chartPlugins"
           baseChart>
   </canvas>

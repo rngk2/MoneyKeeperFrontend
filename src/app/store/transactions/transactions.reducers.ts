@@ -38,14 +38,11 @@ const _transactionsReducer = createReducer(
     });
   }),
   on(TransactionsActions.DeleteTransactionSuccess, (state, { deleted }) => {
+    let withoutDeleted = state.categoriesTransactions || {};
+    delete withoutDeleted[deleted.categoryId!];
     return {
       transactions: isIterable(state.transactions) ? state.transactions!.filter(t => t.id !== deleted.id) : [],
-      categoriesTransactions: state.categoriesTransactions?.hasOwnProperty(deleted.categoryId!)
-        ? {
-          ...state.categoriesTransactions,
-          [deleted.categoryId!]: state.categoriesTransactions[deleted.categoryId!].filter(t => t.id !== deleted.id)
-        }
-        : state.categoriesTransactions
+      categoriesTransactions: withoutDeleted
     };
   }),
   on(TransactionsActions.GetTransactionsForCategorySuccess, (state, { data }) => {
