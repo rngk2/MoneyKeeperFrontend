@@ -38,7 +38,8 @@
         </button>
       </mat-menu>
     </div>
-    <div *ngIf="(overview$ | async)?.length > 1" class="chart">
+    <div *ngIf="(overview$ | async)?.length >= 1" class="chart">
+      <h1 style="display: block; width: available">Hello</h1>
       <wallet-chart [chartTotal$]="chart$">
       </wallet-chart>
     </div>
