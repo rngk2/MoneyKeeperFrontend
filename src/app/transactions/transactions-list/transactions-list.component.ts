@@ -21,6 +21,8 @@ export class TransactionsListComponent implements OnInit {
   public transactions$: Observable<ITransaction[]>;
   public searchControl = new FormControl('');
 
+  public readonly inputTransactionName = INPUT_TRANSACTION_NAME;
+
   @Input() public filter: (value: any) => boolean = () => true;
 
   private rangeForAll
@@ -50,10 +52,6 @@ export class TransactionsListComponent implements OnInit {
     this.searchControl!.value.length === 0
       ? this.fetchTransactions(this.rangeForAll.getNextRange())
       : this.fetchTransactionsWithPattern(this.rangeForSearch.getNextRange());
-  }
-
-  public getInputTransactionName(): string {
-    return INPUT_TRANSACTION_NAME;
   }
 
   private fetchTransactions(range: Range): void {
