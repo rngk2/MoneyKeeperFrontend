@@ -23,7 +23,6 @@ import { CARDS_LAZY_LOADING_OPTIONS } from "./cards.container.constants";
 export class CardsContainerComponent implements OnInit, OnDestroy {
 
   public readonly overview$: Observable<ApiContractCategoryOverview[]>;
-  // TODO: fix chart when category name changes
   public readonly chart$: Observable<Total | undefined>;
   public readonly isFetched: Observable<boolean>;
   public readonly sortComparator = compareFn<ApiContractCategoryOverview>('categoryName');

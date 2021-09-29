@@ -3,6 +3,7 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { of } from "rxjs";
 import { map, switchMap, tap, withLatestFrom } from "rxjs/operators";
 import CategoryService from "../../services/category.service";
+import ChartStore from "../chart/chart.store";
 import { CategoryActions } from './categories.actions';
 import CategoriesStore from "./categories.store";
 
@@ -83,6 +84,12 @@ export class CategoryEffects {
       )
     )
   );
+  public readonly updateCategorySuccess = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CategoryActions.UpdateCategorySuccess),
+      tap(() => this.chartStore.fetchAll())
+    ), { dispatch: false }
+  );
   public readonly deleteCategory = createEffect(() =>
     this.actions$.pipe(
       ofType(CategoryActions.DeleteCategory),
@@ -100,6 +107,12 @@ export class CategoryEffects {
       })
     )
   );
+  public readonly deleteCategorySuccess = createEffect(() =>
+    this.actions$.pipe(
+      ofType(CategoryActions.DeleteCategorySuccess),
+      tap(() => this.chartStore.fetchAll())
+    ), { dispatch: false }
+  );
   public readonly operationFailed = createEffect(() =>
     this.actions$.pipe(
       ofType(CategoryActions.OperationFailed),
@@ -110,7 +123,8 @@ export class CategoryEffects {
   constructor(
     private readonly actions$: Actions,
     private readonly categoryService: CategoryService,
-    private readonly categoriesStore: CategoriesStore
+    private readonly categoriesStore: CategoriesStore,
+    private readonly chartStore: ChartStore
   ) {
   }
 }

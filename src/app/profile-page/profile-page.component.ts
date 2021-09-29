@@ -13,7 +13,6 @@ import UserStore from "../store/user/user.store";
   styleUrls: ['./profile-page.component.scss'],
 })
 export class ProfilePageComponent implements OnInit {
-// TODO: fix chart when category name changes
   public readonly user$: Observable<IUser | undefined>;
   public readonly earnedMonth$: Observable<number>;
   public readonly spentMonth$: Observable<number>;
