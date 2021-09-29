@@ -19,8 +19,8 @@ import { SEARCH_OPTIONS, TRANSACTIONS_LAZY_LOADING_OPTIONS } from "./transaction
 })
 export class TransactionsListComponent implements OnInit {
 
-  public transactions$: Observable<ITransaction[]>;
-  public searchControl = new FormControl('');
+  public readonly transactions$: Observable<ITransaction[]>;
+  public readonly searchControl = new FormControl('');
 
   public readonly inputTransactionName = INPUT_TRANSACTION_NAME;
 

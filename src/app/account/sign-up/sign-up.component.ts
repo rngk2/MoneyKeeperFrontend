@@ -12,7 +12,7 @@ import UserStore from "../../store/user/user.store";
 })
 export class SignUpComponent {
 
-  public signUpForm: FormGroup;
+  public readonly signUpForm: FormGroup;
 
   constructor(
     private readonly fb: FormBuilder,

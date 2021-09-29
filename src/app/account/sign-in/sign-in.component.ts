@@ -10,7 +10,7 @@ import UserStore from "../../store/user/user.store";
 })
 export class SignInComponent {
 
-  public signInForm: FormGroup;
+  public readonly signInForm: FormGroup;
 
   constructor(
     private readonly fb: FormBuilder,

@@ -9,5 +9,5 @@ import ITransaction, { INPUT_TRANSACTION_NAME } from '../../entities/transaction
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class EarningsPageComponent {
-  public filter = (value: ITransaction) => value.categoryName === INPUT_TRANSACTION_NAME;
+  public readonly filter = (value: ITransaction) => value.categoryName === INPUT_TRANSACTION_NAME;
 }

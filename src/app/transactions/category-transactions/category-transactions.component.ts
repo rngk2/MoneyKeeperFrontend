@@ -14,7 +14,7 @@ import ITransaction from '../../entities/transaction.entity';
 export class CategoryTransactionsComponent {
 
   public categoryName!: string;
-  public filter = (value: ITransaction) => value.categoryName === this.categoryName;
+  public readonly filter = (value: ITransaction) => value.categoryName === this.categoryName;
 
   constructor(
     route: ActivatedRoute

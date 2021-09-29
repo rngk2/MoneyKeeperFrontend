@@ -14,12 +14,12 @@ import UserStore from "../store/user/user.store";
 })
 export class ProfilePageComponent implements OnInit {
 // TODO: fix chart when category name changes
-  public user$: Observable<IUser | undefined>;
-  public earnedMonth$: Observable<number>;
-  public spentMonth$: Observable<number>;
-  public spentYear$: Observable<number>;
-  public totalMonth$: Observable<Total | undefined>;
-  public totalYear$: Observable<Total | undefined>;
+  public readonly user$: Observable<IUser | undefined>;
+  public readonly earnedMonth$: Observable<number>;
+  public readonly spentMonth$: Observable<number>;
+  public readonly spentYear$: Observable<number>;
+  public readonly totalMonth$: Observable<Total | undefined>;
+  public readonly totalYear$: Observable<Total | undefined>;
 
   constructor(
     private readonly userStore: UserStore,

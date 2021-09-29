@@ -18,7 +18,6 @@ export class AddCategoryFormComponent {
 
   private readonly categoryUtils = new CategoryService.CategoryServiceUtils();
 
-
   constructor(
     private readonly dialogRef: MatDialogRef<AddCategoryFormComponent>,
     private readonly categoriesStore: CategoriesStore,

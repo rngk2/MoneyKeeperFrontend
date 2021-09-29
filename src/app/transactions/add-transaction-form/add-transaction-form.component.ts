@@ -12,9 +12,9 @@ export class AddTransactionFormComponent {
 
   public amount!: number;
   public comment!: string;
-  public timestampControl = new FormControl(new Date());
-  public minDate = new Date(0);
-  public maxDate = new Date();
+  public readonly timestampControl = new FormControl(new Date());
+  public readonly minDate = new Date(0);
+  public readonly maxDate = new Date();
 
   @Input() public categoryId!: number;
 

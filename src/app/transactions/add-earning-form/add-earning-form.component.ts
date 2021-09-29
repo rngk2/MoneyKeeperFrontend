@@ -12,7 +12,7 @@ import CategoriesStore from "../../store/categories/categories.store";
 })
 export class AddEarningFormComponent {
 
-  public earningsId: Observable<ICategory | undefined>;
+  public readonly earningsId: Observable<ICategory | undefined>;
 
   constructor(
     private readonly dialogRef: MatDialogRef<AddEarningFormComponent>,

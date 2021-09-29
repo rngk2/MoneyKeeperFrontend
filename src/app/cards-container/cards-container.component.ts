@@ -22,11 +22,12 @@ import { CARDS_LAZY_LOADING_OPTIONS } from "./cards.container.constants";
 })
 export class CardsContainerComponent implements OnInit, OnDestroy {
 
-  public overview$: Observable<ApiContractCategoryOverview[]>;
+  public readonly overview$: Observable<ApiContractCategoryOverview[]>;
   // TODO: fix chart when category name changes
-  public chart$: Observable<Total | undefined>;
-  public isFetched: Observable<boolean>;
-  public sortComparator = compareFn<ApiContractCategoryOverview>('categoryName');
+  public readonly chart$: Observable<Total | undefined>;
+  public readonly isFetched: Observable<boolean>;
+  public readonly sortComparator = compareFn<ApiContractCategoryOverview>('categoryName');
+
   private range = new RangeOffsetController(CARDS_LAZY_LOADING_OPTIONS.BEGIN_OFFSET, CARDS_LAZY_LOADING_OPTIONS.STEP);
 
   constructor(

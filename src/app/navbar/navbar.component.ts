@@ -12,7 +12,7 @@ import UserStore from "../store/user/user.store";
 })
 export class NavbarComponent {
 
-  public user$: Observable<IUser | undefined>;
+  public readonly user$: Observable<IUser | undefined>;
 
   constructor(
     private readonly userStore: UserStore

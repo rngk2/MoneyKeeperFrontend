@@ -14,10 +14,10 @@ import { extractAmounts, extractNames } from "./wallet-chart.transform-funcs";
 })
 export class WalletChartComponent {
 
-  public chartType: ChartType = 'doughnut';
-  public chartLegend = true;
-  public chartPlugins = [];
-  public chartOptions: ChartOptions = {
+  public readonly chartType: ChartType = 'doughnut';
+  public readonly chartLegend = true;
+  public readonly chartPlugins = [];
+  public readonly chartOptions: ChartOptions = {
     animation: {
       duration: 3200
     },
@@ -31,8 +31,8 @@ export class WalletChartComponent {
       }
     },
   };
-  public extractAmountsFunc = extractAmounts;
-  public extractNamesFunc = extractNames;
+  public readonly extractAmountsFunc = extractAmounts;
+  public readonly extractNamesFunc = extractNames;
 
   @Input() public chartTotal$!: Observable<Total>;
 
