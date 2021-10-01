@@ -2,6 +2,8 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { of } from "rxjs";
 import { map, switchMap, tap, withLatestFrom } from "rxjs/operators";
+import { LOCALSTORAGE_STATE_PATH } from "../../constants";
+import LocalStorageService from "../../services/localStotage.service";
 
 import TransactionService from "../../services/transaction.service";
 import { ChartActions } from "./chart.actions";
@@ -18,9 +20,13 @@ export class ChartEffects {
             return of(latestFromStore).pipe(map(data => ChartActions.GetTotalSuccess({ total: data })));
           }
           return this.transactionsService.api.totalList()
-            .pipe(map(res => !res.data.error
-              ? ChartActions.GetTotalSuccess({ total: res.data.value })
-              : ChartActions.OperationFailed(res.data.error)
+            .pipe(map(res => {
+                if (!res.data.error) {
+                  this.localStorageService.append(LOCALSTORAGE_STATE_PATH, { total: res.data.value });
+                  return ChartActions.GetTotalSuccess({ total: res.data.value });
+                }
+                return ChartActions.OperationFailed(res.data.error);
+              }
             ));
         }
       )
@@ -35,9 +41,13 @@ export class ChartEffects {
             return of(latestFromStore).pipe(map(data => ChartActions.GetTotalForMonthSuccess({ total: data })));
           }
           return this.transactionsService.api.totalMonthList()
-            .pipe(map(res => !res.data.error
-              ? ChartActions.GetTotalForMonthSuccess({ total: res.data.value })
-              : ChartActions.OperationFailed(res.data.error)
+            .pipe(map(res => {
+                if (!res.data.error) {
+                  this.localStorageService.append(LOCALSTORAGE_STATE_PATH, { totalMonth: res.data.value });
+                  return ChartActions.GetTotalForMonthSuccess({ total: res.data.value });
+                }
+                return ChartActions.OperationFailed(res.data.error);
+              }
             ));
         }
       )
@@ -52,9 +62,13 @@ export class ChartEffects {
             return of(latestFromStore).pipe(map(data => ChartActions.GetTotalForYearSuccess({ total: data })));
           }
           return this.transactionsService.api.totalYearList()
-            .pipe(map(res => !res.data.error
-              ? ChartActions.GetTotalForYearSuccess({ total: res.data.value })
-              : ChartActions.OperationFailed(res.data.error)
+            .pipe(map(res => {
+                if (!res.data.error) {
+                  this.localStorageService.append(LOCALSTORAGE_STATE_PATH, { totalYear: res.data.value });
+                  return ChartActions.GetTotalForYearSuccess({ total: res.data.value });
+                }
+                return ChartActions.OperationFailed(res.data.error);
+              }
             ));
         }
       )
@@ -71,6 +85,7 @@ export class ChartEffects {
     private readonly actions$: Actions,
     private readonly transactionsService: TransactionService,
     private readonly chartStore: ChartStore,
+    private readonly localStorageService: LocalStorageService
   ) {
   }
 }

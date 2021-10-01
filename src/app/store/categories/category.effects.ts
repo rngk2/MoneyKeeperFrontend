@@ -2,7 +2,9 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { of } from "rxjs";
 import { map, switchMap, tap, withLatestFrom } from "rxjs/operators";
+import { LOCALSTORAGE_STATE_PATH } from "../../constants";
 import CategoryService from "../../services/category.service";
+import LocalStorageService from "../../services/localStotage.service";
 import ChartStore from "../chart/chart.store";
 import { CategoryActions } from './categories.actions';
 import CategoriesStore from "./categories.store";
@@ -18,9 +20,13 @@ export class CategoryEffects {
           return of(categories).pipe(map(value => CategoryActions.GetCategoriesSuccess({ categories: value })));
         }
         return this.categoryService.api.categoriesList()
-          .pipe(map(res => !res.data.error
-            ? CategoryActions.GetCategoriesSuccess({ categories: res.data.value })
-            : CategoryActions.OperationFailed(res.data.error)
+          .pipe(map(res => {
+              if (!res.data.error) {
+                this.localStorageService.append(LOCALSTORAGE_STATE_PATH, { categories: res.data.value });
+                return CategoryActions.GetCategoriesSuccess({ categories: res.data.value });
+              }
+              return CategoryActions.OperationFailed(res.data.error);
+            }
           ));
       })
     )
@@ -39,6 +45,7 @@ export class CategoryEffects {
       )
     )
   );
+
   public readonly getOverviewForCategory = createEffect(() =>
     this.actions$.pipe(
       ofType(CategoryActions.GetOverviewForCategory),
@@ -124,7 +131,8 @@ export class CategoryEffects {
     private readonly actions$: Actions,
     private readonly categoryService: CategoryService,
     private readonly categoriesStore: CategoriesStore,
-    private readonly chartStore: ChartStore
+    private readonly chartStore: ChartStore,
+    private readonly localStorageService: LocalStorageService
   ) {
   }
 }

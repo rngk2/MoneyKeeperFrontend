@@ -1,6 +1,12 @@
 import { Observable } from 'rxjs';
 import { fromPromise } from 'rxjs/internal-compatibility';
 
+export class ArgumentError extends Error {
+  constructor(msg: string) {
+    super(msg);
+  }
+}
+
 export interface Range {
   readonly begin: number;
   readonly end: number;

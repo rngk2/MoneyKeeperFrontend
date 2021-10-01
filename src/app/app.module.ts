@@ -24,41 +24,41 @@ import { EffectsModule } from "@ngrx/effects";
 import { StoreModule } from '@ngrx/store'; import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { ChartsModule } from 'ng2-charts';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import ApiConnector from '../api/api.connector';
 
 // app config
 import { environment } from '../environments/environment';
-import { AddCategoryFormComponent } from './add-category-form/add-category-form.component';
+import { BASE_SERVER_URL } from './app.config';
 
 // app components & modules
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule } from './app-routing.module'; import LocalStorageService from "./services/localStotage.service";
+import { AddCategoryFormComponent } from './add-category-form/add-category-form.component';
 import { WalletChartModule } from './wallet-chart/wallet-chart.module';
 import { AppComponent } from './app.component';
-import { BASE_SERVER_URL } from './app.config';
 import { CardsContainerComponent } from './cards-container/cards-container.component';
 import { CategoryCardModule } from './category-card/category-card.module';
 import { PipesModule } from "./commons/pipes/pipes.module";
 import { ConfirmPopupComponent } from './confirm-popup/confirm-popup.component';
 import { NavbarModule } from './navbar/navbar.module';
-import AuthService from './services/auth.service';
-import CategoryService from './services/category.service';
-import TransactionService from './services/transaction.service';
 
 // app services
 import UserService from './services/user.service';
-import { appReducers } from "./store/app.reducers";
+import CategoryService from './services/category.service';
+import AuthService from './services/auth.service';
+import TransactionService from './services/transaction.service';
+import ApiConnector from '../api/api.connector';
 
 // store
+import UserStore from "./store/user/user.store";
+import ChartStore from "./store/chart/chart.store";
+import TransactionsStore from "./store/transactions/transactions.store";
 import CategoriesStore from "./store/categories/categories.store";
 import { CategoryEffects } from "./store/categories/category.effects";
 import { ChartEffects } from "./store/chart/chart.effects";
-import ChartStore from "./store/chart/chart.store";
-import { appMetaReducers } from "./store/meta/meta";
-import { StateManagerEffects } from "./store/meta/state-manager/state-manager.effects";
 import { TransactionsEffects } from "./store/transactions/transactions.effects";
-import TransactionsStore from "./store/transactions/transactions.store";
+import { StateManagerEffects } from "./store/meta/state-manager/state-manager.effects";
 import { AuthEffects } from "./store/user/auth.effects";
-import UserStore from "./store/user/user.store";
+import { appReducers } from "./store/app.reducers";
+import { appMetaReducers } from "./store/meta/meta";
 
 @NgModule({
   declarations: [
@@ -119,6 +119,7 @@ import UserStore from "./store/user/user.store";
     CategoryService,
     TransactionService,
     AuthService,
+    LocalStorageService,
     { provide: BASE_SERVER_URL, useValue: environment.serverUrl },
     UserStore,
     TransactionsStore,
