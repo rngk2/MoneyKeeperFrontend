@@ -5,6 +5,83 @@
     "version": "v1"
   },
   "paths": {
+    "/Auth/authenticate": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthenticateRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthenticateRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthenticateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticateResponseApiResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticateResponseApiResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticateResponseApiResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Auth/refresh-token": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshTokenResponseApiResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshTokenResponseApiResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshTokenResponseApiResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/Categories/{id}": {
       "get": {
         "tags": [
@@ -27,60 +104,20 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoryDto"
+                  "$ref": "#/components/schemas/CategoryApiResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoryDto"
+                  "$ref": "#/components/schemas/CategoryApiResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoryDto"
+                  "$ref": "#/components/schemas/CategoryApiResult"
                 }
               }
             }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Categories"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateCategoryDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateCategoryDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateCategoryDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success"
           }
         }
       },
@@ -101,7 +138,140 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryApiResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryApiResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryApiResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Categories/overview": {
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryOverviewIEnumerableApiResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryOverviewIEnumerableApiResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryOverviewIEnumerableApiResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Categories/overview/{categoryId}": {
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryOverviewApiResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryOverviewApiResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryOverviewApiResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Categories/earnings/overview": {
+      "get": {
+        "tags": [
+          "Categories"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryOverviewApiResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryOverviewApiResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryOverviewApiResult"
+                }
+              }
+            }
           }
         }
       }
@@ -117,26 +287,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CategoryDto"
-                  }
+                  "$ref": "#/components/schemas/CategoryIEnumerableApiResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CategoryDto"
-                  }
+                  "$ref": "#/components/schemas/CategoryIEnumerableApiResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CategoryDto"
-                  }
+                  "$ref": "#/components/schemas/CategoryIEnumerableApiResult"
                 }
               }
             }
@@ -151,17 +312,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateCategoryDto"
+                "$ref": "#/components/schemas/CreateCategory"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateCategoryDto"
+                "$ref": "#/components/schemas/CreateCategory"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateCategoryDto"
+                "$ref": "#/components/schemas/CreateCategory"
               }
             }
           }
@@ -172,25 +333,23 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoryDto"
+                  "$ref": "#/components/schemas/CategoryApiResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoryDto"
+                  "$ref": "#/components/schemas/CategoryApiResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CategoryDto"
+                  "$ref": "#/components/schemas/CategoryApiResult"
                 }
               }
             }
           }
         }
-      }
-    },
-    "/Categories/byname/{categoryName}": {
+      },
       "delete": {
         "tags": [
           "Categories"
@@ -198,8 +357,7 @@
         "parameters": [
           {
             "name": "categoryName",
-            "in": "path",
-            "required": true,
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -207,7 +365,83 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryApiResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryApiResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryApiResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Categories/{categoryId}": {
+      "put": {
+        "tags": [
+          "Categories"
+        ],
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCategory"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCategory"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCategory"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryApiResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryApiResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryApiResult"
+                }
+              }
+            }
           }
         }
       }
@@ -234,17 +468,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionDto"
+                  "$ref": "#/components/schemas/TransactionApiResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionDto"
+                  "$ref": "#/components/schemas/TransactionApiResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionDto"
+                  "$ref": "#/components/schemas/TransactionApiResult"
                 }
               }
             }
@@ -268,88 +502,79 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionApiResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionApiResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionApiResult"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/Transactions": {
+    "/Transactions/category/{categoryId}/transactions": {
       "get": {
         "tags": [
           "Transactions"
         ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TransactionDto"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TransactionDto"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TransactionDto"
-                  }
-                }
-              }
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
             }
           }
-        }
-      },
-      "post": {
-        "tags": [
-          "Transactions"
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateTransactionDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateTransactionDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateTransactionDto"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "Success",
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionDto"
+                  "$ref": "#/components/schemas/TransactionIEnumerableApiResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionDto"
+                  "$ref": "#/components/schemas/TransactionIEnumerableApiResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TransactionDto"
+                  "$ref": "#/components/schemas/TransactionIEnumerableApiResult"
                 }
               }
             }
@@ -357,7 +582,7 @@
         }
       }
     },
-    "/Transactions/ofUser": {
+    "/Transactions/user/transactions": {
       "get": {
         "tags": [
           "Transactions"
@@ -382,18 +607,26 @@
             }
           },
           {
-            "name": "like",
+            "name": "orderByField",
             "in": "query",
+            "required": true,
             "schema": {
-              "type": "string"
+              "$ref": "#/components/schemas/TransactionField"
             }
           },
           {
-            "name": "when",
+            "name": "order",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/OrderType"
+            }
+          },
+          {
+            "name": "searchPattern",
             "in": "query",
             "schema": {
-              "type": "string",
-              "format": "date-time"
+              "type": "string"
             }
           }
         ],
@@ -403,26 +636,181 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TransactionDto"
-                  }
+                  "$ref": "#/components/schemas/TransactionIEnumerableApiResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TransactionDto"
-                  }
+                  "$ref": "#/components/schemas/TransactionIEnumerableApiResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TransactionDto"
-                  }
+                  "$ref": "#/components/schemas/TransactionIEnumerableApiResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Transactions/summary": {
+      "get": {
+        "tags": [
+          "Transactions"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionIEnumerableApiResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionIEnumerableApiResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionIEnumerableApiResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Transactions/total": {
+      "get": {
+        "tags": [
+          "Transactions"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringDecimalDictionaryApiResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringDecimalDictionaryApiResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringDecimalDictionaryApiResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Transactions/total/month": {
+      "get": {
+        "tags": [
+          "Transactions"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringDecimalDictionaryApiResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringDecimalDictionaryApiResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringDecimalDictionaryApiResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Transactions/total/year": {
+      "get": {
+        "tags": [
+          "Transactions"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringDecimalDictionaryApiResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringDecimalDictionaryApiResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringDecimalDictionaryApiResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/Transactions": {
+      "post": {
+        "tags": [
+          "Transactions"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTransaction"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTransaction"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTransaction"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionApiResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionApiResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionApiResult"
                 }
               }
             }
@@ -441,17 +829,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserDto"
+                  "$ref": "#/components/schemas/UserApiResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserDto"
+                  "$ref": "#/components/schemas/UserApiResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserDto"
+                  "$ref": "#/components/schemas/UserApiResult"
                 }
               }
             }
@@ -466,17 +854,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateUserDto"
+                "$ref": "#/components/schemas/CreateUser"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateUserDto"
+                "$ref": "#/components/schemas/CreateUser"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateUserDto"
+                "$ref": "#/components/schemas/CreateUser"
               }
             }
           }
@@ -487,17 +875,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserDto"
+                  "$ref": "#/components/schemas/UserApiResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserDto"
+                  "$ref": "#/components/schemas/UserApiResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserDto"
+                  "$ref": "#/components/schemas/UserApiResult"
                 }
               }
             }
@@ -512,24 +900,41 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateUserDto"
+                "$ref": "#/components/schemas/UpdateUser"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateUserDto"
+                "$ref": "#/components/schemas/UpdateUser"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateUserDto"
+                "$ref": "#/components/schemas/UpdateUser"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserApiResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserApiResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserApiResult"
+                }
+              }
+            }
           }
         }
       },
@@ -539,201 +944,21 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
-          }
-        }
-      }
-    },
-    "/Users/summary": {
-      "get": {
-        "tags": [
-          "Users"
-        ],
-        "responses": {
-          "200": {
             "description": "Success",
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/SummaryUnit"
-                  }
+                  "$ref": "#/components/schemas/UserApiResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/SummaryUnit"
-                  }
+                  "$ref": "#/components/schemas/UserApiResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/SummaryUnit"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/Users/total/month": {
-      "get": {
-        "tags": [
-          "Users"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "number",
-                    "format": "double"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "number",
-                    "format": "double"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "number",
-                    "format": "double"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/Users/total/year": {
-      "get": {
-        "tags": [
-          "Users"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "number",
-                    "format": "double"
-                  }
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "number",
-                    "format": "double"
-                  }
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "number",
-                    "format": "double"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/Users/authenticate": {
-      "post": {
-        "tags": [
-          "Users"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AuthenticateRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AuthenticateRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/AuthenticateRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuthenticateResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuthenticateResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuthenticateResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/Users/refresh-token": {
-      "post": {
-        "tags": [
-          "Users"
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/RefreshTokenResponse"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RefreshTokenResponse"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RefreshTokenResponse"
+                  "$ref": "#/components/schemas/UserApiResult"
                 }
               }
             }
@@ -786,7 +1011,19 @@
         },
         "additionalProperties": false
       },
-      "CategoryDto": {
+      "AuthenticateResponseApiResult": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/AuthenticateResponse"
+          },
+          "error": {
+            "$ref": "#/components/schemas/IError"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Category": {
         "type": "object",
         "properties": {
           "id": {
@@ -804,37 +1041,103 @@
         },
         "additionalProperties": false
       },
-      "CreateCategoryDto": {
+      "CategoryApiResult": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/Category"
+          },
+          "error": {
+            "$ref": "#/components/schemas/IError"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CategoryIEnumerableApiResult": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Category"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "error": {
+            "$ref": "#/components/schemas/IError"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CategoryOverview": {
+        "type": "object",
+        "properties": {
+          "categoryId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "categoryName": {
+            "type": "string",
+            "nullable": true
+          },
+          "spentThisMonth": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CategoryOverviewApiResult": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/CategoryOverview"
+          },
+          "error": {
+            "$ref": "#/components/schemas/IError"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CategoryOverviewIEnumerableApiResult": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CategoryOverview"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "error": {
+            "$ref": "#/components/schemas/IError"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateCategory": {
         "required": [
-          "name",
-          "userId"
+          "name"
         ],
         "type": "object",
         "properties": {
           "name": {
             "type": "string"
-          },
-          "userId": {
-            "type": "integer",
-            "format": "int32"
           }
         },
         "additionalProperties": false
       },
-      "CreateTransactionDto": {
+      "CreateTransaction": {
         "required": [
           "amount",
           "categoryId",
           "comment",
-          "timestamp",
-          "userId"
+          "timestamp"
         ],
         "type": "object",
         "properties": {
-          "userId": {
-            "type": "integer",
-            "format": "int32"
-          },
           "categoryId": {
             "type": "integer",
             "format": "int32"
@@ -853,7 +1156,7 @@
         },
         "additionalProperties": false
       },
-      "CreateUserDto": {
+      "CreateUser": {
         "required": [
           "email",
           "firstName",
@@ -880,17 +1183,70 @@
         },
         "additionalProperties": false
       },
+      "IError": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "OrderType": {
+        "enum": [
+          "ASC",
+          "DESC"
+        ],
+        "type": "string"
+      },
       "RefreshTokenResponse": {
         "type": "object",
         "properties": {
-          "newToken": {
+          "token": {
             "type": "string",
             "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "SummaryUnit": {
+      "RefreshTokenResponseApiResult": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/RefreshTokenResponse"
+          },
+          "error": {
+            "$ref": "#/components/schemas/IError"
+          }
+        },
+        "additionalProperties": false
+      },
+      "StringDecimalDictionaryApiResult": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number",
+              "format": "double"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "error": {
+            "$ref": "#/components/schemas/IError"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Transaction": {
         "type": "object",
         "properties": {
           "id": {
@@ -901,13 +1257,13 @@
             "type": "integer",
             "format": "int32"
           },
-          "categoryName": {
-            "type": "string",
-            "nullable": true
-          },
           "categoryId": {
             "type": "integer",
             "format": "int32"
+          },
+          "categoryName": {
+            "type": "string",
+            "nullable": true
           },
           "amount": {
             "type": "number",
@@ -924,41 +1280,45 @@
         },
         "additionalProperties": false
       },
-      "TransactionDto": {
+      "TransactionApiResult": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
+          "value": {
+            "$ref": "#/components/schemas/Transaction"
           },
-          "userId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "categoryId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "categoryName": {
-            "type": "string",
-            "nullable": true
-          },
-          "amount": {
-            "type": "number",
-            "format": "double"
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "comment": {
-            "type": "string",
-            "nullable": true
+          "error": {
+            "$ref": "#/components/schemas/IError"
           }
         },
         "additionalProperties": false
       },
-      "UpdateCategoryDto": {
+      "TransactionField": {
+        "enum": [
+          "CategoryName",
+          "Amount",
+          "Timestamp",
+          "Comment"
+        ],
+        "type": "string"
+      },
+      "TransactionIEnumerableApiResult": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Transaction"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "error": {
+            "$ref": "#/components/schemas/IError"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateCategory": {
         "type": "object",
         "properties": {
           "name": {
@@ -968,7 +1328,7 @@
         },
         "additionalProperties": false
       },
-      "UpdateUserDto": {
+      "UpdateUser": {
         "type": "object",
         "properties": {
           "firstName": {
@@ -993,7 +1353,7 @@
         },
         "additionalProperties": false
       },
-      "UserDto": {
+      "User": {
         "type": "object",
         "properties": {
           "id": {
@@ -1011,6 +1371,22 @@
           "email": {
             "type": "string",
             "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UserApiResult": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "$ref": "#/components/schemas/User"
+          },
+          "error": {
+            "$ref": "#/components/schemas/IError"
           }
         },
         "additionalProperties": false

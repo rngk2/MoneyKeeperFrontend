@@ -1,39 +1,55 @@
-import User from '../entities/user.entity';
-import UserService from './user.service';
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
+import { UntilDestroy } from "@ngneat/until-destroy";
+import { BehaviorSubject, Observable } from "rxjs";
+import { map } from "rxjs/operators";
 
+import ApiConnector from "../../api/api.connector";
+import { ApiContractIError } from "../../api/api.generated";
+import { AuthApi } from "../../api/api.interfaces";
+import IUser from '../entities/user.entity';
+import { convertToObserved, Observed } from "../utils";
+
+@UntilDestroy()
 @Injectable()
 export default class AuthService {
 
-  constructor(private readonly userService: UserService) {
+  // @ts-ignore
+  private refreshTokenTimeout: NodeJS.Timeout;
+  private _api = new BehaviorSubject<Observed<AuthApi> | null>(null);
+
+  constructor(
+    private readonly apiConnector: ApiConnector
+  ) {
+    apiConnector.api.subscribe(value => this._api.next(convertToObserved(value.auth)));
   }
 
-  public logIn(credentials: { email: string, password: string }, cb?: () => void): void {
-    this.userService.api.authenticateCreate({
+  private get api(): Observed<AuthApi> {
+    return this._api.value!;
+  }
+
+  public logIn(credentials: { email: string, password: string }): Observable<IUser | ApiContractIError> {
+    return this.api.authenticateCreate({
       ...(credentials),
-    }).subscribe(res => {
-      const user: User = res.data as User;
-      this.userService.currentUserService.setCurrentUser(user);
+    }).pipe(map(res => {
+      if (res.data.error) {
+        return res.data.error;
+      }
+      const user: IUser = res.data.value as IUser;
       this.startRefreshTokenTimer();
-      cb && cb();
-    });
+      return user;
+    }));
   }
 
   public logOut(): void {
-    this.userService.currentUserService.removeCurrentUser();
     this.stopRefreshTokenTimer();
   }
 
   public refreshToken(): void {
-    this.userService.api.refreshTokenCreate()
-      .subscribe(res => {
-        this.userService.currentUserService.setCurrentUser({...this.userService.currentUserService.getCurrentUser(), jwtToken: res.data.newToken as string});
+    this.api.refreshTokenCreate()
+      .subscribe(() => {
         this.startRefreshTokenTimer();
       });
   }
-
-  // @ts-ignore
-  private refreshTokenTimeout: NodeJS.Timeout;
 
   private startRefreshTokenTimer(): void {
     const token_ttl = (1000 * 60) * 5;
@@ -43,4 +59,4 @@ export default class AuthService {
   private stopRefreshTokenTimer(): void {
     clearTimeout(this.refreshTokenTimeout);
   }
-};
+}

@@ -1,46 +1,28 @@
-import {Component} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {MatDialogRef} from '@angular/material/dialog';
-import UserService from '../../services/user.service';
-import CardsContainerStore from '../../store/cards-store/cards-container.store';
-import CategoryService from '../../services/category.service';
-import TransactionService from '../../services/transaction.service';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+import { Observable } from "rxjs";
+import ICategory from "../../entities/category.entity";
+import CategoriesStore from "../../store/categories/categories.store";
 
 @Component({
   selector: 'add-earning-form',
   templateUrl: './add-earning-form.component.html',
-  styleUrls: ['./add-earning-form.component.scss']
+  styleUrls: ['./add-earning-form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddEarningFormComponent {
 
-  public timestampControl = new FormControl(new Date());
-  public minDate = new Date(0);
-  public maxDate = new Date();
-  public amount!: number;
-  public comment!: string;
+  public readonly earningsId: Observable<ICategory | undefined>;
 
-  constructor(private readonly dialogRef: MatDialogRef<AddEarningFormComponent>,
-              private readonly userService: UserService,
-              private readonly cardsStore: CardsContainerStore,
-              private readonly categoryService: CategoryService,
-              private readonly transactionService: TransactionService) {
+  constructor(
+    private readonly dialogRef: MatDialogRef<AddEarningFormComponent>,
+    public readonly categoriesStore: CategoriesStore,
+  ) {
+    this.earningsId = categoriesStore.earnings;
+    this.categoriesStore.fetchCategories();
   }
 
-  public addEarning(): void {
-    this.categoryService.api.categoriesList()
-      .subscribe(response => {
-        const categories = response.data;
-        const e_index: number = categories.findIndex((value: { name: string }) => value.name === 'Earnings');
-        (this.transactionService.api.transactionsCreate({
-          userId: this.userService.currentUserService.getCurrentUser()?.id!,
-          categoryId: categories[e_index].id!,
-          amount: this.amount,
-          timestamp: this.timestampControl.value,
-          comment: this.comment
-        })).subscribe(() => {
-          this.cardsStore.updateState();
-        });
-      });
+  public onSubmit(): void {
     this.dialogRef.close();
   }
 }

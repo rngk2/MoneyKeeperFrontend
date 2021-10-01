@@ -32,6 +32,10 @@ body {
 }
 
 @keyframes type {
-  from{box-shadow: inset -3px 0px 0px #3d3d3d;}
-  to{box-shadow: inset -3px 0px 0px transparent;}
+  from {
+    box-shadow: inset -3px 0px 0px #3d3d3d;
+  }
+  to {
+    box-shadow: inset -3px 0px 0px transparent;
+  }
 }

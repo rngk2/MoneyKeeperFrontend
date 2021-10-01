@@ -1,77 +1,41 @@
-import {Component, OnInit} from '@angular/core';
-import UserService from '../services/user.service';
-import User from '../entities/user.entity';
-import Transaction from '../entities/transaction.entity';
-import {BehaviorSubject} from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from "rxjs/operators";
+import IUser from '../entities/user.entity';
+import CategoriesStore from "../store/categories/categories.store";
+import ChartStore from "../store/chart/chart.store";
+import { Total } from "../store/chart/types";
+import UserStore from "../store/user/user.store";
 
 @Component({
   selector: 'profile-page',
   templateUrl: './profile-page.component.html',
-  styleUrls: ['./profile-page.component.scss']
+  styleUrls: ['./profile-page.component.scss'],
 })
 export class ProfilePageComponent implements OnInit {
+  public readonly user$: Observable<IUser | undefined>;
+  public readonly earnedMonth$: Observable<number>;
+  public readonly spentMonth$: Observable<number>;
+  public readonly spentYear$: Observable<number>;
+  public readonly totalMonth$: Observable<Total | undefined>;
+  public readonly totalYear$: Observable<Total | undefined>;
 
-  public user: User | null = null;
-
-  public earnedForMonth: number = 0;
-
-  public names_month = new BehaviorSubject<string[]>([]);
-  public amount_month = new BehaviorSubject<number[]>([]);
-
-  public names_year = new BehaviorSubject<string[]>([]);
-  public amount_year = new BehaviorSubject<number[]>([]);
-
-  public spent_month = 0;
-  public spent_year = 0;
-
-  constructor(private readonly userService: UserService) {
-    userService.currentUserService.getCurrentUserAsObservable()
-      .subscribe(user => this.user = user);
+  constructor(
+    private readonly userStore: UserStore,
+    private readonly chartStore: ChartStore,
+    private readonly categoriesStore: CategoriesStore
+  ) {
+    this.user$ = userStore.user;
+    this.totalMonth$ = chartStore.totalMonth;
+    this.totalYear$ = chartStore.totalYear;
+    this.spentMonth$ = chartStore.amountMonth;
+    this.spentYear$ = chartStore.amountYear;
+    this.earnedMonth$ = categoriesStore.earningsOverview.pipe(map(value => value?.spentThisMonth || 0));
   }
 
-  ngOnInit(): void {
-    this.fetchTotalForMonth();
-    this.fetchTotalForYear();
-  }
-
-  private fetchTotalForMonth(): void {
-    this.userService.api.totalMonthList()
-      .subscribe(res => {
-        const total = res.data;
-        if (total.hasOwnProperty(Transaction.inputTransactionName)) {
-          // @ts-ignore
-          this.earnedForMonth = total[Transaction.inputTransactionName];
-          // @ts-ignore
-          delete total[Transaction.inputTransactionName];
-        }
-        this.names_month.next(this.getCategoriesNames(total));
-        this.amount_month.next(this.getAmountForCategories(total));
-        this.spent_month = this.reduce(this.amount_month.value);
-      });
-  }
-
-  private fetchTotalForYear(): void {
-    this.userService.api.totalYearList()
-      .subscribe(res => {
-        const total = res.data;
-        total.hasOwnProperty(Transaction.inputTransactionName) &&
-        // @ts-ignore
-        delete total[Transaction.inputTransactionName];
-        this.names_year.next(this.getCategoriesNames(total));
-        this.amount_year.next(this.getAmountForCategories(total));
-        this.spent_year = this.reduce(this.amount_year.value);
-      });
-  }
-
-  public getCategoriesNames(total: object): string[] {
-    return Object.keys(total);
-  }
-
-  public getAmountForCategories(total: object): number[] {
-    return Object.values(total);
-  }
-
-  public reduce(a: number[]): number {
-    return a.reduce((acc, curr) => acc + curr);
+  public ngOnInit(): void {
+    this.chartStore.fetchTotalForMonth();
+    this.chartStore.fetchTotalForYear();
+    this.categoriesStore.fetchOverviewForEarnings();
   }
 }

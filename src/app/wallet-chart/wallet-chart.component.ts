@@ -1,19 +1,22 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {ChartOptions, ChartType} from 'chart.js';
-import {Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip, SingleDataSet} from 'ng2-charts';
-import {Observable} from 'rxjs';
+import { Component, Input } from '@angular/core';
+import { ChartOptions, ChartType } from 'chart.js';
+import { monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip } from 'ng2-charts';
+import { Observable } from 'rxjs';
+
+import { Total } from "../store/chart/types";
+import { extractAmounts, extractNames } from "./wallet-chart.transform-funcs";
 
 @Component({
   selector: 'wallet-chart',
   templateUrl: './wallet-chart.component.html',
-  styleUrls: ['./wallet-chart.component.scss']
+  styleUrls: ['./wallet-chart.component.scss'],
 })
-export class WalletChartComponent implements OnInit {
+export class WalletChartComponent {
 
-  public chartType: ChartType = 'doughnut';
-  public chartLegend = true;
-  public chartPlugins = [];
-  public chartOptions: ChartOptions = {
+  public readonly chartType: ChartType = 'doughnut';
+  public readonly chartLegend = true;
+  public readonly chartPlugins = [];
+  public readonly chartOptions: ChartOptions = {
     animation: {
       duration: 3200
     },
@@ -27,20 +30,13 @@ export class WalletChartComponent implements OnInit {
       }
     },
   };
+  public readonly extractAmountsFunc = extractAmounts;
+  public readonly extractNamesFunc = extractNames;
 
-  public chartLabels: Label[] | undefined = undefined;
-  public chartData: SingleDataSet | undefined = undefined;
-
-  @Input() public chartLabelsObservable!: Observable<Label[]>;
-  @Input() public chartDataObservable!: Observable<SingleDataSet>;
+  @Input() public chartTotal$!: Observable<Total>;
 
   constructor() {
     monkeyPatchChartJsTooltip();
     monkeyPatchChartJsLegend();
-  }
-
-  ngOnInit(): void {
-    this.chartLabelsObservable.subscribe(labels => this.chartLabels = labels);
-    this.chartDataObservable.subscribe(data => this.chartData = data);
   }
 }

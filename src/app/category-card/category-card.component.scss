@@ -1,13 +1,47 @@
 .card {
   width: 20rem;
   margin: 50px auto auto auto;
+  overflow: hidden;
 
-  mat-card-title {
-    text-align: center;
+  &__when-expanded__bottom {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__when-expanded__see-all {
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    letter-spacing: .4px;
+  }
+
+  %card__title__font-style {
     font-family: 'Lato', sans-serif;
     font-weight: bold;
     letter-spacing: 1px;
     font-size: 23px;
+  }
+
+  &__edit-name-input {
+    @extend %card__title__font-style;
+    width: 100%;
+  }
+
+  mat-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+
+    mat-card-title {
+      @extend %card__title__font-style;
+      text-align: center;
+    }
+
+    mat-icon {
+      font-size: 20px;
+    }
   }
 
   mat-card-content p.spend {
@@ -21,14 +55,12 @@
     letter-spacing: .3px;
   }
 
-
   mat-divider {
     margin-top: .9rem;
   }
 
   mat-icon {
     cursor: pointer;
-    margin-top: 1rem;
   }
 
 }

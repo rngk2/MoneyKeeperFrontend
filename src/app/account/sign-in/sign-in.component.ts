@@ -1,20 +1,21 @@
-import {Component} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
-import AuthService from '../../services/auth.service';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import UserStore from "../../store/user/user.store";
 
 @Component({
   selector: 'sign-in-form',
   templateUrl: './sign-in.component.html',
-  styleUrls: ['./sign-in.component.scss']
+  styleUrls: ['./sign-in.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SignInComponent {
 
-  public signInForm: FormGroup;
+  public readonly signInForm: FormGroup;
 
-  constructor(private readonly router: Router,
-              private readonly fb: FormBuilder,
-              private readonly authService: AuthService) {
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly userStore: UserStore
+  ) {
     this.signInForm = this.fb.group({
       email: new FormControl('', [
         Validators.required
@@ -34,9 +35,9 @@ export class SignInComponent {
   }
 
   public submit(): void {
-    this.authService.logIn({
+    this.userStore.logIn({
       email: this.email?.value,
       password: this.password?.value
-    }, () => this.router.navigate(['/wallet']));
+    });
   }
 }

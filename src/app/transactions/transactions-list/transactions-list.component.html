@@ -1,21 +1,25 @@
-<div infiniteScroll
-     [infiniteScrollDistance]="3"
+<script src="transactions-list.component.ts"></script>
+<div (scrolled)="onScroll()"
+     [infiniteScrollDistance]="5"
      [infiniteScrollThrottle]="1000"
-     (scrolled)="onScroll()"
+     infiniteScroll
 >
   <mat-list>
     <form>
       <div class="search__container">
-        <input class="search__input" type="text" placeholder="Search by category name or associated comment..." [formControl]="searchControl" >
+        <input [formControl]="searchControl" class="search__input"
+               placeholder="Search by category name or associated comment..."
+               type="text">
       </div>
     </form>
-    <mat-list-item *ngFor="let transaction of transactions" [class]="transaction.categoryName !== inputTransactionName() ? 'spent-bg' : 'earn-bg'">
+    <mat-list-item *ngFor="let transaction of (transactions$ | async | filter: filter)"
+                   [class]="transaction.categoryName !== inputTransactionName ? 'spent-bg' : 'earn-bg'">
       <h3 class="title" matLine> {{transaction.categoryName}} </h3>
-      <p matLine class="content">
+      <p class="content" matLine>
         <span>({{transaction.timestamp | date: "medium"}}) </span>
         <span>spent {{transaction.amount}}$.  </span>
         <span>"{{transaction.comment}}"</span>
-        <mat-icon>{{transaction.categoryName === inputTransactionName() ? "arrow_back" : "arrow_forward"}}</mat-icon>
+        <mat-icon>{{transaction.categoryName === inputTransactionName ? "arrow_back" : "arrow_forward"}}</mat-icon>
       </p>
     </mat-list-item>
   </mat-list>

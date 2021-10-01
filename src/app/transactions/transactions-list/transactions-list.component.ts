@@ -1,88 +1,77 @@
-import {Component, Inject, Input, OnInit} from '@angular/core';
-import {Range} from '../../utils/Utils';
-import Transaction from '../../entities/transaction.entity';
-import {FormControl} from '@angular/forms';
-import {HttpClient} from '@angular/common/http';
-import {BASE_SERVER_URL} from '../../app.config';
-import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
-import TransactionService from '../../services/transaction.service';
-import {TransactionDto} from '../../../api/api.generated';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { UntilDestroy } from "@ngneat/until-destroy";
+import { Observable } from "rxjs";
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
-class RangeOffsetController {
+import { ApiContractOrderType, ApiContractTransactionField } from '../../../api/api.generated';
+import ITransaction, { INPUT_TRANSACTION_NAME } from '../../entities/transaction.entity';
+import TransactionsStore from "../../store/transactions/transactions.store";
+import { Range, RangeOffsetController } from '../../utils';
+import { SEARCH_OPTIONS, TRANSACTIONS_LAZY_LOADING_OPTIONS } from "./transactions-list.constants";
 
-  constructor(private beginOffset: number = 0,
-              private step: number = 20) {
-  }
-
-  getNextRange(): Range {
-    const begin = this.beginOffset;
-    const end = begin + this.step;
-    this.beginOffset += this.step + 1;
-
-    return {begin, end};
-  }
-}
-
+@UntilDestroy()
 @Component({
   selector: 'transactions-list',
   templateUrl: './transactions-list.component.html',
-  styleUrls: ['./transactions-list.component.scss']
+  styleUrls: ['./transactions-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TransactionsListComponent implements OnInit {
 
-  public transactions = new Array<TransactionDto>();
-  public searchControl = new FormControl('');
+  public readonly transactions$: Observable<ITransaction[]>;
+  public readonly searchControl = new FormControl('');
 
-  @Input() public filter: (value: any, index: number, array: any[]) => unknown = () => true;
+  public readonly inputTransactionName = INPUT_TRANSACTION_NAME;
 
-  private rangeForAll = new RangeOffsetController();
-  private rangeForSearch = new RangeOffsetController();
+  @Input() public filter: (value: any) => boolean = () => true;
 
-  private static readonly SEARCH_DEBOUNCE_DURATION = 400;
+  private rangeForAll
+    = new RangeOffsetController(TRANSACTIONS_LAZY_LOADING_OPTIONS.BEGIN_OFFSET, TRANSACTIONS_LAZY_LOADING_OPTIONS.STEP);
+  private rangeForSearch
+    = new RangeOffsetController(TRANSACTIONS_LAZY_LOADING_OPTIONS.BEGIN_OFFSET, TRANSACTIONS_LAZY_LOADING_OPTIONS.STEP);
 
-  constructor(private readonly http: HttpClient,
-              @Inject(BASE_SERVER_URL) private readonly serverUrl: string,
-              private readonly transactionService: TransactionService) {
+  constructor(
+    private readonly transactionsStore: TransactionsStore
+  ) {
+    this.transactions$ = transactionsStore.transactions;
   }
 
   public ngOnInit(): void {
     this.searchControl.valueChanges
-      .pipe(debounceTime(TransactionsListComponent.SEARCH_DEBOUNCE_DURATION), distinctUntilChanged())
+      .pipe(debounceTime(SEARCH_OPTIONS.DEBOUNCE_DURATION), distinctUntilChanged())
       .subscribe(() => {
-        this.rangeForSearch = this.rangeForAll = new RangeOffsetController();
+        this.rangeForSearch
+          = this.rangeForAll
+          = new RangeOffsetController(TRANSACTIONS_LAZY_LOADING_OPTIONS.BEGIN_OFFSET, TRANSACTIONS_LAZY_LOADING_OPTIONS.STEP);
         this.fetchTransactionsWithPattern(this.rangeForSearch.getNextRange());
       });
     this.fetchTransactions(this.rangeForAll.getNextRange());
   }
 
+  public onScroll(): void {
+    this.searchControl!.value.length === 0
+      ? this.fetchTransactions(this.rangeForAll.getNextRange())
+      : this.fetchTransactionsWithPattern(this.rangeForSearch.getNextRange());
+  }
+
   private fetchTransactions(range: Range): void {
-    this.transactionService.api.ofUserList({from: range.begin, to: range.end})
-      .subscribe(transactions => this.transactions =
-          this.transactionService.utils
-          .sortByDate([...this.transactions, ...transactions.data])
-          .filter(this.filter)
-    );
+    this.transactionsStore.fetchTransactions({
+      from: range.begin,
+      to: range.end,
+      orderByField: ApiContractTransactionField.Timestamp,
+      order: ApiContractOrderType.DESC
+    });
   }
 
   private fetchTransactionsWithPattern(range: Range): void {
-    const pattern = `%${this.searchControl.value}%`;
-    this.transactionService.api.ofUserList({from: range.begin, to: range.end, like: pattern})
-      .subscribe(transactions => {
-        const append = range.begin === 0 ? new Set<Transaction>([]) : this.transactions;
-        this.transactions =
-          this.transactionService.utils
-            .sortByDate([...append, ...transactions.data])
-            .filter(this.filter);
-      });
-  }
-
-  public onScroll(): void {
-    this.searchControl!.value.length === 0 ?
-      this.fetchTransactions(this.rangeForAll.getNextRange()) :
-      this.fetchTransactionsWithPattern(this.rangeForSearch.getNextRange());
-  }
-
-  public inputTransactionName(): string {
-    return Transaction.inputTransactionName;
+    const searchPattern = `%${ this.searchControl.value }%`;
+    this.transactionsStore.fetchTransactions({
+      from: range.begin,
+      to: range.end,
+      order: ApiContractOrderType.DESC,
+      orderByField: ApiContractTransactionField.Timestamp,
+      searchPattern
+    });
   }
 }

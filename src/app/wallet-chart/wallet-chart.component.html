@@ -1,10 +1,9 @@
-<div style="display: block;" *ngIf="chartLabels && chartData">
-  <canvas baseChart
-          [data]="chartData"
-          [labels]="chartLabels"
-          [chartType]="chartType"
-          [options]="chartOptions"
+<div *ngIf="(chartTotal$ | async) as total" style="display: block;">
+  <canvas [chartType]="chartType"
+          [data]="total | transform: extractAmountsFunc"
+          [labels]="total | transform: extractNamesFunc"
+          [legend]="chartLegend" [options]="chartOptions"
           [plugins]="chartPlugins"
-          [legend]="chartLegend">
+          baseChart>
   </canvas>
 </div>

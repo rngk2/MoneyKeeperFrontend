@@ -1,15 +1,18 @@
-import UserService from './services/user.service';
-import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree} from '@angular/router';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map } from "rxjs/operators";
+
+import UserStore from "./store/user/user.store";
 
 @Injectable()
 export class Permissions {
-  constructor(private readonly userService: UserService) {
+  constructor(private readonly userStore: UserStore) {
   }
 
-  canActivate(): boolean {
-    return !!this.userService.currentUserService.getCurrentUser()
+  canActivate(): Observable<boolean> {
+    return this.userStore.user
+      .pipe(map(user => !!user));
   }
 }
 
@@ -17,17 +20,17 @@ export class Permissions {
 export class CanActivateUserRoutes implements CanActivate {
 
   constructor(private readonly permissions: Permissions,
-              private readonly router: Router) { }
+              private readonly router: Router) {
+  }
 
   public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot)
     : Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const _canActivate = this.permissions.canActivate()
-    if (_canActivate) {
-      return true
-    }
-    else {
-      this.router.navigate(['/sign-in'])
-      return false
-    }
+    return this.permissions.canActivate()
+      .pipe(map(can => {
+        if (!can) {
+          this.router.navigate(['/sign-in']);
+        }
+        return can;
+      }));
   }
 }

@@ -7,7 +7,7 @@
     "build": "npm run make-api && ng build",
     "watch": "npm run make-api && ng build --watch --configuration development",
     "test": "npm run make-api && ng test",
-    "make-api": "swagger-typescript-api -p src/api/swagger.json -o src/api -n api.generated.ts\\n"
+    "make-api": "swagger-typescript-api -p src/api/swagger.json -o src/api -n api.generated.ts --type-prefix ApiContract"
   },
   "private": true,
   "dependencies": {
@@ -23,11 +23,14 @@
     "@angular/platform-browser-dynamic": "~12.1.0-",
     "@angular/router": "~12.1.0-",
     "@material/fab": "^12.0.0",
+    "@ngneat/until-destroy": "^8.1.4",
+    "@ngrx/effects": "^12.4.0",
     "@ngrx/store": "^12.4.0",
+    "@ngrx/store-devtools": "^12.4.0",
     "chart.js": "^2.9.3",
     "ng2-charts": "^2.2.3",
     "ngx-infinite-scroll": "^10.0.1",
-    "rxjs": "~6.6.0",
+    "rxjs": "^6.6.7",
     "tslib": "^2.2.0",
     "zone.js": "~0.11.4"
   },

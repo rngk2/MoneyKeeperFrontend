@@ -8,9 +8,9 @@ describe('WalletPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ WalletPageComponent ]
+      declarations: [WalletPageComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

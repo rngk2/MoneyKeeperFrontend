@@ -4,18 +4,20 @@
       <p>Sign In</p>
     </div>
     <mat-form-field>
-      <input type="email" matInput placeholder="Email" formControlName="email" required>
-      <div *ngIf="email!.invalid && (email!.dirty || email!.touched) && email!.errors?.required" class="validation-error__hint">
+      <input formControlName="email" matInput placeholder="Email" required type="email">
+      <div *ngIf="email!.invalid && (email!.dirty || email!.touched) && email!.errors?.required"
+           class="validation-error__hint">
         Email is required
       </div>
     </mat-form-field>
     <mat-form-field>
-      <input type="password" matInput placeholder="Password" formControlName="password" required>
-      <div *ngIf="password!.invalid && (password!.dirty || password!.touched) && password!.errors?.required" class="validation-error__hint">
+      <input formControlName="password" matInput placeholder="Password" required type="password">
+      <div *ngIf="password!.invalid && (password!.dirty || password!.touched) && password!.errors?.required"
+           class="validation-error__hint">
         Password is required
       </div>
     </mat-form-field>
-    <button [disabled]="!signInForm.valid" class="submit" mat-button color="primary" (click)="submit()">Submit</button>
+    <button (click)="submit()" [disabled]="!signInForm.valid" class="submit" color="primary" mat-button>Submit</button>
     <div class="hint">
       <a routerLink="/account/sign-up">Don't have an account?</a>
     </div>

@@ -1,22 +1,18 @@
-import {RouterModule, Routes} from "@angular/router";
-import {NgModule} from "@angular/core";
-import {ProfilePageComponent} from "./profile-page.component";
-import {CanActivateUserRoutes, Permissions} from "../guards";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+import { ProfilePageComponent } from './profile-page.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: ProfilePageComponent,
-    canActivate: [CanActivateUserRoutes]
+    component: ProfilePageComponent
   }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-  providers: [
-    CanActivateUserRoutes,
-    Permissions
-  ]
+  exports: [RouterModule]
 })
-export class ProfilePageRoutingModule { }
+export class ProfilePageRoutingModule {
+}
