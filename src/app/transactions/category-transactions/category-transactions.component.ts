@@ -1,10 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { UntilDestroy } from "@ngneat/until-destroy";
 
 import ITransaction from '../../entities/transaction.entity';
 
-@UntilDestroy()
 @Component({
   selector: 'app-category-transactions',
   templateUrl: './category-transactions.component.html',
@@ -13,12 +11,10 @@ import ITransaction from '../../entities/transaction.entity';
 })
 export class CategoryTransactionsComponent {
 
-  public categoryName!: string;
+  public readonly categoryName: string;
   public readonly filter = (value: ITransaction) => value.categoryName === this.categoryName;
 
-  constructor(
-    route: ActivatedRoute
-  ) {
-    route.params.subscribe(params => this.categoryName = params["categoryName"]);
+  constructor(route: ActivatedRoute) {
+    this.categoryName = route.snapshot.params['categoryName'];
   }
 }
