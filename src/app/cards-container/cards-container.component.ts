@@ -25,7 +25,7 @@ export class CardsContainerComponent implements OnInit, OnDestroy {
 
   public readonly overview$: Observable<ApiContractCategoryOverview[]>;
   public readonly chart$: Observable<Total | undefined>;
-  public readonly isFetched: Observable<boolean>;
+  public readonly isFetched$: Observable<boolean>;
   public readonly sortComparator = compareFn<ApiContractCategoryOverview>('categoryName');
 
   private range = new RangeOffsetController(CARDS_LAZY_LOADING_OPTIONS.BEGIN_OFFSET, CARDS_LAZY_LOADING_OPTIONS.STEP);
@@ -37,7 +37,7 @@ export class CardsContainerComponent implements OnInit, OnDestroy {
     private readonly chartStore: ChartStore,
   ) {
     this.overview$ = categoriesStore.overview.pipe(distinctUntilChanged());
-    this.isFetched = categoriesStore.isOverviewFetched.pipe(distinctUntilChanged());
+    this.isFetched$ = categoriesStore.isOverviewFetched.pipe(distinctUntilChanged());
     this.chart$ = chartStore.total.pipe(distinctUntilChanged());
   }
 
